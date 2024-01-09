@@ -1,0 +1,14 @@
+@use "variables" as *;
+
+.header {
+    max-height: $offcanvas-header-height;
+    border-bottom: 1px solid $border-grey-color;
+    .icon-close {
+        font-size: 2rem;
+        transition: transform 0.4s ease;
+        cursor: pointer;
+        &:hover {
+            transform: rotate(180deg);
+        }
+    }
+}

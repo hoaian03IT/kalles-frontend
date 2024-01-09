@@ -1,0 +1,64 @@
+@use "variables" as *;
+@import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Kanit", sans-serif !important;
+    background-color: bisque !important;
+}
+
+.main {
+    height: 1000px;
+}
+
+.btn {
+    border-radius: $btn-radius !important;
+
+    &-primary {
+        position: relative;
+        background-color: $black-color !important;
+        border-color: $black-color !important;
+        overflow: hidden;
+
+        &::after {
+            position: absolute;
+            content: "";
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 100%;
+            background-color: rgba($color: $white-color, $alpha: 0.1);
+            border-radius: $btn-radius;
+            transition: right 0.2s linear;
+        }
+        &:hover::after {
+            right: 0;
+        }
+    }
+    &-secondary {
+        background-color: #f7f7f7 !important;
+        color: rgba($color: $black-color, $alpha: 0.8) !important;
+        border-color: #e7e7e7 !important;
+    }
+    &-size-md {
+        height: $btn-md-height;
+    }
+    &-size-lg {
+        height: $btn-lg-height;
+    }
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    height: 1rem;
+    width: 1rem;
+    accent-color: $black-color;
+}

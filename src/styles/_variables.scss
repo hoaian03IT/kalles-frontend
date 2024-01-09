@@ -1,0 +1,23 @@
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px,
+);
+
+$white-color: #fff;
+$black-color: #000;
+$red-color: #ff2828;
+$border-grey-color: rgba(
+    $color: $black-color,
+    $alpha: 0.2,
+);
+
+$btn-radius: 40px;
+$btn-md-height: 40px;
+$btn-lg-height: 50px;
+$offcanvas-header-height: 65px;
+
+$font-family: "Kanit", sans-serif;
