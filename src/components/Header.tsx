@@ -1,16 +1,16 @@
+import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Col, Image, Row } from "react-bootstrap";
 import classNames from "classnames/bind";
 import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import { BsList } from "react-icons/bs";
+import { LoginSlide } from "./slides/LoginSlide";
+import { CartSlide } from "./slides/CartSlide";
+import { SearchSlide } from "./slides/SearchSlide";
 
 import logoImage from "~/assets/images/text-logo.png";
 
 import styles from "~/styles/Header.module.scss";
-import { useEffect, useRef, useState } from "react";
-import { LoginSlide } from "./slides/LoginSlide";
-import { CartSlide } from "./slides/CartSlide";
-import { SearchSlide } from "./slides/SearchSlide";
 
 const cx = classNames.bind(styles);
 
@@ -25,7 +25,7 @@ export const Header = () => {
     const [whiteBgColorHeader, setWhiteBgColorHeader] = useState(false);
     const [showLoginSlide, setShowLoginSlide] = useState(false);
     const [showCartSlide, setShowCartSlide] = useState(false);
-    const [showSearchSlide, setShowSearchSlide] = useState(true);
+    const [showSearchSlide, setShowSearchSlide] = useState(false);
 
     const headerRef = useRef(null);
 

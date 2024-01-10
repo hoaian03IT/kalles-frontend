@@ -9,16 +9,10 @@
 
 body {
     font-family: "Kanit", sans-serif !important;
-    background-color: bisque !important;
-}
-
-.main {
-    height: 1000px;
 }
 
 .btn {
     border-radius: $btn-radius !important;
-
     &-primary {
         position: relative;
         background-color: $black-color !important;

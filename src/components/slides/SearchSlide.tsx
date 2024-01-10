@@ -15,6 +15,48 @@ type Props = {
 const cx = classNames.bind(styles);
 
 const categories = ["All Categories", "Accessories", "Arts & Entertainments", "Bag"];
+const searchItems = [
+    {
+        id: 0,
+        image: "https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg",
+        nameProduct: "Hat Attack Selena Bag",
+        path: "/",
+        quantity: 2,
+        price: 200000,
+    },
+    {
+        id: 1,
+        image: "https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg",
+        nameProduct: "Hat Attack Selena Bag",
+        path: "/",
+        quantity: 2,
+        price: 200000,
+    },
+    {
+        id: 2,
+        image: "https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg",
+        nameProduct: "Hat Attack Selena Bag",
+        path: "/",
+        quantity: 2,
+        price: 200000,
+    },
+    {
+        id: 3,
+        image: "https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg",
+        nameProduct: "Hat Attack Selena Bag",
+        path: "/",
+        quantity: 2,
+        price: 200000,
+    },
+    {
+        id: 4,
+        image: "https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg",
+        nameProduct: "Hat Attack Selena Bag",
+        path: "/",
+        quantity: 2,
+        price: 200000,
+    },
+];
 
 export const SearchSlide = ({ show, setShow }: Props) => {
     const [selectedCategory, setSelectedCategory] = useState("option1");
@@ -54,50 +96,19 @@ export const SearchSlide = ({ show, setShow }: Props) => {
             <div className={cx("result")}>
                 <div className={cx("label")}>Search result</div>
                 <div className={cx("result-list")}>
-                    <ItemProduct
-                        imageProduct="https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg"
-                        nameProduct="Hat Attack Selena Bag"
-                        linkDetails="/"
-                        quantity={2}
-                        price={12000}
-                    />
-                    <ItemProduct
-                        imageProduct="https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg"
-                        nameProduct="Hat Attack Selena Bag"
-                        linkDetails="/"
-                        quantity={2}
-                        price={12000}
-                    />
-                    <ItemProduct
-                        imageProduct="https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg"
-                        nameProduct="Hat Attack Selena Bag"
-                        linkDetails="/"
-                        quantity={2}
-                        price={12000}
-                    />
-                    <ItemProduct
-                        imageProduct="https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg"
-                        nameProduct="Hat Attack Selena Bag"
-                        linkDetails="/"
-                        quantity={2}
-                        price={12000}
-                    />
-                    <ItemProduct
-                        imageProduct="https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg"
-                        nameProduct="Hat Attack Selena Bag"
-                        linkDetails="/"
-                        quantity={2}
-                        price={12000}
-                    />
-                    <ItemProduct
-                        imageProduct="https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg"
-                        nameProduct="Hat Attack Selena Bag"
-                        linkDetails="/"
-                        quantity={2}
-                        price={12000}
-                    />
+                    {searchItems.map((item) => (
+                        <ItemProduct
+                            key={item.id}
+                            imageProduct={item.image}
+                            nameProduct={item.nameProduct}
+                            linkDetails={item.path}
+                            quantity={item.quantity}
+                            price={item.price}
+                        />
+                    ))}
                 </div>
-                {searchValue && <div className={cx("search-value-label")}>Search for "{searchValue}"</div>}
+                {/* {searchValue && <div className={cx("search-value-label")}>Search for "{searchValue}"</div>} */}
+                <div className={cx("search-value-label")}>Search for "{searchValue}"</div>
             </div>
         </CustomOffCanvas>
     );

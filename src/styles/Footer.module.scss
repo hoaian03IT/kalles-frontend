@@ -1,0 +1,56 @@
+@use "variables" as *;
+
+.wrapper {
+    .footer {
+        background-color: #f7f7f7;
+        padding: 3rem 9rem;
+        .item-link {
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgba($color: $black-color, $alpha: 0.5);
+            text-decoration: none;
+            transition: color 0.2s linear;
+
+            &:hover {
+                color: $black-color;
+            }
+
+            & + .item-link {
+                padding-top: 1rem;
+            }
+        }
+        .social-networks {
+            display: flex;
+            .icon-wrapper {
+                font-size: 1.2rem;
+                transition: transform 0.2s linear;
+                cursor: pointer;
+
+                & + .icon-wrapper {
+                    margin-left: 1.5rem;
+                }
+
+                &:hover {
+                    transform: translateY(-4px);
+                }
+            }
+        }
+        .form-subscribe {
+            display: flex;
+            .input {
+                flex: 1;
+                padding: 0 8px;
+                font-size: 0.8rem;
+                font-weight: 300;
+                color: rgba($color: $black-color, $alpha: 0.5);
+                border: 1px solid $black-color;
+                outline: none;
+                border-radius: 0;
+            }
+            .button {
+                margin-left: 4px;
+                border-radius: 0 !important;
+            }
+        }
+    }
+}
