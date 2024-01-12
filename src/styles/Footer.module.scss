@@ -1,9 +1,10 @@
 @use "variables" as *;
+@use "sass:map";
 
 .wrapper {
     .footer {
         background-color: #f7f7f7;
-        padding: 3rem 9rem;
+        padding: 0 9rem;
         .item-link {
             font-size: 1rem;
             font-weight: 400;
@@ -22,6 +23,7 @@
         .social-networks {
             display: flex;
             .icon-wrapper {
+                color: $black-color;
                 font-size: 1.2rem;
                 transition: transform 0.2s linear;
                 cursor: pointer;
@@ -35,7 +37,9 @@
                 }
             }
         }
+
         .form-subscribe {
+            width: 100%;
             display: flex;
             .input {
                 flex: 1;
@@ -46,11 +50,21 @@
                 border: 1px solid $black-color;
                 outline: none;
                 border-radius: 0;
+                box-shadow: none;
             }
             .button {
+                min-width: 98px;
                 margin-left: 4px;
                 border-radius: 0 !important;
             }
+        }
+    }
+}
+
+@media (max-width: map.get($grid-breakpoints, sm)) {
+    .wrapper {
+        .footer {
+            padding: 0 2rem;
         }
     }
 }

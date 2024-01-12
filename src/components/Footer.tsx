@@ -1,4 +1,4 @@
-import { Button, Col, FormControl, FormGroup, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import { Button, Col, Container, FormControl, FormGroup, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FaXTwitter, FaFacebookF, FaInstagram, FaLinkedinIn, FaPinterestP } from "react-icons/fa6";
 
@@ -38,11 +38,11 @@ const links = [
 ];
 
 const socialNetworks = [
-    { name: "Facebook", icon: FaFacebookF },
-    { name: "Twitter", icon: FaXTwitter },
-    { name: "Instagram", icon: FaInstagram },
-    { name: "Linkedin", icon: FaLinkedinIn },
-    { name: "Pinterest", icon: FaPinterestP },
+    { name: "Facebook", icon: FaFacebookF, href: "https://www.facebook.com/" },
+    { name: "Twitter", icon: FaXTwitter, href: "https://www.twitter.com" },
+    { name: "Instagram", icon: FaInstagram, href: "https://www.instagram.com" },
+    { name: "Linkedin", icon: FaLinkedinIn, href: "https://www.linkedin.com" },
+    { name: "Pinterest", icon: FaPinterestP, href: "https://www.pinterest.com" },
 ];
 
 export const Footer = () => {
@@ -55,10 +55,10 @@ export const Footer = () => {
     return (
         <footer className={styles.wrapper}>
             <Row className={`g-0 ${styles.footer}`}>
-                <Col md={12} lg={9}>
+                <Col sm={12} lg={9}>
                     <Row>
                         {links.map((link, index) => (
-                            <Col key={index} md={4} className="d-flex flex-column">
+                            <Col key={index} xs={6} md={4} className="d-flex flex-column py-4">
                                 <p className="fs-6 text-black fw-normal text-uppercase">{link.title}</p>
                                 {link.children.map((item, index) => (
                                     <Link key={index} to={item.path} className={styles["item-link"]}>
@@ -69,19 +69,24 @@ export const Footer = () => {
                         ))}
                     </Row>
                 </Col>
-                <Col md={12} lg={3}>
+                <Col sm={12} lg={3} className="py-4">
                     <p className="fs-6 text-black fw-normal text-uppercase">follow us</p>
                     <div className={styles["social-networks"]}>
                         {socialNetworks.map((item) => {
                             const Icon = item.icon;
                             return (
                                 <OverlayTrigger
+                                    key={item.name}
                                     placement="top"
                                     delay={{ show: 300, hide: 200 }}
                                     overlay={<Tooltip>Follow on {item.name}</Tooltip>}>
-                                    <div className={styles["icon-wrapper"]}>
+                                    <a
+                                        href={item.href}
+                                        target="_blank"
+                                        className={styles["icon-wrapper"]}
+                                        rel="noreferrer">
                                         <Icon />
-                                    </div>
+                                    </a>
                                 </OverlayTrigger>
                             );
                         })}
@@ -90,7 +95,7 @@ export const Footer = () => {
                         Subscribe to our newsletter & get 10% off on your first order.
                     </p>
                     <form className={styles["form-subscribe"]} onSubmit={(e) => handleSubmitSubscribe(e)}>
-                        <input
+                        <FormControl
                             type="text"
                             placeholder="Your email address"
                             className={styles.input}
@@ -104,7 +109,7 @@ export const Footer = () => {
                     </form>
                 </Col>
             </Row>
-            <div className="text-black-50 fw-light text-center py-3">
+            <div className="text-black-50 fw-light text-center p-3">
                 All Rights Reserved © 2024
                 <a
                     className="text-black text-decoration-none"
