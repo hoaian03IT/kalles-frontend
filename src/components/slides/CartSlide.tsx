@@ -1,4 +1,4 @@
-import { SetStateAction, useId, useState } from "react";
+import { useId, useState } from "react";
 import { Button } from "react-bootstrap";
 import classNames from "classnames/bind";
 import { BsCartX } from "react-icons/bs";
@@ -13,16 +13,16 @@ const totalPrice = 5000000;
 
 type Props = {
     show: boolean;
-    setShow: React.Dispatch<SetStateAction<boolean>>;
+    onHide: () => void;
 };
 
-export const CartSlide = ({ show, setShow }: Props) => {
+export const CartSlide = ({ show, onHide }: Props) => {
     const [isEmpty] = useState(false);
     const [checkedTerms, setCheckedTerms] = useState(false);
 
     const checkboxId = useId();
     return (
-        <CustomOffCanvas titleHeader="shopping cart" show={show} setShow={setShow} placement="end">
+        <CustomOffCanvas titleHeader="shopping cart" show={show} onHide={onHide} placement="end">
             {isEmpty ? (
                 <div className="p-5 m-5 text-center">
                     <BsCartX className={cx("icon-empty-cart")} />

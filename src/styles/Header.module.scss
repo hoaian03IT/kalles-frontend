@@ -2,7 +2,7 @@
 @use "sass:map";
 
 .wrapper {
-    margin-top: 25px;
+    margin-top: $margin-top-header;
     padding: 1rem 2rem;
     position: sticky;
     position: -webkit-sticky;
@@ -108,7 +108,7 @@
     }
 }
 
-@media (max-width: calc( map.get($grid-breakpoints, sm) - 1px)) {
+@media (max-width: calc( map.get($grid-breakpoints, lg) - 1px)) {
     .wrapper {
         padding: 1rem;
         .navbar {

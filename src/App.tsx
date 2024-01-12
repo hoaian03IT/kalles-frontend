@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Header } from "./components/Header";
-
+import "~/styles/animations.scss";
 import "~/styles/GlobalStyles.scss";
 import { publicRoutes } from "./configs/routes";
 import { Footer } from "./components/Footer";

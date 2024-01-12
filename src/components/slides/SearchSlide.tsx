@@ -1,4 +1,4 @@
-import { SetStateAction, useId, useState } from "react";
+import { useId, useState } from "react";
 import { CustomOffCanvas } from "./CustomOffCanvas";
 import { Form, FormControl, FormGroup } from "react-bootstrap";
 import classNames from "classnames/bind";
@@ -9,7 +9,7 @@ import { ItemProduct } from "./ItemProduct";
 
 type Props = {
     show: boolean;
-    setShow: React.Dispatch<SetStateAction<boolean>>;
+    onHide: () => void;
 };
 
 const cx = classNames.bind(styles);
@@ -58,14 +58,14 @@ const searchItems = [
     },
 ];
 
-export const SearchSlide = ({ show, setShow }: Props) => {
+export const SearchSlide = ({ show, onHide }: Props) => {
     const [selectedCategory, setSelectedCategory] = useState("option1");
     const [searchValue, setSearchValue] = useState("");
 
     const searchId = useId();
 
     return (
-        <CustomOffCanvas show={show} setShow={setShow} titleHeader="search out site" placement="end">
+        <CustomOffCanvas show={show} onHide={onHide} titleHeader="search out site" placement="end">
             <div className={cx("group-search")}>
                 <FormGroup>
                     <Form.Select

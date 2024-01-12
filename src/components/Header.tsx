@@ -7,6 +7,8 @@ import { BsList } from "react-icons/bs";
 import { LoginSlide } from "./slides/LoginSlide";
 import { CartSlide } from "./slides/CartSlide";
 import { SearchSlide } from "./slides/SearchSlide";
+import { MenuSlideMobile } from "./slides/MenuSlideMobile";
+import { navbar } from "~/data";
 
 import logoImage from "~/assets/images/text-logo.png";
 
@@ -14,18 +16,12 @@ import styles from "~/styles/Header.module.scss";
 
 const cx = classNames.bind(styles);
 
-const navbar = [
-    { label: "Home", path: "/" },
-    { label: "Shop", path: "/shop" },
-    { label: "Product", path: "/product" },
-    { label: "Blog", path: "/blog" },
-];
-
 export const Header = () => {
     const [whiteBgColorHeader, setWhiteBgColorHeader] = useState(false);
     const [showLoginSlide, setShowLoginSlide] = useState(false);
     const [showCartSlide, setShowCartSlide] = useState(false);
     const [showSearchSlide, setShowSearchSlide] = useState(false);
+    const [showMenuSlide, setShowMenuSlide] = useState(false);
 
     const headerRef = useRef(null);
 
@@ -58,7 +54,7 @@ export const Header = () => {
                         ))}
                     </div>
                     <div className={cx("navbar-mobile")}>
-                        <BsList className={cx("menu-icon")} />
+                        <BsList className={cx("menu-icon")} onClick={() => setShowMenuSlide(true)} />
                     </div>
                 </Col>
                 <Col className="text-center">
@@ -71,9 +67,6 @@ export const Header = () => {
                         <CiSearch className={cx("item")} onClick={() => setShowSearchSlide(true)} />
                     </div>
                     <div className={cx("item-group")}>
-                        <CiUser className={cx("item")} onClick={() => setShowLoginSlide(true)} />
-                    </div>
-                    <div className={cx("item-group")}>
                         <CiHeart className={cx("item")} />
                         <span className={cx("bard")}>{"9+"}</span>
                     </div>
@@ -81,11 +74,15 @@ export const Header = () => {
                         <CiShoppingCart className={cx("item")} onClick={() => setShowCartSlide(true)} />
                         <span className={cx("bard")}>{"9+"}</span>
                     </div>
+                    <div className={cx("item-group")}>
+                        <CiUser className={cx("item")} onClick={() => setShowLoginSlide(true)} />
+                    </div>
                 </Col>
             </Row>
-            <LoginSlide show={showLoginSlide} setShow={setShowLoginSlide} />
-            <CartSlide show={showCartSlide} setShow={setShowCartSlide} />
-            <SearchSlide show={showSearchSlide} setShow={setShowSearchSlide} />
+            <LoginSlide show={showLoginSlide} onHide={() => setShowLoginSlide(false)} />
+            <CartSlide show={showCartSlide} onHide={() => setShowCartSlide(false)} />
+            <SearchSlide show={showSearchSlide} onHide={() => setShowSearchSlide(false)} />
+            <MenuSlideMobile show={showMenuSlide} onHide={() => setShowMenuSlide(false)} />
         </header>
     );
 };
