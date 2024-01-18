@@ -1,0 +1,51 @@
+@use "variables" as *;
+@use "sass:map";
+
+.header {
+    padding: 6rem 0 4rem;
+    text-align: center;
+    h2 {
+        font-size: 30px;
+        font-weight: 400;
+    }
+    span {
+        color: rgba($color: $black-color, $alpha: 0.5);
+        font-weight: 300;
+    }
+}
+
+.item {
+    padding: 0 1.2rem;
+    text-decoration: none;
+    .img-wrapper {
+        width: 100%;
+
+        img {
+            width: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+
+    .content {
+        padding-top: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .title {
+            color: $black-color;
+        }
+        .count {
+            position: absolute;
+            top: 0;
+            left: 100%;
+        }
+    }
+}
+
+@media (max-width: map.get($grid-breakpoints, lg)) {
+    .item {
+        padding: 0 0.5rem;
+    }
+}
