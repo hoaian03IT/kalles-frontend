@@ -89,7 +89,7 @@ input[type="checkbox"] {
         width: 6%;
         color: $black-color !important;
         font-size: 1.5rem;
-        opacity: 0;
+        opacity: 0 !important;
         transition: all 0.2s linear;
         @media (max-width: calc(map.get($grid-breakpoints, md) - 1px)) {
             display: none;
@@ -98,7 +98,7 @@ input[type="checkbox"] {
     &:hover .carousel-control-prev,
     &:hover .carousel-control-next {
         width: 5%;
-        opacity: 1;
+        opacity: 1 !important;
     }
 }
 

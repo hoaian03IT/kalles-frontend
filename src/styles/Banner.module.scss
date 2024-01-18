@@ -1,0 +1,51 @@
+@use "variables" as *;
+@use "sass:map";
+
+.img {
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+}
+
+.caption {
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    transform: translateY(-50%);
+    z-index: 1;
+    p {
+        font-size: 1.2rem;
+        color: rgba($color: $black-color, $alpha: 0.7);
+    }
+
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: calc(map.get($grid-breakpoints, md) - 1px)) {
+    .img {
+        width: 110%;
+    }
+}
+
+@media (max-width: calc(map.get($grid-breakpoints, sm) - 1px)) {
+    .img {
+        width: 250%;
+        object-position: -280px;
+    }
+    .caption {
+        left: 5%;
+        p {
+            font-size: 1rem;
+        }
+        h1 {
+            font-size: 2rem;
+        }
+        button {
+            // height: 40px;
+        }
+    }
+}
