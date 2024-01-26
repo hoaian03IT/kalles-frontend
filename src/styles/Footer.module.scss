@@ -61,7 +61,7 @@
     }
 }
 
-@media (max-width: map.get($grid-breakpoints, sm)) {
+@media (max-width: calc(map.get($grid-breakpoints, sm) - 1px)) {
     .wrapper {
         .footer {
             padding: 0 2rem;

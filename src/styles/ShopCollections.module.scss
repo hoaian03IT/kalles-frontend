@@ -2,7 +2,7 @@
 @use "sass:map";
 
 .header {
-    padding: 6rem 0 4rem;
+    padding: 8rem 0 4rem;
     text-align: center;
     h2 {
         font-size: 30px;
@@ -44,7 +44,7 @@
     }
 }
 
-@media (max-width: map.get($grid-breakpoints, lg)) {
+@media (max-width: calc( map.get($grid-breakpoints, lg) - 1px)) {
     .item {
         padding: 0 0.5rem;
     }

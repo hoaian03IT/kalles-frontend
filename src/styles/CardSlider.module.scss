@@ -18,6 +18,10 @@
         overflow-x: scroll;
         scroll-snap-type: x mandatory;
         scrollbar-width: 0;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
     .pre-btn,
     .nxt-btn {
@@ -44,7 +48,7 @@
     }
 }
 
-@media (max-width: map.get($grid-breakpoints, lg)) {
+@media (max-width: calc(map.get($grid-breakpoints, xl) - 1px)) {
     .wrapper {
         .pre-btn,
         .nxt-btn {
@@ -59,7 +63,7 @@
     }
 }
 
-@media (max-width: map.get($grid-breakpoints, sm)) {
+@media (max-width: calc(map.get($grid-breakpoints, sm) - 1px)) {
     $padding-x: 1rem;
     .wrapper {
         padding: 0 $padding-x;

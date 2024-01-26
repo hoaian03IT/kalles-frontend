@@ -1,9 +1,9 @@
 import classNames from "classnames/bind";
 import { Badge, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { CardSlider } from "./CardSlider";
 
 import styles from "~/styles/ShopCollections.module.scss";
-import { CardSlider } from "./CardSlider";
 
 const cx = classNames.bind(styles);
 
@@ -20,7 +20,7 @@ const data = [
     { img: "https://demo-kalles-4-3.myshopify.com/cdn/shop/files/accessories.png", title: "Accessories", quantity: 18 },
 ];
 
-export const ShopCollections = () => {
+export default function ShopCollections() {
     return (
         <div>
             <div className={cx("header")}>
@@ -46,4 +46,4 @@ export const ShopCollections = () => {
             </CardSlider>
         </div>
     );
-};
+}
