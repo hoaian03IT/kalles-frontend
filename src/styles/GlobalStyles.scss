@@ -14,7 +14,7 @@ body {
 }
 
 .btn {
-    border-radius: $btn-radius !important;
+    border-radius: 0 !important;
     &-primary {
         position: relative;
         background-color: $black-color !important;
@@ -29,17 +29,26 @@ body {
             bottom: 0;
             right: 100%;
             background-color: rgba($color: $white-color, $alpha: 0.1);
-            border-radius: $btn-radius;
             transition: right 0.2s linear;
         }
         &:hover::after {
             right: 0;
         }
     }
+    &-round-border {
+        border-radius: $btn-radius !important;
+        &::after {
+            border-radius: $btn-radius !important;
+        }
+    }
     &-secondary {
         background-color: #f7f7f7 !important;
         color: rgba($color: $black-color, $alpha: 0.8) !important;
         border-color: #e7e7e7 !important;
+        &:hover {
+            background-color: $black-color !important;
+            color: #f7f7f7 !important;
+        }
     }
     &-size-md {
         height: $btn-md-height;
@@ -86,7 +95,6 @@ input[type="checkbox"] {
 
     & .carousel-control-prev,
     & .carousel-control-next {
-        width: 6%;
         color: $black-color !important;
         font-size: 1.5rem;
         opacity: 0 !important;
@@ -97,7 +105,6 @@ input[type="checkbox"] {
     }
     &:hover .carousel-control-prev,
     &:hover .carousel-control-next {
-        width: 5%;
         opacity: 1 !important;
     }
 }
@@ -126,5 +133,16 @@ input[type="checkbox"] {
 
     .active & {
         display: block;
+    }
+}
+
+// limit-line
+@for $i from 1 through 10 {
+    .limit-line-#{$i} {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: $i; /* number of lines to show */
+        line-clamp: $i;
+        -webkit-box-orient: vertical;
     }
 }

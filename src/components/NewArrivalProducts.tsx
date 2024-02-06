@@ -16,6 +16,7 @@ export default function NewArrivalProducts() {
                 <Row xs={{ cols: 2 }} md={{ cols: 3 }} lg={{ cols: 5 }} className="justify-content-center">
                     <Col>
                         <CardProduct
+                            link="/"
                             nameProduct="Minimalist Croc Embossed Baguette Bag"
                             types={[
                                 {
@@ -36,6 +37,7 @@ export default function NewArrivalProducts() {
                     </Col>
                     <Col>
                         <CardProduct
+                            link="/"
                             nameProduct="Minimalist Croc Embossed Baguette Bag"
                             types={[
                                 {
@@ -56,6 +58,7 @@ export default function NewArrivalProducts() {
                     </Col>
                     <Col>
                         <CardProduct
+                            link="/"
                             nameProduct="Minimalist Croc Embossed Baguette Bag"
                             types={[
                                 {
@@ -75,7 +78,7 @@ export default function NewArrivalProducts() {
                         />
                     </Col>
                 </Row>
-                <Button className="btn-size-lg mt-5">
+                <Button className="btn-size-lg mt-5 btn-round-border">
                     Load More <FaArrowDownLong />
                 </Button>
             </Container>

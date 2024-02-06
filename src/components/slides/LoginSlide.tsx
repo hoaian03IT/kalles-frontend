@@ -9,7 +9,9 @@ type Props = {
 export const LoginSlide = ({ show, onHide }: Props) => {
     return (
         <CustomOffCanvas titleHeader="login" show={show} onHide={onHide} placement="end">
-            <LoginForm className="px-4" />
+            <div className="px-4">
+                <LoginForm />
+            </div>
         </CustomOffCanvas>
     );
 };

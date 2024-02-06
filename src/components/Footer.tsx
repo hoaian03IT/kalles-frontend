@@ -1,9 +1,9 @@
-import { Button, Col, FormControl, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import { Button, Col, FormControl, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { FaXTwitter, FaFacebookF, FaInstagram, FaLinkedinIn, FaPinterestP } from "react-icons/fa6";
 
 import styles from "~/styles/Footer.module.scss";
 import { useState } from "react";
+import { SocialNetworks } from "./SocialNetWorks";
 
 const links = [
     {
@@ -37,14 +37,6 @@ const links = [
     },
 ];
 
-const socialNetworks = [
-    { name: "Facebook", icon: FaFacebookF, href: "https://www.facebook.com/" },
-    { name: "Twitter", icon: FaXTwitter, href: "https://www.twitter.com" },
-    { name: "Instagram", icon: FaInstagram, href: "https://www.instagram.com" },
-    { name: "Linkedin", icon: FaLinkedinIn, href: "https://www.linkedin.com" },
-    { name: "Pinterest", icon: FaPinterestP, href: "https://www.pinterest.com" },
-];
-
 export const Footer = () => {
     const [email, setEmail] = useState("");
 
@@ -71,26 +63,7 @@ export const Footer = () => {
                 </Col>
                 <Col sm={12} lg={3} className="py-4">
                     <p className="fs-6 text-black fw-normal text-uppercase">follow us</p>
-                    <div className={styles["social-networks"]}>
-                        {socialNetworks.map((item) => {
-                            const Icon = item.icon;
-                            return (
-                                <OverlayTrigger
-                                    key={item.name}
-                                    placement="top"
-                                    delay={{ show: 300, hide: 200 }}
-                                    overlay={<Tooltip>Follow on {item.name}</Tooltip>}>
-                                    <a
-                                        href={item.href}
-                                        target="_blank"
-                                        className={styles["icon-wrapper"]}
-                                        rel="noreferrer">
-                                        <Icon />
-                                    </a>
-                                </OverlayTrigger>
-                            );
-                        })}
-                    </div>
+                    <SocialNetworks />
                     <p className="fs-6 text-black-50 pt-4">
                         Subscribe to our newsletter & get 10% off on your first order.
                     </p>

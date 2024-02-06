@@ -6,5 +6,14 @@ type Props = {
 };
 
 export const LazyReact = ({ children }: Props) => {
-    return <Suspense fallback={<Loading />}>{children}</Suspense>;
+    return (
+        <Suspense
+            fallback={
+                <div className="text-center">
+                    <Loading />
+                </div>
+            }>
+            {children}
+        </Suspense>
+    );
 };

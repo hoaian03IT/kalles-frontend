@@ -73,7 +73,7 @@ export const CartSlide = ({ show, onHide }: Props) => {
                             </label>
                         </div>
                         <div className="my-4">
-                            <Button variant="secondary" className="w-100 text-uppercase">
+                            <Button variant="secondary" className="w-100 text-uppercase btn-round-border">
                                 check out
                             </Button>
                         </div>
@@ -81,7 +81,7 @@ export const CartSlide = ({ show, onHide }: Props) => {
                             <Button
                                 variant="primary"
                                 disabled={checkedTerms ? false : true}
-                                className="w-100 text-uppercase">
+                                className="w-100 text-uppercase btn-round-border">
                                 view cart
                             </Button>
                         </div>

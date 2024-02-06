@@ -1,0 +1,23 @@
+@use "variables" as *;
+
+.quantity {
+    width: 100%;
+    margin: 1rem 0;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
+    border: 1px solid $black-color;
+    border-radius: $btn-radius;
+
+    .plus-icon,
+    .minus-icon {
+        color: $black-color;
+        user-select: none;
+        transition: all 0.3s;
+        &:hover {
+            color: $hover-blue-color;
+        }
+    }
+}

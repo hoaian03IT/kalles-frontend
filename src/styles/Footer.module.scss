@@ -20,23 +20,6 @@
                 padding-top: 1rem;
             }
         }
-        .social-networks {
-            display: flex;
-            .icon-wrapper {
-                color: $black-color;
-                font-size: 1.2rem;
-                transition: transform 0.2s linear;
-                cursor: pointer;
-
-                & + .icon-wrapper {
-                    margin-left: 1.5rem;
-                }
-
-                &:hover {
-                    transform: translateY(-4px);
-                }
-            }
-        }
 
         .form-subscribe {
             width: 100%;
@@ -55,7 +38,6 @@
             .button {
                 min-width: 98px;
                 margin-left: 4px;
-                border-radius: 0 !important;
             }
         }
     }

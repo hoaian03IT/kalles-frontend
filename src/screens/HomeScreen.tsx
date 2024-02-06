@@ -1,13 +1,12 @@
+import { lazy } from "react";
 import classNames from "classnames/bind";
 import { Banner } from "~/components/Banner";
-import { lazy } from "react";
-import { LazyReact } from "~/components/LazyReact";
-import { Button, Col, Container, Image, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { GoArrowRight } from "react-icons/go";
 import { IoCarOutline, IoDiamondOutline, IoGiftOutline } from "react-icons/io5";
 
 import styles from "~/styles/HomeScreen.module.scss";
-
+import { LazyReact } from "~/components/LazyReact";
 const ShopCollections = lazy(() => import("~/components/ShopCollections"));
 const NewArrivalProducts = lazy(() => import("~/components/NewArrivalProducts"));
 const TrendingProducts = lazy(() => import("~/components/TrendingProducts"));
@@ -52,15 +51,27 @@ export default function HomeScreen() {
                             dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas
                             accumsan
                         </article>
-                        <Button className="btn-size-lg">
+                        <Button className="btn-size-lg btn-round-border">
                             <span>Shop now</span>
                             <GoArrowRight className="ms-2" />
                         </Button>
                     </Col>
-                    <Col sx className={cx("images")}>
-                        <Image loading="lazy" src="https://demo-kalles-4-3.myshopify.com/cdn/shop/files/image-3.png" />
-                        <Image loading="lazy" src="https://demo-kalles-4-3.myshopify.com/cdn/shop/files/image-2.png" />
-                        <Image loading="lazy" src="https://demo-kalles-4-3.myshopify.com/cdn/shop/files/image-1.png" />
+                    <Col className={cx("images")}>
+                        <img
+                            loading="lazy"
+                            src="https://demo-kalles-4-3.myshopify.com/cdn/shop/files/image-3.png"
+                            alt=""
+                        />
+                        <img
+                            loading="lazy"
+                            src="https://demo-kalles-4-3.myshopify.com/cdn/shop/files/image-2.png"
+                            alt=""
+                        />
+                        <img
+                            loading="lazy"
+                            src="https://demo-kalles-4-3.myshopify.com/cdn/shop/files/image-1.png"
+                            alt=""
+                        />
                     </Col>
                 </Row>
             </Container>

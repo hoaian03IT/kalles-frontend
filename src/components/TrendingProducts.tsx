@@ -37,9 +37,10 @@ export default function TrendingProducts() {
                     md={{ cols: 3 }}
                     lg={{ cols: 5 }}
                     className={cx("tab-product", selectedCategory === categories[0] ? "show" : "")}>
-                    {[1, 2, 3, 4, 5, 7, 89].map(() => (
-                        <Col>
+                    {[1, 2, 3, 4, 5, 7, 89].map((item) => (
+                        <Col key={item}>
                             <CardProduct
+                                link="/"
                                 nameProduct="Minimalist Croc Embossed Baguette Bag"
                                 types={[
                                     {
@@ -65,9 +66,10 @@ export default function TrendingProducts() {
                     md={{ cols: 3 }}
                     lg={{ cols: 5 }}
                     className={cx("tab-product", selectedCategory === categories[1] ? "show" : "")}>
-                    {[1, 2, 3, 4].map(() => (
-                        <Col>
+                    {[1, 2, 3, 4].map((item) => (
+                        <Col key={item}>
                             <CardProduct
+                                link="/"
                                 nameProduct="Minimalist Croc Embossed Baguette Bag"
                                 types={[
                                     {
@@ -93,9 +95,10 @@ export default function TrendingProducts() {
                     md={{ cols: 3 }}
                     lg={{ cols: 5 }}
                     className={cx("tab-product", selectedCategory === categories[2] ? "show" : "")}>
-                    {[1, 2, 3].map(() => (
-                        <Col>
+                    {[1, 2, 3].map((item) => (
+                        <Col key={item}>
                             <CardProduct
+                                link="/"
                                 nameProduct="Minimalist Croc Embossed Baguette Bag"
                                 types={[
                                     {

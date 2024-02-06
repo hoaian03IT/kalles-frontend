@@ -1,0 +1,103 @@
+@use "variables" as *;
+
+.wrapper {
+    .carousel {
+        .control-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+            width: 30px;
+            border: 1px solid $black-color;
+            border-radius: 50%;
+            background-color: transparent;
+            transition: all 0.3s;
+
+            &:hover {
+                color: $white-color;
+                background-color: $hover-blue-color;
+                border-color: $hover-blue-color;
+            }
+        }
+        .img {
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+    .content {
+        overflow-x: hidden;
+        overflow-y: auto;
+        .name-product {
+            font-weight: 500;
+            font-size: 1.2rem;
+            color: $black-color;
+            text-decoration: none;
+            transition: all 0.3s;
+
+            &:hover {
+                color: $hover-blue-color;
+            }
+        }
+        .price {
+            .current-price {
+                color: rgba($color: $black-color, $alpha: 0.6);
+                font-size: 1.4em;
+            }
+        }
+        .description {
+            word-wrap: break-word;
+        }
+        .btn-buy {
+            padding: 0 8px;
+            color: $white-color;
+            background-color: $hover-blue-color;
+            border: none;
+            height: $btn-md-height;
+            border-radius: $btn-radius;
+        }
+        .whitelist {
+            position: relative;
+            height: 38px;
+            width: 38px;
+            border-radius: 50%;
+            border: 2px solid $black-color;
+            background-color: $white-color;
+            transition: all 0.3s;
+
+            .icon {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                transition: all 0.3s;
+            }
+
+            .icon-not-active {
+                opacity: 1;
+            }
+            .icon-active {
+                opacity: 0;
+                color: $red-color;
+            }
+
+            &.active {
+                border-color: $red-color;
+
+                .icon-not-active {
+                    opacity: 0;
+                }
+                .icon-active {
+                    opacity: 1;
+                }
+            }
+
+            &:hover {
+                border-color: $hover-blue-color;
+
+                .icon {
+                    color: $hover-blue-color;
+                }
+            }
+        }
+    }
+}

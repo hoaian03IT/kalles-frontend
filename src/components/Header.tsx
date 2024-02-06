@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Col, Image, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import classNames from "classnames/bind";
 import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import { BsList } from "react-icons/bs";
@@ -16,7 +16,11 @@ import styles from "~/styles/Header.module.scss";
 
 const cx = classNames.bind(styles);
 
-export const Header = () => {
+type Props = {
+    type: "sticky" | "fixed";
+};
+
+export const Header = ({ type }: Props) => {
     const [whiteBgColorHeader, setWhiteBgColorHeader] = useState(false);
     const [showLoginSlide, setShowLoginSlide] = useState(false);
     const [showCartSlide, setShowCartSlide] = useState(false);
@@ -38,7 +42,7 @@ export const Header = () => {
     }, [whiteBgColorHeader]);
 
     return (
-        <header ref={headerRef} className={cx("wrapper", whiteBgColorHeader ? "bg-white" : "")}>
+        <header ref={headerRef} className={cx("wrapper", whiteBgColorHeader ? "bg-white" : "", type)}>
             <Row className="d-flex align-items-center justify-content-between">
                 <Col className={cx("navbar")}>
                     <div className={cx("navbar-pc")}>
@@ -59,7 +63,7 @@ export const Header = () => {
                 </Col>
                 <Col className="text-center">
                     <Link to="/">
-                        <Image src={logoImage} alt="kalles" />
+                        <img src={logoImage} alt="kalles" />
                     </Link>
                 </Col>
                 <Col className={cx("interact")}>

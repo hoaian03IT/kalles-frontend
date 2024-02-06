@@ -2,16 +2,32 @@
 @use "sass:map";
 
 .wrapper {
-    margin-top: $margin-top-header;
     padding: 1rem 2rem;
-    position: sticky;
-    position: -webkit-sticky;
-    top: 0;
-    left: 0;
-    right: 0;
     z-index: 999;
-    background-color: transparent;
     transition: background-color 0.1s linear;
+
+    &.sticky {
+        margin-top: $margin-top-header;
+        position: sticky;
+        position: -webkit-sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: transparent;
+        z-index: 999;
+        &.bg-white {
+            background-color: $white-color;
+            box-shadow: 2px 0 2px 2px rgba($color: $black-color, $alpha: 0.1) !important;
+        }
+    }
+
+    .fixed {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: $white-color;
+    }
 
     .navbar {
         text-align: start;
@@ -86,11 +102,6 @@
             }
         }
     }
-}
-
-.wrapper.bg-white {
-    background-color: $white-color;
-    box-shadow: 2px 0 2px 2px rgba($color: $black-color, $alpha: 0.1) !important;
 }
 
 @media (max-width: calc( map.get($grid-breakpoints, md) - 1px)) {
