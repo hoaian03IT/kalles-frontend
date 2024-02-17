@@ -15,6 +15,7 @@ $padding-left-input: 12px;
     .input {
         padding-left: $padding-left-input;
         padding-top: 1rem;
+        padding-right: 40px;
         font-size: 1rem;
         color: $black-color;
         border: none;
@@ -54,6 +55,22 @@ $padding-left-input: 12px;
             font-size: 1.2rem;
             color: $red-color;
             transition: font-size 0.1s linear;
+        }
+    }
+    .icon-show-hide-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        user-select: none;
+        opacity: 0;
+        z-index: 0;
+        transition: opacity 0.3s linear;
+
+        &.active {
+            opacity: 1;
+            z-index: 1;
         }
     }
 }

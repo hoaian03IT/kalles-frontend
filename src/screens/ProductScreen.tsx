@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames/bind";
-import { Col, Container, Form, Modal, Row } from "react-bootstrap";
+import { Col, Container, Form, Row } from "react-bootstrap";
 import { MdOutlineFilterList } from "react-icons/md";
 import { TfiLayoutColumn2Alt, TfiLayoutColumn3Alt, TfiLayoutColumn4Alt } from "react-icons/tfi";
 
@@ -9,7 +9,6 @@ import { HeaderBanner } from "~/components/HeaderBanner";
 import { CardProduct } from "~/components/CardProduct";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { SortProductModal } from "~/components/SortProductModal";
-import { ProductDetail } from "~/components/ProductDetail";
 
 import styles from "~/styles/ProductScreen.module.scss";
 

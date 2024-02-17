@@ -3,7 +3,7 @@ import { Carousel, CarouselItem, Col, OverlayTrigger, Row, Tooltip } from "react
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
 import styles from "~/styles/ProductDetail.module.scss";
-import { formatCurrencyVND } from "./utils";
+import { formatCurrencyVND } from "~/utils";
 import { QuantityEditor } from "./QuantityEditor";
 import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import { useState } from "react";

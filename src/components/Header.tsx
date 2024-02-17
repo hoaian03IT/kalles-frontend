@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { Col, Row } from "react-bootstrap";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Col, OverlayTrigger, Popover, Row } from "react-bootstrap";
 import classNames from "classnames/bind";
 import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import { BsList } from "react-icons/bs";
@@ -13,6 +13,8 @@ import { navbar } from "~/data";
 import logoImage from "~/assets/images/text-logo.png";
 
 import styles from "~/styles/Header.module.scss";
+import { CheckLoggedContext } from "./CheckLogged";
+import { pathname } from "~/configs/pathname";
 
 const cx = classNames.bind(styles);
 
@@ -27,7 +29,11 @@ export const Header = ({ type }: Props) => {
     const [showSearchSlide, setShowSearchSlide] = useState(false);
     const [showMenuSlide, setShowMenuSlide] = useState(false);
 
+    const { isLogged, handleLogout } = useContext(CheckLoggedContext);
+
     const headerRef = useRef(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handler = () => {
@@ -78,12 +84,41 @@ export const Header = ({ type }: Props) => {
                         <CiShoppingCart className={cx("item")} onClick={() => setShowCartSlide(true)} />
                         <span className={cx("bard")}>{"9+"}</span>
                     </div>
-                    <div className={cx("item-group")}>
-                        <CiUser className={cx("item")} onClick={() => setShowLoginSlide(true)} />
-                    </div>
+                    {isLogged ? (
+                        <OverlayTrigger
+                            trigger="click"
+                            placement="bottom-start"
+                            overlay={
+                                <Popover className={cx("popover-user")}>
+                                    <Popover.Body className={cx("body")}>
+                                        <button
+                                            className={cx("btn-interact")}
+                                            onClick={() => navigate(pathname.dashboard())}>
+                                            Dashboard
+                                        </button>
+                                        <button
+                                            className={cx("btn-interact")}
+                                            onClick={() => navigate(pathname.address())}>
+                                            Address
+                                        </button>
+                                        <button className={cx("btn-interact")} onClick={handleLogout}>
+                                            Logout
+                                        </button>
+                                    </Popover.Body>
+                                </Popover>
+                            }>
+                            <div className={cx("item-group")}>
+                                <CiUser className={cx("item")} onClick={() => setShowLoginSlide(true)} />
+                            </div>
+                        </OverlayTrigger>
+                    ) : (
+                        <div className={cx("item-group")}>
+                            <CiUser className={cx("item")} onClick={() => setShowLoginSlide(true)} />
+                        </div>
+                    )}
                 </Col>
             </Row>
-            <LoginSlide show={showLoginSlide} onHide={() => setShowLoginSlide(false)} />
+            <LoginSlide show={showLoginSlide && !isLogged} onHide={() => setShowLoginSlide(false)} />
             <CartSlide show={showCartSlide} onHide={() => setShowCartSlide(false)} />
             <SearchSlide show={showSearchSlide} onHide={() => setShowSearchSlide(false)} />
             <MenuSlideMobile show={showMenuSlide} onHide={() => setShowMenuSlide(false)} />

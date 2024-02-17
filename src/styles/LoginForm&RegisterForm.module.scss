@@ -1,0 +1,11 @@
+@use "variables" as *;
+
+.wrapper {
+    .validation-msg {
+        margin-left: 4px;
+        display: block;
+        color: $red-color;
+        font-size: 14px;
+        height: 28px;
+    }
+}

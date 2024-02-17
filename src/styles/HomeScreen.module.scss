@@ -2,8 +2,6 @@
 @use "sass:map";
 
 .wrapper {
-    transform: translateY(calc(0px - $offcanvas-header-height - $margin-top-header));
-
     .look-book-collections {
         padding: 4rem;
         display: flex;
