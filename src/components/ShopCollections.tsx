@@ -1,26 +1,28 @@
 import classNames from "classnames/bind";
-import { Badge, Image } from "react-bootstrap";
+import { Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { CardSlider } from "./CardSlider";
 
 import styles from "~/styles/ShopCollections.module.scss";
+import { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "~/app/hooks";
+import { fetchCategoriesApi } from "~/api";
 
 const cx = classNames.bind(styles);
 
-const data = [
-    { img: "https://demo-kalles-4-3.myshopify.com/cdn/shop/files/top.png", title: "Tops", quantity: 18 },
-    { img: "https://demo-kalles-4-3.myshopify.com/cdn/shop/files/bottom.png", title: "Bottoms", quantity: 18 },
-    { img: "https://demo-kalles-4-3.myshopify.com/cdn/shop/files/bags.png", title: "Bags", quantity: 18 },
-    { img: "https://demo-kalles-4-3.myshopify.com/cdn/shop/files/shoes.png", title: "Shoes", quantity: 18 },
-    {
-        img: "https://demo-kalles-4-3.myshopify.com/cdn/shop/files/coat_jacket.png",
-        title: "Coats & Jackets",
-        quantity: 18,
-    },
-    { img: "https://demo-kalles-4-3.myshopify.com/cdn/shop/files/accessories.png", title: "Accessories", quantity: 18 },
-];
-
 export default function ShopCollections() {
+    const { categories } = useAppSelector((state) => state.category);
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            await fetchCategoriesApi(dispatch);
+        };
+
+        fetchCategories();
+    }, [dispatch]);
+
     return (
         <div>
             <div className={cx("header")}>
@@ -28,17 +30,17 @@ export default function ShopCollections() {
                 <span>Shop the latest products from the most popular collections</span>
             </div>
             <CardSlider>
-                {data.map((item, index) => (
+                {categories.map((item, index) => (
                     <Link key={index} to="/" className={cx("item")}>
                         <div className={cx("img-wrapper")}>
-                            <Image draggable="false" loading="eager" roundedCircle src={item.img} alt={item.title} />
+                            <Image draggable="false" loading="eager" roundedCircle src={item.img} alt={item.name} />
                         </div>
                         <div className={cx("content")}>
                             <div className="position-relative">
-                                <h5 className={cx("title")}>{item.title}</h5>
-                                <Badge bg="dark" className="text-white position-absolute top-0 start-100">
+                                <h5 className={cx("title")}>{item.name}</h5>
+                                {/* <Badge bg="dark" className="text-white position-absolute top-0 start-100">
                                     {item.quantity}
-                                </Badge>
+                                </Badge> */}
                             </div>
                         </div>
                     </Link>
