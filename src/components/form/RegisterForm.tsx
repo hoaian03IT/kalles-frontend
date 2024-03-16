@@ -17,11 +17,13 @@ export const RegisterForm = () => {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [gender, setGender] = useState("none");
 
     const [validateFirstNameMsg, setValidateFirstNameMsg] = useState("");
     const [validateLastNameMsg, setValidateLastNameMsg] = useState("");
     const [validateEmailMsg, setValidateEmailMsg] = useState("");
     const [validatePasswordMsg, setValidatePasswordMsg] = useState("");
+    const [validateGenderMsg, setValidateGenderMsg] = useState("");
 
     const { loading } = useAppSelector((state) => state.user);
 
@@ -45,6 +47,13 @@ export const RegisterForm = () => {
             setValidatePasswordMsg("");
         }
 
+        if (gender === "none") {
+            setValidateGenderMsg("Select your gender!");
+            canSubmit = false;
+        } else {
+            setValidateGenderMsg("");
+        }
+
         if (
             validateRules.required(firstName) ||
             validateRules.required(lastName) ||
@@ -61,6 +70,7 @@ export const RegisterForm = () => {
             setValidateLastNameMsg("");
             setValidateEmailMsg("");
             setValidatePasswordMsg("");
+            setValidateGenderMsg("");
         }
 
         if (canSubmit) {
@@ -90,6 +100,17 @@ export const RegisterForm = () => {
                         required={true}
                     />
                     <span className={cx("validation-msg", "limit-line-1")}>{validateLastNameMsg}</span>
+                </FormGroup>
+                <FormGroup>
+                    <select
+                        className={cx("gender-selection")}
+                        value={gender}
+                        onChange={(e) => setGender(e.target.value)}>
+                        <option value="none">-Select your gender-</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                    <span className={cx("validation-msg", "limit-line-1")}>{validateGenderMsg}</span>
                 </FormGroup>
                 <FormGroup>
                     <CustomInput type="email" value={email} setValue={setEmail} label="Email" required />

@@ -8,6 +8,9 @@ type UserState = {
     lastName: string;
     email: string;
     token: string;
+    phoneNumber: string;
+    avatar: string;
+    gender: string;
     loading: boolean;
     error: string;
 };
@@ -18,6 +21,9 @@ const initialState: UserState = {
     firstName: "",
     lastName: "",
     token: "",
+    phoneNumber: "",
+    avatar: "",
+    gender: "",
     loading: false,
     error: "",
 };
@@ -30,11 +36,14 @@ export const userSlice = createSlice({
             state.loading = true;
         },
         signUpSuccess: (state, action: PayloadAction<UserState>) => {
-            const { _id, firstName, lastName, email, token } = action.payload;
+            const { _id, firstName, lastName, email, token, phoneNumber, avatar, gender } = action.payload;
             state._id = _id;
             state.firstName = firstName;
             state.lastName = lastName;
             state.email = email;
+            state.phoneNumber = phoneNumber;
+            state.avatar = avatar;
+            state.gender = gender;
             state.token = token;
 
             state.loading = false;
@@ -50,11 +59,14 @@ export const userSlice = createSlice({
             state.loading = true;
         },
         signInSuccess: (state, action: PayloadAction<UserState>) => {
-            const { _id, firstName, lastName, email, token } = action.payload;
+            const { _id, firstName, lastName, email, token, phoneNumber, avatar, gender } = action.payload;
             state._id = _id;
             state.firstName = firstName;
             state.lastName = lastName;
             state.email = email;
+            state.phoneNumber = phoneNumber;
+            state.avatar = avatar;
+            state.gender = gender;
             state.token = token;
             state.loading = false;
             state.error = "";
@@ -75,6 +87,9 @@ export const userSlice = createSlice({
             state.email = "";
             state.token = "";
             state.error = "";
+            state.phoneNumber = "";
+            state.avatar = "";
+            state.gender = "";
             state.loading = false;
         },
         signOutFailed: (state, action: PayloadAction<Error>) => {
