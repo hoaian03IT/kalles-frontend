@@ -29,7 +29,7 @@ export const RegisterForm = () => {
 
     const dispatch = useAppDispatch();
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         let canSubmit = true;
 
@@ -74,7 +74,7 @@ export const RegisterForm = () => {
         }
 
         if (canSubmit) {
-            signUpApi({ firstName, lastName, email, password }, dispatch);
+            await signUpApi({ firstName, lastName, email, password, gender }, dispatch);
         }
     };
 

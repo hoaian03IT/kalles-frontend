@@ -52,7 +52,7 @@ export const LoginForm = ({ onHideModal }: Props) => {
         }
 
         if (canSubmit) {
-            signInApi({ email, password }, dispatch);
+            await signInApi({ email, password }, dispatch);
             if (onHideModal) onHideModal();
         }
     };

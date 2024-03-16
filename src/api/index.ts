@@ -47,6 +47,7 @@ type SignUpPayload = {
     lastName: string;
     email: string;
     password: string;
+    gender: string;
 };
 
 export const signUpApi = async (payload: SignUpPayload, dispatch: Dispatch<Action>) => {
@@ -55,6 +56,7 @@ export const signUpApi = async (payload: SignUpPayload, dispatch: Dispatch<Actio
         const response = await axios.post("/auth/sign-up", payload, {
             withCredentials: true,
         });
+        toast.success(response.data.message);
         dispatch(signUpSuccess(response.data));
     } catch (error) {
         if (axios.isAxiosError(error)) {
