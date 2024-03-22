@@ -39,7 +39,7 @@ export default function TrendingProducts() {
                     className={cx("tab-product", selectedCategory === categories[0] ? "show" : "")}>
                     {[1, 2, 3, 4, 5, 7, 89].map((item) => (
                         <Col key={item}>
-                            <CardProduct
+                            {/* <CardProduct
                                 link="/"
                                 nameProduct="Minimalist Croc Embossed Baguette Bag"
                                 types={[
@@ -57,7 +57,7 @@ export default function TrendingProducts() {
                                 price={3000000}
                                 discount={1}
                                 favorite={true}
-                            />
+                            /> */}
                         </Col>
                     ))}
                 </Row>
@@ -68,7 +68,7 @@ export default function TrendingProducts() {
                     className={cx("tab-product", selectedCategory === categories[1] ? "show" : "")}>
                     {[1, 2, 3, 4].map((item) => (
                         <Col key={item}>
-                            <CardProduct
+                            {/* <CardProduct
                                 link="/"
                                 nameProduct="Minimalist Croc Embossed Baguette Bag"
                                 types={[
@@ -86,7 +86,7 @@ export default function TrendingProducts() {
                                 price={3000000}
                                 discount={1}
                                 favorite={true}
-                            />
+                            /> */}
                         </Col>
                     ))}
                 </Row>
@@ -97,7 +97,7 @@ export default function TrendingProducts() {
                     className={cx("tab-product", selectedCategory === categories[2] ? "show" : "")}>
                     {[1, 2, 3].map((item) => (
                         <Col key={item}>
-                            <CardProduct
+                            {/* <CardProduct
                                 link="/"
                                 nameProduct="Minimalist Croc Embossed Baguette Bag"
                                 types={[
@@ -115,7 +115,7 @@ export default function TrendingProducts() {
                                 price={3000000}
                                 discount={1}
                                 favorite={true}
-                            />
+                            /> */}
                         </Col>
                     ))}
                 </Row>

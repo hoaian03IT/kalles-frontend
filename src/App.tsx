@@ -33,7 +33,7 @@ function App() {
                         />
                     );
                 })}
-                {privateRoutes.map((route) => {
+                {/* {privateRoutes.map((route) => {
                     const Component = route.component;
                     const Layout = route.layout;
 
@@ -52,7 +52,7 @@ function App() {
                             }
                         />
                     );
-                })}
+                })} */}
             </Routes>
             <ToastContainer position="top-center" />
         </div>

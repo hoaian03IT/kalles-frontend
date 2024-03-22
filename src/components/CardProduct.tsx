@@ -11,27 +11,20 @@ import { formatCurrencyVND } from "~/utils";
 
 const cx = classNames.bind(styles);
 
-type typeProduct = { id: string; image1: string; image2: string };
-
 type Props = {
     nameProduct: string;
+    previewImages: string[];
     price: number;
-    types: Array<typeProduct>;
     discount?: number;
     favorite?: boolean;
     link: string;
 };
 
-export const CardProduct = memo(({ types, nameProduct, price, discount, favorite = false, link }: Props) => {
+export const CardProduct = memo(({ nameProduct, price, discount, favorite = false, link, previewImages }: Props) => {
     const [favoriteStatus, setFavoriteStatus] = useState(favorite);
-    const [typeProduct, setTypeProduct] = useState(0);
     const [showQuickView, setShowQuickView] = useState(false);
 
     const moneyAfterDiscount = discount && discount <= 100 ? price * (1 - discount / 100) : null;
-
-    const handleSelectType = (index: number) => {
-        setTypeProduct(index);
-    };
 
     const handleToggleFavorite = () => {
         setFavoriteStatus(!favoriteStatus);
@@ -46,22 +39,10 @@ export const CardProduct = memo(({ types, nameProduct, price, discount, favorite
         <div className={cx("wrapper")}>
             <div className={cx("img")}>
                 <Link to={link}>
-                    <img
-                        loading="lazy"
-                        draggable="false"
-                        className={cx("first")}
-                        src={types[typeProduct].image1}
-                        alt=""
-                    />
+                    <img loading="lazy" draggable="false" className={cx("first")} src={previewImages[0]} alt="" />
                 </Link>
                 <Link to={link}>
-                    <img
-                        loading="lazy"
-                        draggable="false"
-                        className={cx("second")}
-                        src={types[typeProduct].image2}
-                        alt=""
-                    />
+                    <img loading="lazy" draggable="false" className={cx("second")} src={previewImages[1]} alt="" />
                 </Link>
                 <div className={cx("action-btns")}>
                     <button className={cx("action-btn", "watch-btn")} onClick={() => setShowQuickView(true)}>
@@ -95,19 +76,6 @@ export const CardProduct = memo(({ types, nameProduct, price, discount, favorite
                         <span className="text-danger ms-2">{formatCurrencyVND(moneyAfterDiscount)}</span>
                     )}
                 </div>
-            </div>
-            <div className={cx("types")}>
-                {types.map((type, index) => (
-                    <div
-                        className={cx("type", index === typeProduct ? "active" : "")}
-                        key={index}
-                        onMouseEnter={() => handleSelectType(index)}
-                        onClick={() => handleSelectType(index)}>
-                        <div className={cx("type-img")}>
-                            <img loading="lazy" src={type.image1} alt="" />
-                        </div>
-                    </div>
-                ))}
             </div>
             <div className={cx("quick-view-modal")}>
                 <Modal show={showQuickView} size="lg" centered onHide={() => setShowQuickView(false)}>

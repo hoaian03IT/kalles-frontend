@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
+import { persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER, persistCombineReducers } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import userReducer from "./features/user/userSlice";
-import categoryReducer from "./features/category/categorySlice";
+import userReducer from "./features/user/userReducer";
+import categoryReducer from "./features/category/categoryReducer";
+import listProductReducer from "./features/products/productListReducer";
+import productReducer from "./features/products/productReducer";
 
 const persistConfig = {
     key: "root",
@@ -10,12 +12,18 @@ const persistConfig = {
     storage,
 };
 
-const rootReducer = combineReducers({ user: userReducer, category: categoryReducer });
+const reducerNeededCombine = { category: categoryReducer, user: userReducer };
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistCombineReducers(persistConfig, reducerNeededCombine);
+
+const rootReducer = combineReducers({
+    persist: persistedReducer,
+    products: listProductReducer,
+    product: productReducer,
+});
 
 export const store = configureStore({
-    reducer: persistedReducer,
+    reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {

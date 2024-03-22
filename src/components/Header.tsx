@@ -15,6 +15,7 @@ import logoImage from "~/assets/images/text-logo.png";
 import styles from "~/styles/Header.module.scss";
 import { CheckLoggedContext } from "./CheckLogged";
 import { pathname } from "~/configs/pathname";
+import { useAppSelector } from "~/app/hooks";
 
 const cx = classNames.bind(styles);
 
@@ -30,6 +31,7 @@ export const Header = ({ type }: Props) => {
     const [showMenuSlide, setShowMenuSlide] = useState(false);
 
     const { isLogged, handleLogout } = useContext(CheckLoggedContext);
+    const { user } = useAppSelector((state) => state.persist);
 
     const headerRef = useRef(null);
 
@@ -108,7 +110,12 @@ export const Header = ({ type }: Props) => {
                                 </Popover>
                             }>
                             <div className={cx("item-group")}>
-                                <CiUser className={cx("item")} onClick={() => setShowLoginSlide(true)} />
+                                <img
+                                    className={cx("item", "avatar")}
+                                    onClick={() => setShowLoginSlide(true)}
+                                    src={user.avatar}
+                                    alt="avatar"
+                                />
                             </div>
                         </OverlayTrigger>
                     ) : (

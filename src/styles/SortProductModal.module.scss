@@ -2,7 +2,7 @@
 
 .wrapper {
     overflow-y: auto;
-    .item {
+    .order {
         color: rgba($color: $black-color, $alpha: 0.6);
         &.active {
             background-color: rgba($color: $black-color, $alpha: 0.1);

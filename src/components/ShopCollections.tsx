@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import { Image } from "react-bootstrap";
+import { Badge, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { CardSlider } from "./CardSlider";
 
@@ -11,7 +11,7 @@ import { fetchCategoriesApi } from "~/api";
 const cx = classNames.bind(styles);
 
 export default function ShopCollections() {
-    const { categories } = useAppSelector((state) => state.category);
+    const { categories } = useAppSelector((state) => state.persist.category);
 
     const dispatch = useAppDispatch();
 
@@ -30,7 +30,7 @@ export default function ShopCollections() {
                 <span>Shop the latest products from the most popular collections</span>
             </div>
             <CardSlider>
-                {categories.map((item, index) => (
+                {categories.slice(0, 6).map((item, index) => (
                     <Link key={index} to="/" className={cx("item")}>
                         <div className={cx("img-wrapper")}>
                             <Image draggable="false" loading="eager" roundedCircle src={item.img} alt={item.name} />
@@ -38,9 +38,9 @@ export default function ShopCollections() {
                         <div className={cx("content")}>
                             <div className="position-relative">
                                 <h5 className={cx("title")}>{item.name}</h5>
-                                {/* <Badge bg="dark" className="text-white position-absolute top-0 start-100">
-                                    {item.quantity}
-                                </Badge> */}
+                                <Badge bg="dark" className="text-white position-absolute top-0 start-100">
+                                    {item.productCount}
+                                </Badge>
                             </div>
                         </div>
                     </Link>

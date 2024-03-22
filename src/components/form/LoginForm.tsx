@@ -22,7 +22,7 @@ export const LoginForm = ({ onHideModal }: Props) => {
     const [validatedEmailMessage, setValidatedEmailMessage] = useState("");
     const [validatedPasswordMessage, setValidatedPasswordMessage] = useState("");
 
-    const { loading } = useAppSelector((state) => state.user);
+    const { loading } = useAppSelector((state) => state.persist.user);
 
     const dispatch = useAppDispatch();
 
@@ -52,8 +52,8 @@ export const LoginForm = ({ onHideModal }: Props) => {
         }
 
         if (canSubmit) {
-            await signInApi({ email, password }, dispatch);
-            if (onHideModal) onHideModal();
+            const resultSignIn = await signInApi({ email, password }, dispatch);
+            if (onHideModal && !!resultSignIn) onHideModal();
         }
     };
 

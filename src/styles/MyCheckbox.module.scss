@@ -1,0 +1,39 @@
+@use "variables" as *;
+
+.group {
+    user-select: none;
+    .input:checked ~ .my-checkbox .box {
+        background-color: $hover-blue-color;
+        border-color: $hover-blue-color;
+
+        .check {
+            opacity: 1;
+        }
+    }
+    .my-checkbox {
+        .box {
+            height: 20px;
+            width: 20px;
+            border: 1px solid $border-grey-color;
+            overflow: hidden;
+            cursor: pointer;
+            transition: background-color 0.3s;
+
+            .check {
+                opacity: 0;
+                height: 13px;
+                width: 13px;
+                color: $white-color;
+                transition: all 0.3s;
+            }
+        }
+        &:hover > .label,
+        .label:hover {
+            color: $hover-blue-color;
+        }
+        .label {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+    }
+}

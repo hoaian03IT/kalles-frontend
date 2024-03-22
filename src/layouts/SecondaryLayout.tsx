@@ -13,7 +13,7 @@ type Props = {
 
 export default function SecondaryLayout({ children }: Props) {
     return (
-        <div className={cx("secondary-layout", "d-flex flex-column justify-content-between")}>
+        <div className={cx("secondary-layout", "min-vh-100 d-flex flex-column justify-content-between")}>
             <Header type="fixed" />
             <main className={cx("main")}>
                 <LazyReact>{children}</LazyReact>

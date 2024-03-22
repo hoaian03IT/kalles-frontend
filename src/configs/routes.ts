@@ -13,6 +13,7 @@ export const publicRoutes = [
     { path: pathname.login, component: LoginScreen, layout: SecondaryLayout },
     { path: pathname.register, component: RegisterScreen, layout: SecondaryLayout },
     { path: pathname.shop, component: ShopScreen, layout: SecondaryLayout },
+    { path: pathname.product, component: ProductScreen, layout: SecondaryLayout },
 ];
 
-export const privateRoutes = [{ path: pathname.product, component: ProductScreen, layout: SecondaryLayout }];
+export const privateRoutes = [];

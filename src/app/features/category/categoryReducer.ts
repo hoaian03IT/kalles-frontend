@@ -3,9 +3,11 @@ import { Error } from "../commonTypes";
 
 type Category = {
     _id: string;
+    key: string;
     name: string;
     description: string | null | undefined;
     img: string;
+    productCount: number;
 };
 
 type CategoryState = {

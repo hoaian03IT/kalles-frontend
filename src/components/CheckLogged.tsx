@@ -13,13 +13,13 @@ export const CheckLoggedContext = createContext({ isLogged: false, handleLogout:
 export const CheckLogged = ({ children }: Props) => {
     const [isLogged, setIsLogged] = useState(false);
 
-    const state = useAppSelector((state) => state);
-    const token = state.user.token;
+    const userState = useAppSelector((state) => state.persist.user);
+    const token = userState.token;
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const axiosJWT = axiosInstance(state, dispatch, navigate);
+    const axiosJWT = axiosInstance(userState, dispatch, navigate);
 
     const handleLogout = async () => {
         await signOutApi(axiosJWT, navigate, dispatch);

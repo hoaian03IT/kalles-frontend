@@ -18,14 +18,19 @@
     }
     .actions {
         .filter {
-            display: flex;
-            align-items: center;
-            color: rgba($color: $black-color, $alpha: 0.5);
-            cursor: pointer;
-            transition: color 0.3s;
+            button {
+                background-color: $white-color;
+                border: none;
+                outline: none;
+                display: flex;
+                align-items: center;
+                color: rgba($color: $black-color, $alpha: 0.5);
+                cursor: pointer;
+                transition: color 0.3s;
 
-            &:hover {
-                color: $black-color;
+                &:hover {
+                    color: $black-color;
+                }
             }
         }
         .layouts {

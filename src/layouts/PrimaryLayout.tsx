@@ -12,9 +12,11 @@ type Props = {
 
 export default function PrimaryLayout({ children }: Props) {
     return (
-        <div className={cx("primary-layout", "d-flex flex-column justify-content-between")}>
-            <Header type="sticky" />
-            <main className={cx("main")}>{children}</main>
+        <div className={cx("primary-layout", "min-vh-100 d-flex flex-column justify-content-")}>
+            <div>
+                <Header type="sticky" />
+                <main className={cx("main")}>{children}</main>
+            </div>
             <Footer />
         </div>
     );

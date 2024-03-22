@@ -5,5 +5,5 @@
 }
 
 .secondary-layout .main {
-    transform: translateY($offcanvas-header-height);
+    padding-top: $offcanvas-header-height;
 }

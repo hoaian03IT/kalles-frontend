@@ -1,0 +1,31 @@
+@use "variables" as *;
+.wrapper {
+    .filter {
+        padding: 1rem 1.2rem;
+        & + .filter {
+            border-top: 1px solid $border-grey-color;
+        }
+        .title-header {
+            display: inline-block;
+            position: relative;
+            font-weight: 400;
+            &::after {
+                position: absolute;
+                content: "";
+                left: 0;
+                bottom: -2px;
+                width: 70%;
+                border-bottom: 2px solid $black-color;
+            }
+        }
+
+        &.price {
+            .price-filter {
+                font-size: 14px;
+                .label {
+                    color: rgba($color: $black-color, $alpha: 0.5);
+                }
+            }
+        }
+    }
+}

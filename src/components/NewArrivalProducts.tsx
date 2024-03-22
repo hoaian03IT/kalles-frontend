@@ -15,7 +15,7 @@ export default function NewArrivalProducts() {
             <Container fluid className="5 px-md-5 text-center">
                 <Row xs={{ cols: 2 }} md={{ cols: 3 }} lg={{ cols: 5 }} className="justify-content-center">
                     <Col>
-                        <CardProduct
+                        {/* <CardProduct
                             link="/"
                             nameProduct="Minimalist Croc Embossed Baguette Bag"
                             types={[
@@ -33,10 +33,10 @@ export default function NewArrivalProducts() {
                             price={3000000}
                             discount={1}
                             favorite={true}
-                        />
+                        /> */}
                     </Col>
                     <Col>
-                        <CardProduct
+                        {/* <CardProduct
                             link="/"
                             nameProduct="Minimalist Croc Embossed Baguette Bag"
                             types={[
@@ -54,10 +54,10 @@ export default function NewArrivalProducts() {
                             price={3000000}
                             discount={1}
                             favorite={true}
-                        />
+                        /> */}
                     </Col>
                     <Col>
-                        <CardProduct
+                        {/* <CardProduct
                             link="/"
                             nameProduct="Minimalist Croc Embossed Baguette Bag"
                             types={[
@@ -75,7 +75,7 @@ export default function NewArrivalProducts() {
                             price={3000000}
                             discount={1}
                             favorite={true}
-                        />
+                        /> */}
                     </Col>
                 </Row>
                 <Button className="btn-size-lg mt-5 btn-round-border">

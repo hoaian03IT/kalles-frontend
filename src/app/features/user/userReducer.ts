@@ -1,8 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Error } from "../commonTypes";
-import { toast } from "react-toastify";
 
-type UserState = {
+export type UserState = {
     _id: string;
     firstName: string;
     lastName: string;
@@ -51,7 +50,6 @@ export const userSlice = createSlice({
         },
         signUpFailed: (state, action: PayloadAction<Error>) => {
             const errMsg = action.payload.message;
-            toast.error(errMsg);
             state.error = errMsg;
             state.loading = false;
         },
@@ -73,7 +71,6 @@ export const userSlice = createSlice({
         },
         signInFailed: (state, action: PayloadAction<Error>) => {
             const errMsg = action.payload.message;
-            toast.error(errMsg);
             state.error = errMsg;
             state.loading = false;
         },
@@ -94,7 +91,6 @@ export const userSlice = createSlice({
         },
         signOutFailed: (state, action: PayloadAction<Error>) => {
             const errMsg = action.payload.message;
-            toast.error(errMsg);
             state.error = errMsg;
             state.loading = false;
         },

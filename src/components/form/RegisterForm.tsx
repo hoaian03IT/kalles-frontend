@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { CustomInput } from "./CustomInput";
 import { Button, FormGroup, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -25,7 +25,7 @@ export const RegisterForm = () => {
     const [validatePasswordMsg, setValidatePasswordMsg] = useState("");
     const [validateGenderMsg, setValidateGenderMsg] = useState("");
 
-    const { loading } = useAppSelector((state) => state.user);
+    const { loading } = useAppSelector((state) => state.persist.user);
 
     const dispatch = useAppDispatch();
 
