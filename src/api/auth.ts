@@ -31,7 +31,7 @@ export const signInApi = async (payload: SignInPayload, dispatch: Dispatch<Actio
         return true;
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            const { message } = error.response?.data;
+            const message = error.message || error.response?.data;
             dispatch(signInFailed({ message }));
             toast.error(message);
         }
@@ -57,7 +57,7 @@ export const signUpApi = async (payload: SignUpPayload, dispatch: Dispatch<Actio
         dispatch(signUpSuccess(response.data));
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            const { message } = error.response?.data;
+            const message = error.message || error.response?.data;
             dispatch(signUpFailed({ message }));
             toast.error(message);
         }
@@ -73,7 +73,7 @@ export const signOutApi = async (axiosJWT: AxiosInstance, navigate: NavigateFunc
         navigate(pathname.home);
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            const { message } = error.response?.data;
+            const message = error.message || error.response?.data;
             dispatch(signUpFailed({ message }));
             toast.error(message);
         }
@@ -86,7 +86,7 @@ export const RefreshTokenApi = async (navigate: NavigateFunction) => {
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            toast.error(error.response?.data.message);
+            toast.error(error.message || error.response?.data);
         }
         navigate(pathname.login);
     }

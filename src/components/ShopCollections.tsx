@@ -7,6 +7,7 @@ import styles from "~/styles/ShopCollections.module.scss";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { fetchCategoriesApi } from "~/api";
+import { pathname } from "~/configs/pathname";
 
 const cx = classNames.bind(styles);
 
@@ -31,7 +32,7 @@ export default function ShopCollections() {
             </div>
             <CardSlider>
                 {categories.slice(0, 6).map((item, index) => (
-                    <Link key={index} to="/" className={cx("item")}>
+                    <Link key={index} to={pathname.product + "?category=" + item._id} className={cx("item")}>
                         <div className={cx("img-wrapper")}>
                             <Image draggable="false" loading="eager" roundedCircle src={item.img} alt={item.name} />
                         </div>

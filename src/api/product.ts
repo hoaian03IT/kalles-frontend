@@ -19,7 +19,7 @@ export const fetchListProductApi = async (query: string, dispatch: Dispatch<Acti
         dispatch(fetchListProductSuccess(res.data.products));
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            const { message } = error.response?.data;
+            const message = error.message || error.response?.data;
             dispatch(fetchListProductFailed({ message }));
             toast.error(message);
         }
@@ -34,7 +34,7 @@ export const fetchProductDetailApi = async (idProduct: string, dispatch: Dispatc
         dispatch(fetchDetailProductSuccess(res.data.product));
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            const { message } = error.response?.data;
+            const message = error.message || error.response?.data;
             dispatch(fetchDetailProductFailed({ message }));
             toast.error(message);
         }
