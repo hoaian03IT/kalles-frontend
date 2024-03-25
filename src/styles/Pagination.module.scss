@@ -1,0 +1,44 @@
+@use "variables" as *;
+
+.pagination {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    list-style: none;
+    &.center {
+        justify-content: center;
+    }
+    &.start {
+        justify-content: flex-start;
+    }
+    &.end {
+        justify-content: flex-end;
+    }
+
+    &-item {
+        padding: 0 1rem;
+        font-weight: 300;
+        border-radius: 4px;
+        transition: all 0.3s;
+        user-select: none;
+        &.disabled {
+            cursor: default;
+            color: rgba($color: $black-color, $alpha: 0.5);
+            pointer-events: none;
+        }
+
+        &.ellipsis {
+            cursor: default;
+        }
+
+        &:not(.disabled, .ellipsis) {
+            cursor: pointer;
+            &:hover,
+            &.active {
+                color: $orange-color;
+                background-color: rgba($color: $black-color, $alpha: 0.02);
+            }
+        }
+    }
+}

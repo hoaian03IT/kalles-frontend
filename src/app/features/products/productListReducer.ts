@@ -12,12 +12,16 @@ type Product = {
 
 type ProductListState = {
     products: Product[];
-    loading: boolean;
-    error: string;
+    page: number;
+    pages: number;
+    loading?: boolean;
+    error?: string;
 };
 
 const initialState: ProductListState = {
     products: [],
+    page: 1,
+    pages: 0,
     loading: false,
     error: "",
 };
@@ -30,9 +34,12 @@ export const productListSlice = createSlice({
             state.loading = true;
             state.error = "";
         },
-        fetchListProductSuccess: (state, action: PayloadAction<Product[]>) => {
+        fetchListProductSuccess: (state, action: PayloadAction<ProductListState>) => {
+            const { page, pages, products } = action.payload;
             state.loading = false;
-            state.products = action.payload;
+            state.products = products;
+            state.page = page;
+            state.pages = pages;
             state.error = "";
         },
         fetchListProductFailed: (state, action: PayloadAction<Error>) => {

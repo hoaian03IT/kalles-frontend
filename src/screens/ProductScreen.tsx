@@ -15,6 +15,13 @@ import { pathname } from "~/configs/pathname";
 import styles from "~/styles/ProductScreen.module.scss";
 import { FilterProduct } from "~/components/FilterProduct";
 import { Loading } from "~/components/Loading";
+import {
+    Pagination,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationNext,
+    PaginationPrevious,
+} from "~/components/pagination";
 
 const cx = classNames.bind(styles);
 
@@ -50,7 +57,7 @@ const orderProducts = [
     },
 ];
 
-type FilterProductStateType = { order: number; category: string; stock: string; price: string };
+type FilterProductStateType = { order: number; category: string; stock: string; price: string; page: number };
 
 export type FilterProductContextType = {
     filter: FilterProductStateType;
@@ -60,7 +67,7 @@ export type FilterProductContextType = {
 export const ProductScreenContext = createContext<FilterProductContextType | null>(null);
 
 export default function ProductScreen() {
-    const { products, loading } = useAppSelector((state) => state.products);
+    const { products, loading, pages } = useAppSelector((state) => state.products);
 
     const { search } = useLocation();
 
@@ -78,6 +85,7 @@ export default function ProductScreen() {
         category: categoryQuery,
         stock: stockQuery,
         price: priceQuery,
+        page: 1,
     });
 
     // state modals
@@ -86,25 +94,36 @@ export default function ProductScreen() {
 
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                await fetchListProductApi(
-                    `order=${orderProducts[filter.order].key}&category=${filter.category}&stock=${filter.stock}&price=${
-                        filter.price
-                    }&pageSize=${4}`,
-                    dispatch
-                );
-                // close all modals when fetch products successfully
-                setShowFilterProduct(false);
-                setShowOrderProduct(false);
-            } catch (error) {}
-        };
-        fetchProducts();
-    }, [dispatch, filter.category, filter.order, filter.price, filter.stock]);
+    // useEffect(() => {
+    //     const fetchProducts = async () => {
+    //         try {
+    //             await fetchListProductApi(
+    //                 `order=${orderProducts[filter.order].key}&category=${filter.category}&stock=${filter.stock}&price=${
+    //                     filter.price
+    //                 }&pageSize=${4}&page=${filter.page}`,
+    //                 dispatch
+    //             );
+    //             // close all modals when fetch products successfully
+    //             setShowFilterProduct(false);
+    //             setShowOrderProduct(false);
+    //         } catch (error) {}
+    //     };
+    //     fetchProducts();
+    // }, [dispatch, filter.category, filter.order, filter.price, filter.stock, filter.page]);
 
     const handleChangeOrderProduct = (value: number) => {
         setFilter({ ...filter, order: value });
+    };
+
+    const handleNextPage = () => {
+        setFilter({ ...filter, page: filter.page + 1 });
+    };
+    const handlePreviousPage = () => {
+        setFilter({ ...filter, page: filter.page - 1 });
+    };
+
+    const handleFilterPage = (value: number) => {
+        setFilter({ ...filter, page: value });
     };
 
     return (
@@ -185,6 +204,21 @@ export default function ProductScreen() {
                                         />
                                     </Col>
                                 ))}
+                                <Pagination>
+                                    <PaginationPrevious disabled={filter.page === 1} onClick={handlePreviousPage} />
+                                    {Array.from(Array(10).keys()).map((item) => {
+                                        const page = item + 1;
+                                        return (
+                                            <PaginationItem
+                                                key={page}
+                                                value={page}
+                                                isActive={page === filter.page}
+                                                onClick={() => handleFilterPage(page)}
+                                            />
+                                        );
+                                    })}
+                                    <PaginationNext disabled={filter.page === pages} onClick={handleNextPage} />
+                                </Pagination>
                             </Row>
                         ) : (
                             <div className="text-center my-5">

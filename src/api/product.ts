@@ -16,7 +16,7 @@ export const fetchListProductApi = async (query: string, dispatch: Dispatch<Acti
     dispatch(fetchListProductRequest());
     try {
         const res = await axios.get(`/product/filter?${query}`);
-        dispatch(fetchListProductSuccess(res.data.products));
+        dispatch(fetchListProductSuccess(res.data));
     } catch (error) {
         if (axios.isAxiosError(error)) {
             const message = error.message || error.response?.data;
