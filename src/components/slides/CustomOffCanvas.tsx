@@ -17,11 +17,11 @@ type Props = {
 export const CustomOffCanvas = ({ titleHeader, show, onHide, placement = "start", children }: Props) => {
     return (
         <Offcanvas show={show} onHide={onHide} placement={placement}>
-            <div className={`px-4 py-3 d-flex algin-items-center justify-content-between ${cx("header")}`}>
+            <div className={cx("header", "px-4 py-3 d-flex algin-items-center justify-content-between")}>
                 <span className="text-uppercase fs-5 fw-light">{titleHeader}</span>
                 <IoCloseOutline className={cx("icon-close")} onClick={onHide} />
             </div>
-            {children}
+            <div className={cx("body")}>{children}</div>
         </Offcanvas>
     );
 };

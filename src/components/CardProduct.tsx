@@ -82,7 +82,7 @@ export const CardProduct = memo(({ nameProduct, price, discount, favorite = fals
                     <button className={cx("close-btn")} onClick={() => setShowQuickView(false)}>
                         <IoCloseOutline className="fs-3" />
                     </button>
-                    <ProductDetail
+                    {/* <ProductDetail
                         images={[
                             "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/KIC_144-2169-1329-900_prod1.jpg",
                             "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/KIC_144-2169-1329-900_prod2.jpg",
@@ -94,7 +94,7 @@ export const CardProduct = memo(({ nameProduct, price, discount, favorite = fals
                         description="Go kalles this summer with this vintage navy and white striped v-neck t-shirt from the Nike. Perfect for pairing with denim and white kicks for a stylish kalles vibe."
                         remainQuantity={1}
                         whitelist={false}
-                    />
+                    /> */}
                 </Modal>
             </div>
         </div>

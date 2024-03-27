@@ -23,6 +23,12 @@ const availabilityOptions = [
     { label: "Out of Stock", value: "out-stock" },
 ];
 
+const sexOptions = [
+    { label: "Men", key: "men" },
+    { label: "Women", key: "women" },
+    { label: "Unisex", key: "unisex" },
+];
+
 const defaultMaxPrice = 50000000;
 
 export const FilterProduct = ({ show, onHide }: Props) => {
@@ -57,6 +63,14 @@ export const FilterProduct = ({ show, onHide }: Props) => {
             productScreenContext.setFilter({ ...productScreenContext.filter, category: "all" });
         } else {
             productScreenContext?.setFilter({ ...productScreenContext.filter, category: id });
+        }
+    };
+
+    const handleChangeFilterGender = (key: string) => {
+        if (key === productScreenContext?.filter.sex) {
+            productScreenContext.setFilter({ ...productScreenContext.filter, sex: "all" });
+        } else {
+            productScreenContext?.setFilter({ ...productScreenContext.filter, sex: key });
         }
     };
 
@@ -124,6 +138,20 @@ export const FilterProduct = ({ show, onHide }: Props) => {
                                     checked={productScreenContext?.filter.category === category._id}
                                     label={category.name}
                                     onChange={() => handleChangeFilterCategory(category._id)}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className={cx("filter", "category")}>
+                    <h5 className={cx("title-header")}>Gender</h5>
+                    <div className={cx("body")}>
+                        {sexOptions.map((sex) => (
+                            <div key={sex.key} className="my-2">
+                                <MyCheckbox
+                                    checked={productScreenContext?.filter.sex === sex.key}
+                                    label={sex.label}
+                                    onChange={() => handleChangeFilterGender(sex.key)}
                                 />
                             </div>
                         ))}

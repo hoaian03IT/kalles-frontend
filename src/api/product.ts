@@ -30,8 +30,8 @@ export const fetchListProductApi = async (query: string, dispatch: Dispatch<Acti
 export const fetchProductDetailApi = async (idProduct: string, dispatch: Dispatch<Action>) => {
     dispatch(fetchDetailProductRequest());
     try {
-        const res = await axios.get(`/product/detail/${idProduct}`);
-        dispatch(fetchDetailProductSuccess(res.data.product));
+        const res = await axios.get(`/product/details/${idProduct}`);
+        dispatch(fetchDetailProductSuccess(res.data));
     } catch (error) {
         if (axios.isAxiosError(error)) {
             const message = error.message || error.response?.data;

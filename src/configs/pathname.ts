@@ -5,7 +5,7 @@ export const pathname = {
     register: "/register",
     shop: "/shop",
     product: "/product",
-    detailProduct: "/product/detail/:id",
+    detailProduct: "/product-detail/:id",
     dashboard: function () {
         return this.me + "/dashboard";
     },

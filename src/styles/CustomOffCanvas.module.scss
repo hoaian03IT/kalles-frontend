@@ -12,3 +12,7 @@
         }
     }
 }
+.body {
+    max-height: calc(100vh - $offcanvas-header-height);
+    overflow-y: auto;
+}

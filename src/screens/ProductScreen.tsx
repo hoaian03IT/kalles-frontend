@@ -1,9 +1,9 @@
 import { createContext, Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import classNames from "classnames/bind";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import { MdOutlineFilterList } from "react-icons/md";
 import { TfiLayoutColumn2Alt, TfiLayoutColumn3Alt, TfiLayoutColumn4Alt } from "react-icons/tfi";
+import classNames from "classnames/bind";
 import { HeaderBanner } from "~/components/HeaderBanner";
 import { CardProduct } from "~/components/CardProduct";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -15,13 +15,7 @@ import { pathname } from "~/configs/pathname";
 import styles from "~/styles/ProductScreen.module.scss";
 import { FilterProduct } from "~/components/FilterProduct";
 import { Loading } from "~/components/Loading";
-import {
-    Pagination,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationNext,
-    PaginationPrevious,
-} from "~/components/pagination";
+import { Pagination, PaginationItem, PaginationNext, PaginationPrevious } from "~/components/pagination";
 
 const cx = classNames.bind(styles);
 
@@ -57,7 +51,14 @@ const orderProducts = [
     },
 ];
 
-type FilterProductStateType = { order: number; category: string; stock: string; price: string; page: number };
+type FilterProductStateType = {
+    order: number;
+    category: string;
+    stock: string;
+    price: string;
+    page: number;
+    sex: string;
+};
 
 export type FilterProductContextType = {
     filter: FilterProductStateType;
@@ -76,6 +77,7 @@ export default function ProductScreen() {
     const orderQuery = Number(query.get("order")) || 0;
     const stockQuery = query.get("stock") || "all";
     const priceQuery = query.get("price") || "all";
+    const sexQuery = query.get("sex") || "all";
 
     const [layout, setLayout] = useState(4); // default is 2 cols per row
 
@@ -86,6 +88,7 @@ export default function ProductScreen() {
         stock: stockQuery,
         price: priceQuery,
         page: 1,
+        sex: sexQuery,
     });
 
     // state modals
@@ -93,23 +96,37 @@ export default function ProductScreen() {
     const [showFilterProduct, setShowFilterProduct] = useState(false);
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     const fetchProducts = async () => {
-    //         try {
-    //             await fetchListProductApi(
-    //                 `order=${orderProducts[filter.order].key}&category=${filter.category}&stock=${filter.stock}&price=${
-    //                     filter.price
-    //                 }&pageSize=${4}&page=${filter.page}`,
-    //                 dispatch
-    //             );
-    //             // close all modals when fetch products successfully
-    //             setShowFilterProduct(false);
-    //             setShowOrderProduct(false);
-    //         } catch (error) {}
-    //     };
-    //     fetchProducts();
-    // }, [dispatch, filter.category, filter.order, filter.price, filter.stock, filter.page]);
+    useEffect(() => {
+        navigate(
+            pathname.product +
+                `?order=${orderProducts[filter.order].key}&category=${filter.category}&stock=${filter.stock}&price=${
+                    filter.price
+                }&sex=${filter.sex}`
+        );
+        setFilter({ ...filter, page: 1 }); // set lại page 1
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filter.category, filter.order, filter.price, filter.stock, navigate, filter.sex]);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                await fetchListProductApi(
+                    `order=${orderProducts[filter.order].key}&category=${filter.category}&stock=${filter.stock}&price=${
+                        filter.price
+                    }&sex=${filter.sex}&pageSize=${8}&page=${filter.page}`,
+                    dispatch
+                );
+                // close all modals when fetch products successfully
+                setShowFilterProduct(false);
+                setShowOrderProduct(false);
+            } catch (error) {}
+        };
+        fetchProducts();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [search, filter.page]);
 
     const handleChangeOrderProduct = (value: number) => {
         setFilter({ ...filter, order: value });
@@ -206,7 +223,7 @@ export default function ProductScreen() {
                                 ))}
                                 <Pagination>
                                     <PaginationPrevious disabled={filter.page === 1} onClick={handlePreviousPage} />
-                                    {Array.from(Array(10).keys()).map((item) => {
+                                    {Array.from(Array(pages).keys()).map((item) => {
                                         const page = item + 1;
                                         return (
                                             <PaginationItem

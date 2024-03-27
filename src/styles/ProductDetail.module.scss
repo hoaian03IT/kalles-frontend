@@ -1,6 +1,24 @@
 @use "variables" as *;
 
 .wrapper {
+    .preview-image {
+        width: 100%;
+        aspect-ratio: 3 / 4;
+        object-fit: cover;
+        object-position: center;
+        opacity: 0.4;
+        transition: opacity 0.3s;
+        cursor: pointer;
+
+        &:hover,
+        &.active {
+            opacity: 1;
+        }
+
+        & + .preview-image {
+            margin-top: 10px;
+        }
+    }
     .carousel {
         .control-icon {
             display: flex;
@@ -20,6 +38,8 @@
             }
         }
         .img {
+            width: 100%;
+            aspect-ratio: 3 / 4;
             object-fit: cover;
             object-position: center;
         }
@@ -54,6 +74,36 @@
             border: none;
             height: $btn-md-height;
             border-radius: $btn-radius;
+        }
+        .color-product {
+            .colors {
+                display: flex;
+                align-items: center;
+            }
+        }
+        .size-product {
+            .sizes {
+                display: flex;
+                align-items: center;
+                .size {
+                    padding: 2px 4px;
+                    border: 1px solid rgba($color: $black-color, $alpha: 0.2);
+                    border-radius: 4px;
+                    font-weight: 300;
+                    color: rgba($color: $black-color, $alpha: 0.5);
+                    cursor: pointer;
+                    transition: all 0.6s ease-out;
+
+                    & + .size {
+                        margin-left: 4px;
+                    }
+                    &:hover,
+                    &.active {
+                        color: $black-color;
+                        border-color: $black-color;
+                    }
+                }
+            }
         }
         .whitelist {
             position: relative;
@@ -99,5 +149,48 @@
                 }
             }
         }
+    }
+}
+
+.color {
+    position: relative;
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+
+    & + .color {
+        margin-left: 12px;
+    }
+
+    &:hover::after {
+        border-width: 1px;
+        border-color: $black-color;
+    }
+    &.active::after {
+        border-width: 2px;
+        border-color: $black-color;
+    }
+
+    &::after {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 34px;
+        height: 34px;
+        border: 1px solid rgba($color: $black-color, $alpha: 0.2);
+        border-radius: 50%;
+        transition: border-color 0.6s ease-out;
+    }
+}
+
+.popover {
+    border-radius: 8px;
+    overflow: hidden;
+    &-body {
+        background-color: $white-color;
+        padding: 4px;
     }
 }

@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Error } from "../commonTypes";
 
-type Category = {
+export type Category = {
     _id: string;
     key: string;
     name: string;

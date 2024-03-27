@@ -1,21 +1,22 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Error } from "../commonTypes";
+import { Category } from "../category/categoryReducer";
 
-type SizeProduct = {
+export type SizeProduct = {
     _id: string;
     image: string;
     name: string;
     description: string;
 };
 
-type ColorProduct = {
+export type ColorProduct = {
     _id: string;
     name: string;
     hex: string;
-    sizes: SizeProduct[];
+    sizes: Array<SizeProduct>;
 };
 
-type FeedBackProduct = {
+export type FeedBackProduct = {
     _id: string;
     feedback: string;
     owner: {
@@ -25,28 +26,48 @@ type FeedBackProduct = {
 };
 
 type Product = {
+    category: Category;
     _id: string;
-    category: string;
-    previewImages: string;
+    previewImages: Array<string>;
     name: string;
     description: string;
     price: number;
     discount: number;
-    colors: ColorProduct[];
-    sex: string[];
+    colors: Array<ColorProduct>;
+    sex: string;
     stock: number;
     sold: number;
-    feedback: FeedBackProduct;
+    feedback: Array<FeedBackProduct>;
 };
 
 type ProductState = {
-    product: Product | null;
+    product: Product;
     loading: boolean;
     error: string;
 };
 
 const initialState: ProductState = {
-    product: null,
+    product: {
+        category: {
+            _id: "",
+            key: "",
+            name: "",
+            description: "",
+            img: "",
+            productCount: 0,
+        },
+        _id: "",
+        previewImages: [],
+        name: "",
+        description: "",
+        price: 0,
+        discount: 0,
+        colors: [],
+        sex: "",
+        stock: 0,
+        sold: 0,
+        feedback: [],
+    },
     loading: false,
     error: "",
 };
