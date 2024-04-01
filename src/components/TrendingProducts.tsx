@@ -8,13 +8,14 @@ const cx = classNames.bind(styles);
 
 const categories = ["best-sellers", "top-rated", "sales"];
 
+const convertUpperFirstText = (text: string) => {
+    let texts = text.split("-");
+    let newText = texts.reduce((acc, text) => acc + " " + text[0].toUpperCase() + text.slice(1), "");
+    return newText;
+};
+
 export default function TrendingProducts() {
     const [selectedCategory, setSelectedCategory] = useState(categories[0]);
-    const convertUpperFirstText = (text: string) => {
-        let texts = text.split("-");
-        let newText = texts.reduce((acc, text) => acc + " " + text[0].toUpperCase() + text.slice(1), "");
-        return newText;
-    };
 
     return (
         <div className={cx("wrapper")}>

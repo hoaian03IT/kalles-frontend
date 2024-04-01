@@ -4,14 +4,15 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
 import styles from "~/styles/ProductDetail.module.scss";
 import { formatCurrencyVND } from "~/utils";
-import { QuantityEditor } from "./QuantityEditor";
+import { QuantityEditor } from "../QuantityEditor";
 import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import { SocialNetworks } from "./SocialNetWorks";
+import { SocialNetworks } from "../SocialNetWorks";
 import listSafeCheckout from "~/assets/images/list-safe-checkout.png";
-import { ColorProduct, FeedBackProduct, SizeProduct } from "~/app/features/products/productReducer";
+import { ColorProduct, SizeProduct } from "~/app/features/products/productReducer";
 import { Category } from "~/app/features/category/categoryReducer";
 import { pathname } from "~/configs/pathname";
+import { RateProduct } from "../RateProduct";
 
 const cx = classNames.bind(styles);
 
@@ -25,7 +26,7 @@ type Props = {
     colors: Array<ColorProduct>;
     sold: number;
     sex: string;
-    feedback: Array<FeedBackProduct>;
+    rate: number;
     category: Category;
 };
 
@@ -50,9 +51,9 @@ export const ProductDetail = ({
     stock,
     category,
     colors,
-    feedback,
     sex,
     sold,
+    rate,
 }: Props) => {
     const [quantityBuy, setQuantityBuy] = useState<number>(1);
     const [isWhitelist, setIsWhitelist] = useState<boolean>(false);
@@ -139,15 +140,32 @@ export const ProductDetail = ({
                 </Col>
                 <Col>
                     <div className={cx("content", "px-4")}>
-                        <h6 className={cx("name-product")}>{nameProduct}</h6>
-                        <div className={cx("price")}>
-                            <span className={cx("current-price")}>{formatCurrencyVND(priceAfterDiscount)}</span>
-                            {discount > 0 && (
-                                <span className={cx("origin-price", "ms-2 text-danger text-decoration-line-through")}>
-                                    {formatCurrencyVND(price)}
-                                </span>
-                            )}
-                        </div>
+                        <Row>
+                            <Col>
+                                <h6 className={cx("name-product")}>{nameProduct}</h6>
+                                <div className={cx("price")}>
+                                    <span className={cx("current-price")}>{formatCurrencyVND(priceAfterDiscount)}</span>
+                                    {discount > 0 && (
+                                        <span
+                                            className={cx(
+                                                "origin-price",
+                                                "ms-2 text-danger text-decoration-line-through"
+                                            )}>
+                                            {formatCurrencyVND(price)}
+                                        </span>
+                                    )}
+                                </div>
+                            </Col>
+                            <Col>
+                                <div className={cx("rating", "d-flex align-items-center justify-content-end")}>
+                                    <span className="fw-light">Sold: {sold}</span>
+                                    <span className="ms-4 d-flex align-items-center">
+                                        <RateProduct rating={rate} />
+                                        <span className="ms-1 fw-light">({rate})</span>
+                                    </span>
+                                </div>
+                            </Col>
+                        </Row>
                         <p className={cx("description", "text-black-50 mt-4 limit-line-4")}>{description}</p>
                         <div className={cx("color-product")}>
                             <h6 className={cx("label", "fw-normal text-uppercase")}>Color: {selectedColor?.name}</h6>
@@ -230,7 +248,7 @@ export const ProductDetail = ({
                                             </Link>
                                             ,&nbsp;
                                             <Link to={pathname.product + `?category=${category._id}`}>
-                                                {sex[0].toUpperCase() + sex.slice(1, sex.length)}
+                                                {sex[0]?.toUpperCase() + sex.slice(1, sex.length)}
                                             </Link>
                                         </span>
                                     </div>

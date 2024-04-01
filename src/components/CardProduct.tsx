@@ -6,7 +6,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import styles from "~/styles/CardProduct.module.scss";
 import { memo, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
-import { ProductDetail } from "./ProductDetail";
+import { ProductDetail } from "./productDetail/ProductDetail";
 import { formatCurrencyVND } from "~/utils";
 
 const cx = classNames.bind(styles);

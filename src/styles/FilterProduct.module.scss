@@ -3,7 +3,7 @@
     .filter {
         padding: 1rem 1.2rem;
         & + .filter {
-            border-top: 1px solid $border-grey-color;
+            border-top: 1px solid $black-color-20;
         }
         .title-header {
             display: inline-block;

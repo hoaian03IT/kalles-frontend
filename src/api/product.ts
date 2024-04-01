@@ -40,3 +40,8 @@ export const fetchProductDetailApi = async (idProduct: string, dispatch: Dispatc
         }
     }
 };
+
+export const createReview = async () => {
+    try {
+    } catch (error) {}
+};

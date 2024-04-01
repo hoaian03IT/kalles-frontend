@@ -6,7 +6,8 @@ import { fetchProductDetailApi } from "~/api";
 import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { BreadCrumb } from "~/components/BreadCrumb";
 import { Loading } from "~/components/Loading";
-import { ProductDetail } from "~/components/ProductDetail";
+import { DescriptionAndReview } from "~/components/productDetail/DescriptionAndReview";
+import { ProductDetail } from "~/components/productDetail/ProductDetail";
 import { pathname } from "~/configs/pathname";
 import styles from "~/styles/ProductDetailScreen.module.scss";
 const cx = classNames.bind(styles);
@@ -38,25 +39,32 @@ export default function ProductDetailScreen() {
                     { label: product.name, value: pathname.detailProduct.split(":")[0] + product._id, isCurrent: true },
                 ]}
             />
-            <Container className="p-4">
-                {loading ? (
-                    <Loading />
-                ) : (
-                    <ProductDetail
-                        description={product.description}
-                        discount={product.discount}
-                        images={product.previewImages}
-                        nameProduct={product.name}
-                        price={product.price}
-                        stock={product.stock}
-                        category={product.category}
-                        colors={product.colors}
-                        feedback={product.feedback}
-                        sex={product.sex}
-                        sold={product.sold}
-                    />
-                )}
-            </Container>
+            <div className="py-5">
+                <Container>
+                    {loading ? (
+                        <Loading />
+                    ) : (
+                        <ProductDetail
+                            description={product.description}
+                            discount={product.discount}
+                            images={product.previewImages}
+                            nameProduct={product.name}
+                            price={product.price}
+                            stock={product.stock}
+                            category={product.category}
+                            colors={product.colors}
+                            sex={product.sex}
+                            sold={product.sold}
+                            rate={product.rate}
+                        />
+                    )}
+                </Container>
+            </div>
+            <div className={cx("description-reviews-part")}>
+                <Container>
+                    <DescriptionAndReview />
+                </Container>
+            </div>
         </div>
     );
 }

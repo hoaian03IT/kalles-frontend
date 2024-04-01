@@ -16,16 +16,19 @@ export type ColorProduct = {
     sizes: Array<SizeProduct>;
 };
 
-export type FeedBackProduct = {
+export type ReviewProduct = {
+    product: string;
     _id: string;
-    feedback: string;
-    owner: {
+    content: string;
+    title: string;
+    user: {
         lastName: string;
         avatar: string;
     };
+    rate: number | 0;
 };
 
-type Product = {
+export type Product = {
     category: Category;
     _id: string;
     previewImages: Array<string>;
@@ -37,7 +40,7 @@ type Product = {
     sex: string;
     stock: number;
     sold: number;
-    feedback: Array<FeedBackProduct>;
+    rate: number;
 };
 
 type ProductState = {
@@ -66,7 +69,7 @@ const initialState: ProductState = {
         sex: "",
         stock: 0,
         sold: 0,
-        feedback: [],
+        rate: 0,
     },
     loading: false,
     error: "",

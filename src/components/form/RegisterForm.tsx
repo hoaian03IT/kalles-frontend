@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { CustomInput } from "./CustomInput";
 import { Button, FormGroup, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";

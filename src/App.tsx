@@ -54,7 +54,7 @@ function App() {
                     );
                 })} */}
             </Routes>
-            <ToastContainer position="top-center" />
+            <ToastContainer position="top-right" />
         </div>
     );
 }

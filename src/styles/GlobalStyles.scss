@@ -42,16 +42,18 @@ body {
         }
     }
     &-secondary {
-        background-color: #f7f7f7 !important;
+        background-color: $gray-color !important;
         color: rgba($color: $black-color, $alpha: 0.8) !important;
         border-color: #e7e7e7 !important;
         &:hover {
             background-color: $black-color !important;
-            color: #f7f7f7 !important;
+            color: $gray-color !important;
         }
     }
     &-size-md {
         height: $btn-md-height;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
     }
     &-size-lg {
         height: $btn-lg-height;
