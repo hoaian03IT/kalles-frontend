@@ -21,11 +21,13 @@ export type ReviewProduct = {
     _id: string;
     content: string;
     title: string;
-    user: {
+    owner: {
+        firstName: string;
         lastName: string;
         avatar: string;
     };
     rate: number | 0;
+    photos: Array<string>;
 };
 
 export type Product = {

@@ -13,7 +13,7 @@ export const fetchCategoriesApi = async (dispatch: Dispatch<Action>) => {
         dispatch(fetchCategoriesSuccess(response.data));
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            const message = error.message || error.response?.data;
+            const message = error.response?.data.message || error.message;
             dispatch(fetchCategoriesFailed(message));
             toast.error(message);
         }

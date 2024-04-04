@@ -15,12 +15,7 @@ import {
 } from "~/app/features/user/userReducer";
 import { pathname } from "~/configs/pathname";
 
-type SignInPayload = {
-    email: string;
-    password: string;
-};
-
-export const signInApi = async (payload: SignInPayload, dispatch: Dispatch<Action>) => {
+export const signInApi = async (payload: { email: string; password: string }, dispatch: Dispatch<Action>) => {
     try {
         dispatch(signInRequest());
         const response = await axios.post("/auth/sign-in", payload, {
@@ -31,7 +26,7 @@ export const signInApi = async (payload: SignInPayload, dispatch: Dispatch<Actio
         return true;
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            const message = error.message || error.response?.data;
+            const message = error.response?.data.message || error.message;
             dispatch(signInFailed({ message }));
             toast.error(message);
         }
@@ -39,15 +34,10 @@ export const signInApi = async (payload: SignInPayload, dispatch: Dispatch<Actio
     }
 };
 
-type SignUpPayload = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    gender: string;
-};
-
-export const signUpApi = async (payload: SignUpPayload, dispatch: Dispatch<Action>) => {
+export const signUpApi = async (
+    payload: { firstName: string; lastName: string; email: string; password: string; gender: string },
+    dispatch: Dispatch<Action>
+) => {
     try {
         dispatch(signUpRequest());
         const response = await axios.post("/auth/sign-up", payload, {
@@ -57,7 +47,7 @@ export const signUpApi = async (payload: SignUpPayload, dispatch: Dispatch<Actio
         dispatch(signUpSuccess(response.data));
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            const message = error.message || error.response?.data;
+            const message = error.response?.data.message || error.message;
             dispatch(signUpFailed({ message }));
             toast.error(message);
         }
@@ -73,7 +63,7 @@ export const signOutApi = async (axiosJWT: AxiosInstance, navigate: NavigateFunc
         navigate(pathname.home);
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            const message = error.message || error.response?.data;
+            const message = error.response?.data.message || error.message;
             dispatch(signUpFailed({ message }));
             toast.error(message);
         }
@@ -86,7 +76,7 @@ export const RefreshTokenApi = async (navigate: NavigateFunction) => {
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            toast.error(error.message || error.response?.data);
+            toast.error(error.response?.data.message || error.message);
         }
         navigate(pathname.login);
     }

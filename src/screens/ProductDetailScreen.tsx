@@ -15,16 +15,16 @@ const cx = classNames.bind(styles);
 export default function ProductDetailScreen() {
     const { product, loading } = useAppSelector((state) => state.product);
 
-    const { id: idProduct = "" } = useParams();
+    const { id: productId = "" } = useParams();
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         const fetchProduct = async () => {
-            await fetchProductDetailApi(idProduct, dispatch);
+            await fetchProductDetailApi(productId, dispatch);
         };
         fetchProduct();
-    }, [idProduct, dispatch]);
+    }, [productId, dispatch]);
 
     return (
         <div className={cx("wrapper")}>

@@ -9,6 +9,10 @@ import classNames from "classnames/bind";
 import styles from "~/styles/WriteReviewModal.module.scss";
 import { getBase64, validateRules } from "~/utils";
 import { toast } from "react-toastify";
+import { createReviewApi } from "~/api";
+import { axiosInstance } from "~/https/axiosInstance";
+import { useAppDispatch, useAppSelector } from "~/app/hooks";
+import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 type Props = {
@@ -18,17 +22,21 @@ type Props = {
     numberReviews: number;
 };
 
+const LIMIT_PHOTO = 5;
+
 function WriteReviewModal({ handleClose, show, product, numberReviews }: Props) {
-    const [rate, setRate] = useState<number>(5);
+    const { user } = useAppSelector((state) => state.persist);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const [inputs, setInputs] = useState({
+        rate: 5,
         email: "",
         title: "",
         content: "",
         file: null,
     });
     const [errMsg, setErrMsg] = useState({ email: "" });
-
     const [handledPhotos, setHandledPhotos] = useState<Array<string>>([]);
 
     const inputEmailId = useId();
@@ -36,11 +44,17 @@ function WriteReviewModal({ handleClose, show, product, numberReviews }: Props) 
     const inputContentId = useId();
     const inputFileId = useId();
 
+    const axiosJWT = axiosInstance(user, dispatch, navigate);
+
     const handleSelectRate = (rate: number) => {
-        setRate(rate);
+        setInputs({ ...inputs, rate: rate });
     };
 
     const handleSelectFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (handledPhotos.length === LIMIT_PHOTO) {
+            toast.warn(`You are just allow to upload maximum ${LIMIT_PHOTO} photos`);
+            return;
+        }
         try {
             const files = e.currentTarget.files;
 
@@ -62,7 +76,7 @@ function WriteReviewModal({ handleClose, show, product, numberReviews }: Props) 
         setHandledPhotos((prev) => prev.filter((p) => p !== photo));
     };
 
-    const handleSubmitReview = (e: FormEvent) => {
+    const handleSubmitReview = async (e: FormEvent) => {
         e.preventDefault();
         let canSubmit = true;
         if (validateRules.email(inputs.email)) {
@@ -76,7 +90,18 @@ function WriteReviewModal({ handleClose, show, product, numberReviews }: Props) 
         }
 
         if (canSubmit) {
-            toast.success("Submit your review successfully");
+            const handler = await createReviewApi(
+                {
+                    content: inputs.content,
+                    email: inputs.email,
+                    productId: product._id,
+                    rate: inputs.rate,
+                    title: inputs.title,
+                    photos: handledPhotos,
+                },
+                axiosJWT
+            );
+            if (handler) handleClose();
         }
     };
 
@@ -110,7 +135,7 @@ function WriteReviewModal({ handleClose, show, product, numberReviews }: Props) 
                                 <label>Quality</label>
                                 <div className="ms-3">
                                     <RateProduct
-                                        rating={rate}
+                                        rating={inputs.rate}
                                         justShow={false}
                                         size="large"
                                         maxStar={5}
@@ -171,6 +196,8 @@ function WriteReviewModal({ handleClose, show, product, numberReviews }: Props) 
                                     <p className="m-0 text-black">Upload Photos</p>
                                     <p className={cx("note", "m-0 text-black-50 fw-light fst-italic")}>
                                         Accept .jpg, .png and max 10MB each
+                                        <br />
+                                        Limit: 5 photos
                                     </p>
                                 </label>
                                 <input

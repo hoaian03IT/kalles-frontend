@@ -12,6 +12,8 @@ import {
     fetchDetailProductSuccess,
 } from "~/app/features/products/productReducer";
 
+const messageErrDefault = "Oops! Something went wrong";
+
 export const fetchListProductApi = async (query: string, dispatch: Dispatch<Action>) => {
     dispatch(fetchListProductRequest());
     try {
@@ -19,7 +21,7 @@ export const fetchListProductApi = async (query: string, dispatch: Dispatch<Acti
         dispatch(fetchListProductSuccess(res.data));
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            const message = error.message || error.response?.data;
+            const message = error.response?.data.message || messageErrDefault;
             dispatch(fetchListProductFailed({ message }));
             toast.error(message);
         }
@@ -27,21 +29,16 @@ export const fetchListProductApi = async (query: string, dispatch: Dispatch<Acti
     }
 };
 
-export const fetchProductDetailApi = async (idProduct: string, dispatch: Dispatch<Action>) => {
+export const fetchProductDetailApi = async (productId: string, dispatch: Dispatch<Action>) => {
     dispatch(fetchDetailProductRequest());
     try {
-        const res = await axios.get(`/product/details/${idProduct}`);
+        const res = await axios.get(`/product/details/${productId}`);
         dispatch(fetchDetailProductSuccess(res.data));
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            const message = error.message || error.response?.data;
+            const message = error.response?.data.message || messageErrDefault;
             dispatch(fetchDetailProductFailed({ message }));
             toast.error(message);
         }
     }
-};
-
-export const createReview = async () => {
-    try {
-    } catch (error) {}
 };
