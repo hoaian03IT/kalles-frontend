@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { CustomOffCanvas } from "./CustomOffCanvas";
 import { Form, FormControl, FormGroup } from "react-bootstrap";
 import classNames from "classnames/bind";
@@ -6,6 +6,9 @@ import { CiSearch } from "react-icons/ci";
 
 import styles from "~/styles/SearchSlide.module.scss";
 import { ItemProduct } from "./ItemProduct";
+import { useAppSelector } from "~/app/hooks";
+import { useDebounce } from "~/hooks";
+import axios from "axios";
 
 type Props = {
     show: boolean;
@@ -14,7 +17,7 @@ type Props = {
 
 const cx = classNames.bind(styles);
 
-const categories = ["All Categories", "Accessories", "Arts & Entertainments", "Bag"];
+// const categories = ["All Categories", "Accessories", "Arts & Entertainments", "Bag"];
 const searchItems = [
     {
         id: 0,
@@ -59,8 +62,24 @@ const searchItems = [
 ];
 
 export const SearchSlide = ({ show, onHide }: Props) => {
-    const [selectedCategory, setSelectedCategory] = useState("option1");
+    const { categories } = useAppSelector((state) => state.persist.category);
+    const [selectedCategory, setSelectedCategory] = useState("all");
     const [searchValue, setSearchValue] = useState("");
+
+    const debouncedSearch = useDebounce(searchValue, 1000);
+
+    useEffect(() => {
+        const fetchSearchProduct = async () => {
+            const res = await axios.get(
+                `/product/filter?category=${selectedCategory}&query=${debouncedSearch}&pageSize=${10}&order=featured`
+            );
+            console.log(res.data.products);
+        };
+        if (debouncedSearch) {
+            fetchSearchProduct();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedSearch]);
 
     const searchId = useId();
 
@@ -72,9 +91,10 @@ export const SearchSlide = ({ show, onHide }: Props) => {
                         className={cx("input-search", "categories-selection")}
                         value={selectedCategory}
                         onChange={(e) => setSelectedCategory(e.target.value)}>
+                        <option value="all">All</option>
                         {categories.map((category, index) => (
-                            <option key={index} value={index}>
-                                {category}
+                            <option key={index} value={category._id}>
+                                {category.name}
                             </option>
                         ))}
                     </Form.Select>
