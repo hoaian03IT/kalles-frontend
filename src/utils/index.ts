@@ -31,7 +31,6 @@ export const getTimeAgo = (date: Date) => {
         return "";
     }
     const currentTime = new Date();
-    console.log(currentTime.getMinutes() - date.getMinutes());
     if (currentTime.getDay() - date.getDay() <= 0) {
         if (currentTime.getHours() - date.getHours() <= 0) {
             if (currentTime.getMinutes() - date.getMinutes() <= 0) {
