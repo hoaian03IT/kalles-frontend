@@ -119,41 +119,48 @@
                                 object-position: center;
                             }
                         }
-                        .content {
-                            font-size: 14px;
-                        }
-                        .photos {
-                            .wrapper-photo {
-                                position: relative;
-                                width: 40px;
-                                aspect-ratio: 3 / 4;
-                                overflow: hidden;
+                        .feedback-content {
+                            .time-ago {
+                                line-height: 1;
+                                font-size: 14px;
+                                color: rgba($color: $black-color, $alpha: 0.5);
+                            }
+                            .content {
+                                font-size: 14px;
+                            }
+                            .photos {
+                                .wrapper-photo {
+                                    position: relative;
+                                    width: 40px;
+                                    aspect-ratio: 3 / 4;
+                                    overflow: hidden;
 
-                                & + .wrapper-photo {
-                                    margin-left: 4px;
-                                }
+                                    & + .wrapper-photo {
+                                        margin-left: 4px;
+                                    }
 
-                                &:hover button {
-                                    background-color: rgba($color: $black-color, $alpha: 0.1);
-                                }
+                                    &:hover button {
+                                        background-color: rgba($color: $black-color, $alpha: 0.1);
+                                    }
 
-                                img {
-                                    height: 100%;
-                                    width: 100%;
-                                    object-fit: cover;
-                                    object-position: center;
-                                }
+                                    img {
+                                        height: 100%;
+                                        width: 100%;
+                                        object-fit: cover;
+                                        object-position: center;
+                                    }
 
-                                button {
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    right: 0;
-                                    bottom: 0;
-                                    border: none;
-                                    outline: none;
-                                    background-color: transparent;
-                                    z-index: 1;
+                                    button {
+                                        position: absolute;
+                                        top: 0;
+                                        left: 0;
+                                        right: 0;
+                                        bottom: 0;
+                                        border: none;
+                                        outline: none;
+                                        background-color: transparent;
+                                        z-index: 1;
+                                    }
                                 }
                             }
                         }

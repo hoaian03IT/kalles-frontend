@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
-import { Carousel, CarouselItem, Col, OverlayTrigger, Popover, PopoverBody, Row, Tooltip } from "react-bootstrap";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { Col, OverlayTrigger, Popover, PopoverBody, Row, Tooltip } from "react-bootstrap";
+
 import { Link } from "react-router-dom";
 import styles from "~/styles/ProductDetail.module.scss";
 import { formatCurrencyVND } from "~/utils";
@@ -13,6 +13,7 @@ import { ColorProduct, SizeProduct } from "~/app/features/products/productReduce
 import { Category } from "~/app/features/category/categoryReducer";
 import { pathname } from "~/configs/pathname";
 import { RateProduct } from "../RateProduct";
+import { ImageSlider } from "../ImageSlider";
 
 const cx = classNames.bind(styles);
 
@@ -29,18 +30,6 @@ type Props = {
     rate: number;
     category: Category;
 };
-
-const PrevControl = ({ onClick }: { onClick: () => void }) => (
-    <div className={cx("control-icon")} onClick={onClick}>
-        <IoIosArrowBack className={cx("icon")} />
-    </div>
-);
-
-const NextControl = ({ onClick }: { onClick: () => void }) => (
-    <div className={cx("control-icon")} onClick={onClick}>
-        <IoIosArrowForward className={cx("icon")} />
-    </div>
-);
 
 export const ProductDetail = ({
     images,
@@ -85,6 +74,9 @@ export const ProductDetail = ({
         setSelectedImage(indexSize);
     };
 
+    const handleNextImageSlider = () => setSelectedImage((prev) => (prev === listImages.length - 1 ? 0 : prev + 1));
+    const handlePreviousImageSlider = () => setSelectedImage((prev) => (prev === 0 ? listImages.length - 1 : prev - 1));
+
     const priceAfterDiscount = discount > 0 ? price - price * discount : price;
     return (
         <div className={cx("wrapper", "w-100 h-100")}>
@@ -92,7 +84,7 @@ export const ProductDetail = ({
                 <Col>
                     <Row>
                         <Col lg={2}>
-                            {listImages.map((image, index) => (
+                            {listImages?.map((image, index) => (
                                 <img
                                     key={index}
                                     className={cx("preview-image", index === selectedImage ? "active" : "")}
@@ -105,36 +97,12 @@ export const ProductDetail = ({
                             ))}
                         </Col>
                         <Col lg={10}>
-                            <Carousel
-                                className={cx("carousel")}
-                                fade={true}
-                                prevIcon={
-                                    <PrevControl
-                                        onClick={() =>
-                                            setSelectedImage((prev) => (prev === 0 ? listImages.length - 1 : prev - 1))
-                                        }
-                                    />
-                                }
-                                nextIcon={
-                                    <NextControl
-                                        onClick={() =>
-                                            setSelectedImage((prev) => (prev === listImages.length - 1 ? 0 : prev + 1))
-                                        }
-                                    />
-                                }
-                                activeIndex={selectedImage}>
-                                {listImages.map((img, index) => (
-                                    <CarouselItem key={index}>
-                                        <img
-                                            loading="eager"
-                                            draggable={false}
-                                            className={cx("img", "w-100")}
-                                            src={img}
-                                            alt=""
-                                        />
-                                    </CarouselItem>
-                                ))}
-                            </Carousel>
+                            <ImageSlider
+                                handleNextImage={handleNextImageSlider}
+                                handlePreviousImage={handlePreviousImageSlider}
+                                images={listImages}
+                                selectedIndexImage={selectedImage}
+                            />
                         </Col>
                     </Row>
                 </Col>

@@ -28,6 +28,7 @@ export type ReviewProduct = {
     };
     rate: number | 0;
     photos: Array<string>;
+    updatedAt: string;
 };
 
 export type Product = {

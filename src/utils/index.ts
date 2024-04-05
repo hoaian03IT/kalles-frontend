@@ -25,3 +25,28 @@ export const getBase64 = (file: File) => {
         reader.onerror = (error) => reject(error);
     });
 };
+
+export const getTimeAgo = (date: Date) => {
+    if (!date) {
+        return "";
+    }
+    const currentTime = new Date();
+    console.log(currentTime.getMinutes() - date.getMinutes());
+    if (currentTime.getDay() - date.getDay() <= 0) {
+        if (currentTime.getHours() - date.getHours() <= 0) {
+            if (currentTime.getMinutes() - date.getMinutes() <= 0) {
+                if (currentTime.getSeconds() - date.getSeconds() <= 60) {
+                    return `${currentTime.getSeconds() - date.getSeconds()} seconds ago`;
+                }
+            } else {
+                return `${currentTime.getMinutes() - date.getMinutes()} minutes ago`;
+            }
+        } else {
+            return `${currentTime.getHours() - date.getHours()} hours ago`;
+        }
+    } else if (currentTime.getDay() - date.getDay() <= 2) {
+        return `${currentTime.getDay() - date.getDay()} days ago`;
+    } else {
+        return `${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`;
+    }
+};

@@ -19,31 +19,7 @@
             margin-top: 10px;
         }
     }
-    .carousel {
-        .control-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 30px;
-            width: 30px;
-            border: 1px solid $black-color;
-            border-radius: 50%;
-            background-color: transparent;
-            transition: all 0.3s;
 
-            &:hover {
-                color: $white-color;
-                background-color: $hover-blue-color;
-                border-color: $hover-blue-color;
-            }
-        }
-        .img {
-            width: 100%;
-            aspect-ratio: 3 / 4;
-            object-fit: cover;
-            object-position: center;
-        }
-    }
     .content {
         overflow-x: hidden;
         overflow-y: auto;

@@ -1,18 +1,20 @@
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { fetchReviewsApi, fetchTotalRateApi } from "~/api/review";
 import { ReviewProduct } from "~/app/features/products/productReducer";
 import { Loading } from "../Loading";
 import { WriteReviewModal } from "../WriteReviewModal";
 import { useAppSelector } from "~/app/hooks";
 import { RateProduct } from "../RateProduct";
-import { Button } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import { CheckLoggedContext } from "../CheckLogged";
 import { toast } from "react-toastify";
-import { FaStar } from "react-icons/fa";
 import { MdOutlineKeyboardDoubleArrowDown } from "react-icons/md";
+import { TableRate } from "./TableRate";
+import { ImageSlider } from "../ImageSlider";
 
 import classNames from "classnames/bind";
 import styles from "~/styles/ProductDetailScreen.module.scss";
+import { ReviewItem } from "./ReviewItem";
 const cx = classNames.bind(styles);
 
 type Sort = "newest" | "oldest";
@@ -46,8 +48,16 @@ export const DescriptionAndReview = () => {
     const [filterRate, setFilterRate] = useState<number>(-1);
     const [sort, setSort] = useState<Sort>("newest");
 
+    const [groupPhotoViewModal, setGroupPhotoViewModal] = useState<{ photos: Array<string>; current: number }>({
+        photos: [],
+        current: 0,
+    });
+
     // modal state
     const [showWriteReviewModal, setShowWriteReviewModal] = useState<boolean>(false);
+    const [showModalViewPhoto, setShowModalViewPhoto] = useState<boolean>(false);
+
+    const reviewEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const fetchTotalRate = async () => {
@@ -72,6 +82,7 @@ export const DescriptionAndReview = () => {
                     page: Number(res.page),
                     pages: Number(res.pages),
                 });
+
                 setReviews(res.reviews);
             }
         };
@@ -80,6 +91,13 @@ export const DescriptionAndReview = () => {
             fetchReviews();
         }
     }, [activeTab, nPage, product._id, sort, filterRate]);
+
+    useEffect(() => {
+        reviewEndRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "end",
+        });
+    }, [reviews.length]);
 
     const handleOpenWriteReviewModal = () => {
         if (!isLogged) {
@@ -102,7 +120,7 @@ export const DescriptionAndReview = () => {
         if (pageReview.page === pageReview.pages) {
             return;
         }
-        setNPage((prev) => prev + 1);
+        setNPage((prev) => prev + INITIAL_NPAGE);
     };
 
     const handleSelectRate = (rate: number) => {
@@ -111,9 +129,12 @@ export const DescriptionAndReview = () => {
         setNPage(INITIAL_NPAGE);
     };
 
-    useEffect(() => {
-        console.log(pageReview);
-    }, [pageReview]);
+    const handleGroupPhotoViewModal = (photos: Array<string>, current: number) => {
+        if (photos.length > 0) {
+            setGroupPhotoViewModal({ photos: photos, current: current });
+            setShowModalViewPhoto(true);
+        }
+    };
 
     return (
         <div className={cx("description-reviews", "pt-5")}>
@@ -155,7 +176,7 @@ export const DescriptionAndReview = () => {
                                         <RateProduct rating={product.rate} size="medium" />
                                     </div>
                                     <p className="fw-light">
-                                        {reviews.length + ` ${reviews.length > 1 ? "reviews" : "review"}`}
+                                        {totalRate.length + ` ${reviews.length > 1 ? "reviews" : "review"}`}
                                     </p>
                                     <Button
                                         className={cx("btn-write-review", "fw-light")}
@@ -163,53 +184,13 @@ export const DescriptionAndReview = () => {
                                         Write a review
                                     </Button>
                                 </div>
-                                <table className={cx("table-rate-percent", "mx-5")}>
-                                    <tbody>
-                                        {Array.from(Array(5).keys())
-                                            .reverse()
-                                            .map((item) => {
-                                                const quantity = totalRate.filter(
-                                                    (oneRate) => oneRate.rate === item + 1
-                                                ).length;
-                                                const percent = (quantity / totalRate.length) * 100;
-                                                return (
-                                                    <tr className={cx("rate-bar")} key={item}>
-                                                        <th className={cx("rate-name")}>
-                                                            <div className="d-flex align-items-start">
-                                                                <FaStar className={cx("ic-star", "fs-5")} />
-                                                                <span className="ms-1 fw-light text-black-50">
-                                                                    {item + 1}
-                                                                </span>
-                                                            </div>
-                                                        </th>
-                                                        <th className="w-100 px-2">
-                                                            <div
-                                                                className={cx(
-                                                                    "total-bar-default",
-                                                                    percent === 0 ? "disabled" : ""
-                                                                )}
-                                                                onClick={() => handleSelectRate(item + 1)}>
-                                                                <span
-                                                                    className={cx("percent")}
-                                                                    style={{ width: `${percent}%` }}></span>
-                                                            </div>
-                                                        </th>
-                                                        <th>
-                                                            <div
-                                                                className={cx(
-                                                                    "quantity",
-                                                                    "fw-light d-flex align-items-center justify-content-center",
-                                                                    filterRate === item + 1 ? "active" : ""
-                                                                )}
-                                                                style={{}}>
-                                                                {quantity}
-                                                            </div>
-                                                        </th>
-                                                    </tr>
-                                                );
-                                            })}
-                                    </tbody>
-                                </table>
+                                <div className="mx-5">
+                                    <TableRate
+                                        filterRate={filterRate}
+                                        handleSelectRate={handleSelectRate}
+                                        totalRate={totalRate}
+                                    />
+                                </div>
                             </div>
                             <div className={cx("review-details")}>
                                 <div
@@ -232,43 +213,13 @@ export const DescriptionAndReview = () => {
                                 </div>
                                 <div className={cx("review-list", "m-2")}>
                                     {reviews.map((review) => (
-                                        <div
+                                        <ReviewItem
                                             key={review._id}
-                                            className={cx("review-item", "p-2 d-flex align-items-start")}>
-                                            <div className={cx("wrapper-image")}>
-                                                <img
-                                                    loading="lazy"
-                                                    src={review.owner?.avatar}
-                                                    alt={review.owner?.firstName + " " + review.owner?.lastName}
-                                                />
-                                            </div>
-                                            <div className={cx("feedback-content", "ms-4")}>
-                                                <RateProduct rating={review.rate} size="small" />
-                                                <h6 className={cx("title")}>{review.title}</h6>
-                                                <div className={cx("photos", "d-flex align-items-center")}>
-                                                    {review.photos?.map(
-                                                        (photo, index) =>
-                                                            index < 3 && (
-                                                                <div className={cx("wrapper-photo")} key={index}>
-                                                                    <img
-                                                                        loading="lazy"
-                                                                        key={index}
-                                                                        src={photo}
-                                                                        alt="img"
-                                                                    />
-                                                                    <button className="text-white fw-light">
-                                                                        {index === 2 && "More"}
-                                                                    </button>
-                                                                </div>
-                                                            )
-                                                    )}
-                                                </div>
-                                                <p className={cx("content", "fw-light")}>
-                                                    {!review.title && !review.content ? "No feedback" : review.content}
-                                                </p>
-                                            </div>
-                                        </div>
+                                            handleGroupPhoto={handleGroupPhotoViewModal}
+                                            review={review}
+                                        />
                                     ))}
+                                    <div ref={reviewEndRef} />
                                 </div>
                                 {pageReview.page < pageReview.pages && (
                                     <button
@@ -295,6 +246,26 @@ export const DescriptionAndReview = () => {
                 product={product}
                 numberReviews={reviews.length}
             />
+            <Modal show={showModalViewPhoto} onHide={() => setShowModalViewPhoto(false)} centered size="lg">
+                <Modal.Body className="p-0">
+                    <ImageSlider
+                        images={groupPhotoViewModal.photos}
+                        selectedIndexImage={groupPhotoViewModal.current}
+                        handleNextImage={() => {
+                            setGroupPhotoViewModal((prev) => ({
+                                ...prev,
+                                current: prev.current < prev.photos.length - 1 ? prev.current + 1 : 0,
+                            }));
+                        }}
+                        handlePreviousImage={() =>
+                            setGroupPhotoViewModal((prev) => ({
+                                ...prev,
+                                current: prev.current > 0 ? prev.current - 1 : prev.photos.length - 1,
+                            }))
+                        }
+                    />
+                </Modal.Body>
+            </Modal>
         </div>
     );
 };
