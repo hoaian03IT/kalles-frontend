@@ -24,10 +24,8 @@
             .wrapper-image {
                 height: 50px;
                 img {
+                    @include image-3x4;
                     height: 100%;
-                    object-fit: cover;
-                    object-position: center;
-                    aspect-ratio: 3 / 4;
                 }
             }
         }

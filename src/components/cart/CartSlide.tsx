@@ -2,8 +2,8 @@ import { useId, useState } from "react";
 import { Button } from "react-bootstrap";
 import classNames from "classnames/bind";
 import { BsCartX } from "react-icons/bs";
-import { CustomOffCanvas } from "./CustomOffCanvas";
-import { ItemProduct } from "./ItemProduct";
+import { CustomOffCanvas } from "../slides/CustomOffCanvas";
+import { ItemProduct } from "./ItemCartProduct";
 
 import styles from "~/styles/CartSlide.module.scss";
 
@@ -32,7 +32,7 @@ export const CartSlide = ({ show, onHide }: Props) => {
             ) : (
                 <div className={cx("list-item")}>
                     <div className="overflow-y-auto">
-                        <ItemProduct
+                        {/* <ItemProduct
                             imageProduct="https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg"
                             nameProduct="Hat Attack Selena Bag"
                             linkDetails="/"
@@ -52,7 +52,7 @@ export const CartSlide = ({ show, onHide }: Props) => {
                             linkDetails="/"
                             quantity={2}
                             price={12000}
-                        />
+                        /> */}
                     </div>
                     <div className={cx("checkout")}>
                         <div className="d-flex align-items-center justify-content-between fs-4">

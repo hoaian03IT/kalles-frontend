@@ -5,10 +5,14 @@ import classNames from "classnames/bind";
 import { CiSearch } from "react-icons/ci";
 
 import styles from "~/styles/SearchSlide.module.scss";
-import { ItemProduct } from "./ItemProduct";
+import { ItemProduct } from "../cart/ItemCartProduct";
 import { useAppSelector } from "~/app/hooks";
 import { useDebounce } from "~/hooks";
 import axios from "axios";
+import { Product } from "~/app/features/products/productReducer";
+import { formatCurrencyVND } from "~/utils";
+import { Link } from "react-router-dom";
+import { pathname } from "~/configs/pathname";
 
 type Props = {
     show: boolean;
@@ -65,18 +69,21 @@ export const SearchSlide = ({ show, onHide }: Props) => {
     const { categories } = useAppSelector((state) => state.persist.category);
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [searchValue, setSearchValue] = useState("");
+    const [searchedProducts, setSearchedProducts] = useState<Array<Product>>([]);
 
     const debouncedSearch = useDebounce(searchValue, 1000);
 
     useEffect(() => {
-        const fetchSearchProduct = async () => {
-            const res = await axios.get(
-                `/product/filter?category=${selectedCategory}&query=${debouncedSearch}&pageSize=${10}&order=featured`
-            );
-            console.log(res.data.products);
+        const fetchSearchProduct = async (queryString: string) => {
+            const res = await axios.get(queryString);
+            setSearchedProducts(res.data.products);
         };
         if (debouncedSearch) {
-            fetchSearchProduct();
+            fetchSearchProduct(
+                `/product/filter?category=${selectedCategory}&query=${debouncedSearch}&pageSize=${10}&order=featured`
+            );
+        } else {
+            fetchSearchProduct(`/product/filter?pageSize=${10}&order=featured`);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedSearch]);
@@ -116,19 +123,56 @@ export const SearchSlide = ({ show, onHide }: Props) => {
             <div className={cx("result")}>
                 <div className={cx("label")}>Search result</div>
                 <div className={cx("result-list")}>
-                    {searchItems.map((item) => (
-                        <ItemProduct
-                            key={item.id}
-                            imageProduct={item.image}
-                            nameProduct={item.nameProduct}
-                            linkDetails={item.path}
-                            quantity={item.quantity}
-                            price={item.price}
-                        />
-                    ))}
+                    {searchedProducts.length > 0 ? (
+                        searchedProducts.map((product) => {
+                            const linkProduct = pathname.detailProduct.split(":")[0] + product._id;
+                            return (
+                                <div
+                                    key={product._id}
+                                    className={cx("item-searched-product", "p-4 d-flex align-items-center")}>
+                                    <Link to={linkProduct} className={cx("wrapper-image")}>
+                                        <img src={product.previewImages[0]} alt="" />
+                                    </Link>
+                                    <div className={cx("description", "ps-3")}>
+                                        <Link to={linkProduct} className="text-decoration-none">
+                                            <h6 className={cx("product-name", "limit-line-1")}>{product.name}</h6>
+                                        </Link>
+                                        <div>
+                                            <span
+                                                className={cx(
+                                                    "discount-price",
+                                                    product.discount > 0 ? "highlight" : "",
+                                                    "fw-light"
+                                                )}>
+                                                {formatCurrencyVND(
+                                                    product.price - (product.price * product.discount) / 100
+                                                )}
+                                            </span>
+                                            {product.discount > 0 && (
+                                                <span
+                                                    className={cx(
+                                                        "origin-price",
+
+                                                        "ms-2 fw-light text-black-50 text-decoration-line-through"
+                                                    )}>
+                                                    {formatCurrencyVND(product.price)}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <p className="fw-light m-0">Sold: {product.sold}</p>
+                                        <p className="fw-light m-0">Discount: {product.discount}%</p>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <p className="text-center">Sorry! There is no product now for "{debouncedSearch}"</p>
+                    )}
                 </div>
                 {/* {searchValue && <div className={cx("search-value-label")}>Search for "{searchValue}"</div>} */}
-                <div className={cx("search-value-label")}>Search for "{searchValue}"</div>
+                <div className={cx("search-value-label")}>
+                    {debouncedSearch ? `Search for "${searchValue}"` : "Suggested products"}
+                </div>
             </div>
         </CustomOffCanvas>
     );

@@ -1,19 +1,24 @@
-import classNames from "classnames/bind";
-import { useEffect } from "react";
-import { Container } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { fetchProductDetailApi } from "~/api";
+import { Product } from "~/app/features/products/productReducer";
 import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { BreadCrumb } from "~/components/BreadCrumb";
 import { Loading } from "~/components/Loading";
 import { DescriptionAndReview } from "~/components/productDetail/DescriptionAndReview";
 import { ProductDetail } from "~/components/productDetail/ProductDetail";
 import { pathname } from "~/configs/pathname";
+import { fetchSuggestedProductApi } from "~/api/product";
+
+import classNames from "classnames/bind";
 import styles from "~/styles/ProductDetailScreen.module.scss";
+import { CardProduct } from "~/components/CardProduct";
 const cx = classNames.bind(styles);
 
 export default function ProductDetailScreen() {
     const { product, loading } = useAppSelector((state) => state.product);
+    const [suggestedProduct, setSuggestedProduct] = useState<Array<Product>>([]);
 
     const { id: productId = "" } = useParams();
 
@@ -25,6 +30,18 @@ export default function ProductDetailScreen() {
         };
         fetchProduct();
     }, [productId, dispatch]);
+
+    useEffect(() => {
+        const fetchSuggestedProduct = async (categoryId: string) => {
+            const resData = await fetchSuggestedProductApi(categoryId);
+            setSuggestedProduct(resData.products);
+        };
+        if (product.category._id) fetchSuggestedProduct(product.category._id);
+    }, [product.category._id]);
+
+    useEffect(() => {
+        console.log(suggestedProduct);
+    }, [suggestedProduct]);
 
     return (
         <div className={cx("wrapper")}>
@@ -63,6 +80,24 @@ export default function ProductDetailScreen() {
             <div className={cx("description-reviews-part")}>
                 <Container>
                     <DescriptionAndReview />
+                </Container>
+            </div>
+            <div className={cx("suggested-products", "py-4")}>
+                <Container>
+                    <p className="text-center fs-3 mb-0">You may also like</p>
+                    <Row md={{ cols: 6 }} className="overflow-hidden flex-nowrap">
+                        {suggestedProduct?.map((product) => (
+                            <Col>
+                                <CardProduct
+                                    link={pathname.detailProduct.split(":")[0] + product._id}
+                                    nameProduct={product.name}
+                                    previewImages={product.previewImages}
+                                    price={product.price}
+                                    discount={product.discount}
+                                />
+                            </Col>
+                        ))}
+                    </Row>
                 </Container>
             </div>
         </div>

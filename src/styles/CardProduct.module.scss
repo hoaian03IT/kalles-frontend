@@ -22,9 +22,9 @@
 
     & .img {
         display: block;
-        aspect-ratio: 3 / 4;
         position: relative;
         overflow: hidden;
+        @include image-3x4;
 
         img {
             width: 100%;

@@ -13,9 +13,9 @@ type Props = {
 export const QuantityEditor = ({ handleInCrease, handleInDecrease, value }: Props) => {
     return (
         <div className={cx("quantity", "w-100")}>
-            <FaMinus className={cx("plus-icon", "cursor-pointer")} onClick={handleInDecrease} />
+            <FaMinus className={cx("minus-icon", "cursor-pointer")} onClick={handleInDecrease} />
             <span className="user-select-none">{value}</span>
-            <FaPlus className={cx("minus-icon", "cursor-pointer")} onClick={handleInCrease} />
+            <FaPlus className={cx("plus-icon", "cursor-pointer")} onClick={handleInCrease} />
         </div>
     );
 };

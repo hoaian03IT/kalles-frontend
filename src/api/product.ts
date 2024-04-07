@@ -42,3 +42,15 @@ export const fetchProductDetailApi = async (productId: string, dispatch: Dispatc
         }
     }
 };
+
+export const fetchSuggestedProductApi = async (categoryId: string) => {
+    try {
+        const res = await axios.get(`/product/suggest/${categoryId}`);
+        return res.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || messageErrDefault;
+            toast.error(message);
+        }
+    }
+};

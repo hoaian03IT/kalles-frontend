@@ -177,7 +177,7 @@ export const ProductDetail = ({
                                     />
                                 </Col>
                                 <Col md={8}>
-                                    <Row>
+                                    <Row className="g-2">
                                         <Col xs={8}>
                                             <button className={cx("btn-buy", "w-100")}>
                                                 {stock === 0 ? "Out of stock" : "Add to cart"}

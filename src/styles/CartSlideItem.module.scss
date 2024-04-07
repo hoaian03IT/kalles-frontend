@@ -1,11 +1,15 @@
 @use "variables" as *;
+
 .wrapper {
     padding: 1.5rem;
     display: flex;
     align-items: center;
     &-image {
-        max-height: 150px;
         max-width: 120px;
+        img {
+            width: 100%;
+            @include image-3x4;
+        }
     }
     .name-product {
         white-space: nowrap;

@@ -27,3 +27,10 @@ $offcanvas-header-height: 65px;
 $margin-horizontal-header: 15px;
 
 $font-family: "Kanit", sans-serif;
+
+// mixins
+@mixin image-3x4 {
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: center;
+}

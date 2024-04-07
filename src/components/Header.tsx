@@ -5,7 +5,7 @@ import classNames from "classnames/bind";
 import { CiHeart, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import { BsList } from "react-icons/bs";
 import { LoginSlide } from "./slides/LoginSlide";
-import { CartSlide } from "./slides/CartSlide";
+import { CartSlide } from "./cart/CartSlide";
 import { SearchSlide } from "./slides/SearchSlide";
 import { MenuSlideMobile } from "./slides/MenuSlideMobile";
 import { navbar } from "~/data";

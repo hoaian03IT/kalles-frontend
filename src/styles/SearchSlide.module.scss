@@ -39,6 +39,7 @@ $height-label-search: 50px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    min-height: $height-search-group;
     max-height: calc(100% - $height-search-group - $offcanvas-header-height);
     overflow: hidden;
     .label,
@@ -56,5 +57,35 @@ $height-label-search: 50px;
     .result-list {
         height: calc(100% - $height-label-search - $height-label-search);
         overflow-y: auto;
+
+        .item-searched-product {
+            & + .item-searched-product {
+                border-top: 1px solid rgba($color: $black-color, $alpha: 0.1);
+            }
+            .wrapper-image {
+                width: 80px;
+                img {
+                    width: 100%;
+                    @include image-3x4;
+                }
+            }
+            .description {
+                .product-name {
+                    color: $black-color;
+
+                    &:hover {
+                        color: $hover-blue-color;
+                    }
+                }
+                .discount-price {
+                    &.highlight {
+                        color: $red-color;
+                    }
+                }
+                .origin-price {
+                    font-size: 14px;
+                }
+            }
+        }
     }
 }
