@@ -24,4 +24,9 @@
     & + .wrapper {
         border-top: 1px solid $black-color-20;
     }
+    .btn-delete {
+        border: none;
+        outline: none;
+        background-color: transparent;
+    }
 }

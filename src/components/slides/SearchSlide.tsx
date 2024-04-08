@@ -5,7 +5,7 @@ import classNames from "classnames/bind";
 import { CiSearch } from "react-icons/ci";
 
 import styles from "~/styles/SearchSlide.module.scss";
-import { ItemProduct } from "../cart/ItemCartProduct";
+import { ItemCardProduct } from "../cart/ItemCartProduct";
 import { useAppSelector } from "~/app/hooks";
 import { useDebounce } from "~/hooks";
 import axios from "axios";

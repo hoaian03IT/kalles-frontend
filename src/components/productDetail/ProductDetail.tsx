@@ -9,47 +9,34 @@ import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { SocialNetworks } from "../SocialNetWorks";
 import listSafeCheckout from "~/assets/images/list-safe-checkout.png";
-import { ColorProduct, SizeProduct } from "~/app/features/products/productReducer";
-import { Category } from "~/app/features/category/categoryReducer";
+import { ColorProduct, Product, SizeProduct } from "~/app/features/products/productReducer";
 import { pathname } from "~/configs/pathname";
 import { RateProduct } from "../RateProduct";
 import { ImageSlider } from "../ImageSlider";
+import { useAppDispatch } from "~/app/hooks";
+import {
+    addProductToCartFailed,
+    addProductToCartRequest,
+    addProductToCartSuccess,
+} from "~/app/features/cart/cartReducer";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
 type Props = {
-    images: string[];
-    nameProduct: string;
-    price: number;
-    discount: number;
-    description: string;
-    stock: number;
-    colors: Array<ColorProduct>;
-    sold: number;
-    sex: string;
-    rate: number;
-    category: Category;
+    product: Product;
+    preview?: boolean;
 };
 
-export const ProductDetail = ({
-    images,
-    nameProduct,
-    price,
-    description,
-    discount,
-    stock,
-    category,
-    colors,
-    sex,
-    sold,
-    rate,
-}: Props) => {
+export const ProductDetail = ({ product, preview = false }: Props) => {
     const [quantityBuy, setQuantityBuy] = useState<number>(1);
     const [isWhitelist, setIsWhitelist] = useState<boolean>(false);
-    const [selectedColor, setSelectedColor] = useState<ColorProduct>(colors[0]);
+    const [selectedColor, setSelectedColor] = useState<ColorProduct>(product.colors[0]);
     const [selectedSize, setSelectedSize] = useState<SizeProduct>(selectedColor?.sizes[0]);
     const [selectedImage, setSelectedImage] = useState<number>(0);
     const [listImages, setListImages] = useState<Array<string>>([]);
+
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const images = selectedColor?.sizes.map((size) => size.image);
@@ -77,68 +64,97 @@ export const ProductDetail = ({
     const handleNextImageSlider = () => setSelectedImage((prev) => (prev === listImages.length - 1 ? 0 : prev + 1));
     const handlePreviousImageSlider = () => setSelectedImage((prev) => (prev === 0 ? listImages.length - 1 : prev - 1));
 
-    const priceAfterDiscount = discount > 0 ? price - price * discount : price;
+    const handleAddToCard = () => {
+        try {
+            dispatch(addProductToCartRequest());
+            dispatch(
+                addProductToCartSuccess({
+                    product: { ...product, colors: [{ ...selectedColor, sizes: [selectedSize] }] },
+                    quantity: quantityBuy,
+                })
+            );
+            toast.success("Add to cart successfully");
+        } catch (error) {
+            dispatch(addProductToCartFailed({ message: "Oops! Something went wrong!" }));
+        }
+    };
+
+    const priceAfterDiscount =
+        product.discount > 0 ? product.price - (product.price * product.discount) / 100 : product.price;
     return (
         <div className={cx("wrapper", "w-100 h-100")}>
             <Row xs={{ cols: 1 }} md={{ cols: 2 }}>
-                <Col>
-                    <Row>
-                        <Col lg={2}>
-                            {listImages?.map((image, index) => (
-                                <img
-                                    key={index}
-                                    className={cx("preview-image", index === selectedImage ? "active" : "")}
-                                    src={image}
-                                    alt=""
-                                    draggable={false}
-                                    loading="lazy"
-                                    onClick={() => setSelectedImage(index)}
-                                />
-                            ))}
-                        </Col>
-                        <Col lg={10}>
+                <Col className={preview ? "d-flex align-items-center" : ""}>
+                    {preview ? (
+                        <div className="w-100">
                             <ImageSlider
                                 handleNextImage={handleNextImageSlider}
                                 handlePreviousImage={handlePreviousImageSlider}
                                 images={listImages}
                                 selectedIndexImage={selectedImage}
                             />
-                        </Col>
-                    </Row>
+                        </div>
+                    ) : (
+                        <Row>
+                            <Col lg={2}>
+                                {listImages?.map((image, index) => (
+                                    <img
+                                        key={index}
+                                        className={cx("preview-image", index === selectedImage ? "active" : "")}
+                                        src={image}
+                                        alt=""
+                                        draggable={false}
+                                        loading="lazy"
+                                        onClick={() => setSelectedImage(index)}
+                                    />
+                                ))}
+                            </Col>
+                            <Col lg={10}>
+                                <ImageSlider
+                                    handleNextImage={handleNextImageSlider}
+                                    handlePreviousImage={handlePreviousImageSlider}
+                                    images={listImages}
+                                    selectedIndexImage={selectedImage}
+                                />
+                            </Col>
+                        </Row>
+                    )}
                 </Col>
                 <Col>
                     <div className={cx("content", "px-4")}>
                         <Row>
                             <Col>
-                                <h6 className={cx("name-product")}>{nameProduct}</h6>
+                                <h6 className={cx("name-product")}>{product.name}</h6>
                                 <div className={cx("price")}>
                                     <span className={cx("current-price")}>{formatCurrencyVND(priceAfterDiscount)}</span>
-                                    {discount > 0 && (
+                                    {product.discount > 0 && (
                                         <span
                                             className={cx(
                                                 "origin-price",
                                                 "ms-2 text-danger text-decoration-line-through"
                                             )}>
-                                            {formatCurrencyVND(price)}
+                                            {formatCurrencyVND(product.price)}
                                         </span>
                                     )}
                                 </div>
                             </Col>
-                            <Col>
-                                <div className={cx("rating", "d-flex align-items-center justify-content-end")}>
-                                    <span className="fw-light">Sold: {sold}</span>
-                                    <span className="ms-4 d-flex align-items-center">
-                                        <RateProduct rating={rate} />
-                                        <span className="ms-1 fw-light">({rate})</span>
-                                    </span>
-                                </div>
-                            </Col>
+                            {!preview && (
+                                <Col>
+                                    <div className={cx("rating", "d-flex align-items-center justify-content-end")}>
+                                        <span className="fw-light">Sold: {product.sold}</span>
+                                        <span className="ms-4 d-flex align-items-center">
+                                            <RateProduct rating={product.rate} />
+                                            <span className="ms-1 fw-light">({product.rate})</span>
+                                        </span>
+                                    </div>
+                                </Col>
+                            )}
                         </Row>
-                        <p className={cx("description", "text-black-50 mt-4 limit-line-4")}>{description}</p>
+                        <p className={cx("description", "text-black-50 mt-4 limit-line-4")}>{product.description}</p>
                         <div className={cx("color-product")}>
                             <h6 className={cx("label", "fw-normal text-uppercase")}>Color: {selectedColor?.name}</h6>
                             <div className={cx("colors")}>
-                                {colors.map((color) => (
+                                {product.colors.map((color) => (
                                     <OverlayTrigger
                                         key={color._id}
                                         overlay={
@@ -179,8 +195,8 @@ export const ProductDetail = ({
                                 <Col md={8}>
                                     <Row className="g-2">
                                         <Col xs={8}>
-                                            <button className={cx("btn-buy", "w-100")}>
-                                                {stock === 0 ? "Out of stock" : "Add to cart"}
+                                            <button className={cx("btn-buy", "w-100")} onClick={handleAddToCard}>
+                                                {product.stock === 0 ? "Out of stock" : "Add to cart"}
                                             </button>
                                         </Col>
                                         <Col xs={4}>
@@ -206,17 +222,18 @@ export const ProductDetail = ({
                                 <div>
                                     <div className="fw-light">
                                         <span className="text-black-50">Availability:&nbsp;</span>
-                                        <span>{stock > 0 ? `In Stock (${stock})` : "Out Stock"}</span>
+                                        <span>{product.stock > 0 ? `In Stock (${product.stock})` : "Out Stock"}</span>
                                     </div>
                                     <div className="fw-light">
                                         <span className="text-black-50">Categories:&nbsp;</span>
                                         <span>
-                                            <Link to={pathname.product + `?category=${category._id}`}>
-                                                {category.name}
+                                            <Link to={pathname.product + `?category=${product.category._id}`}>
+                                                {product.category.name}
                                             </Link>
                                             ,&nbsp;
-                                            <Link to={pathname.product + `?category=${category._id}`}>
-                                                {sex[0]?.toUpperCase() + sex.slice(1, sex.length)}
+                                            <Link to={pathname.product + `?category=${product.category._id}`}>
+                                                {product.sex[0]?.toUpperCase() +
+                                                    product.sex.slice(1, product.sex.length)}
                                             </Link>
                                         </span>
                                     </div>

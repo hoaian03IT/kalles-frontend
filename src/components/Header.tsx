@@ -31,7 +31,7 @@ export const Header = ({ type }: Props) => {
     const [showMenuSlide, setShowMenuSlide] = useState(false);
 
     const { isLogged, handleLogout } = useContext(CheckLoggedContext);
-    const { user } = useAppSelector((state) => state.persist);
+    const { user, cart } = useAppSelector((state) => state.persist);
 
     const headerRef = useRef(null);
 
@@ -84,7 +84,7 @@ export const Header = ({ type }: Props) => {
                     </div>
                     <div className={cx("item-group", "mobile")}>
                         <CiShoppingCart className={cx("item")} onClick={() => setShowCartSlide(true)} />
-                        <span className={cx("bard")}>{"9+"}</span>
+                        <span className={cx("bard")}>{cart.items.length > 9 ? "9+" : cart.items.length}</span>
                     </div>
                     {isLogged ? (
                         <OverlayTrigger

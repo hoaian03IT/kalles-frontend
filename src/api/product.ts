@@ -29,15 +29,16 @@ export const fetchListProductApi = async (query: string, dispatch: Dispatch<Acti
     }
 };
 
-export const fetchProductDetailApi = async (productId: string, dispatch: Dispatch<Action>) => {
-    dispatch(fetchDetailProductRequest());
+export const fetchProductDetailApi = async (productId: string, dispatch?: Dispatch<Action> | null) => {
+    dispatch && dispatch(fetchDetailProductRequest());
     try {
         const res = await axios.get(`/product/details/${productId}`);
-        dispatch(fetchDetailProductSuccess(res.data));
+        dispatch && dispatch(fetchDetailProductSuccess(res.data));
+        return res.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
             const message = error.response?.data.message || messageErrDefault;
-            dispatch(fetchDetailProductFailed({ message }));
+            dispatch && dispatch(fetchDetailProductFailed({ message }));
             toast.error(message);
         }
     }

@@ -213,6 +213,7 @@ export default function ProductScreen() {
                                 {products.map((product) => (
                                     <Col key={product._id}>
                                         <CardProduct
+                                            productId={product._id}
                                             nameProduct={product.name}
                                             previewImages={product.previewImages}
                                             price={product.price}

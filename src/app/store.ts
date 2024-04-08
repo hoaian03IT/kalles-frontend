@@ -5,6 +5,7 @@ import userReducer from "./features/user/userReducer";
 import categoryReducer from "./features/category/categoryReducer";
 import listProductReducer from "./features/products/productListReducer";
 import productReducer from "./features/products/productReducer";
+import cartReducer from "./features/cart/cartReducer";
 
 const persistConfig = {
     key: "root",
@@ -12,7 +13,7 @@ const persistConfig = {
     storage,
 };
 
-const reducerNeededCombine = { category: categoryReducer, user: userReducer };
+const reducerNeededCombine = { category: categoryReducer, user: userReducer, cart: cartReducer };
 
 const persistedReducer = persistCombineReducers(persistConfig, reducerNeededCombine);
 

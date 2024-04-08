@@ -31,7 +31,7 @@ export const getTimeAgo = (date: Date) => {
         return "";
     }
     const currentTime = new Date();
-    if (currentTime.getDay() - date.getDay() <= 0) {
+    if (currentTime.getDate() - date.getDate() <= 0) {
         if (currentTime.getHours() - date.getHours() <= 0) {
             if (currentTime.getMinutes() - date.getMinutes() <= 0) {
                 if (currentTime.getSeconds() - date.getSeconds() <= 60) {
@@ -43,9 +43,9 @@ export const getTimeAgo = (date: Date) => {
         } else {
             return `${currentTime.getHours() - date.getHours()} hours ago`;
         }
-    } else if (currentTime.getDay() - date.getDay() <= 2) {
-        return `${currentTime.getDay() - date.getDay()} days ago`;
+    } else if (currentTime.getDate() - date.getDate() <= 2) {
+        return `${currentTime.getDate() - date.getDate()} days ago`;
     } else {
-        return `${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`;
+        return `${date.getMonth() + 1}/${date.getDay()}/${date.getFullYear()}`;
     }
 };

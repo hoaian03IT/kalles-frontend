@@ -1,15 +1,14 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Button } from "react-bootstrap";
 import classNames from "classnames/bind";
 import { BsCartX } from "react-icons/bs";
 import { CustomOffCanvas } from "../slides/CustomOffCanvas";
-import { ItemProduct } from "./ItemCartProduct";
+import { ItemCardProduct } from "./ItemCartProduct";
 
 import styles from "~/styles/CartSlide.module.scss";
+import { useAppSelector } from "~/app/hooks";
 
 const cx = classNames.bind(styles);
-
-const totalPrice = 5000000;
 
 type Props = {
     show: boolean;
@@ -17,10 +16,22 @@ type Props = {
 };
 
 export const CartSlide = ({ show, onHide }: Props) => {
+    const { items } = useAppSelector((state) => state.persist.cart);
+
+    const [totalPrice, setTotalPrice] = useState(0);
     const [isEmpty] = useState(false);
     const [checkedTerms, setCheckedTerms] = useState(false);
 
     const checkboxId = useId();
+
+    useEffect(() => {
+        const total = items.reduce((acc, cur) => {
+            const discountPrice = cur.product.price - (cur.product.price * cur.product.discount) / 100;
+            return acc + discountPrice;
+        }, 0);
+        setTotalPrice(total);
+    }, [items]);
+
     return (
         <CustomOffCanvas titleHeader="shopping cart" show={show} onHide={onHide} placement="end">
             {isEmpty ? (
@@ -32,27 +43,9 @@ export const CartSlide = ({ show, onHide }: Props) => {
             ) : (
                 <div className={cx("list-item")}>
                     <div className="overflow-y-auto">
-                        {/* <ItemProduct
-                            imageProduct="https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg"
-                            nameProduct="Hat Attack Selena Bag"
-                            linkDetails="/"
-                            quantity={2}
-                            price={12000}
-                        />
-                        <ItemProduct
-                            imageProduct="https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg"
-                            nameProduct="Hat Attack Selena Bag"
-                            linkDetails="/"
-                            quantity={2}
-                            price={12000}
-                        />
-                        <ItemProduct
-                            imageProduct="https://cdn.shopify.com/s/files/1/0641/8690/8910/products/hatta3044814a9b_1637360792172_2-0._QL90_1703d3a7-3b28-4599-b389-84e123169139.jpg"
-                            nameProduct="Hat Attack Selena Bag"
-                            linkDetails="/"
-                            quantity={2}
-                            price={12000}
-                        /> */}
+                        {items?.map((item, index) => (
+                            <ItemCardProduct key={index} product={item.product} quantity={item.quantity} />
+                        ))}
                     </div>
                     <div className={cx("checkout")}>
                         <div className="d-flex align-items-center justify-content-between fs-4">
@@ -74,7 +67,7 @@ export const CartSlide = ({ show, onHide }: Props) => {
                         </div>
                         <div className="my-4">
                             <Button variant="secondary" className="w-100 text-uppercase btn-round-border">
-                                check out
+                                view cart
                             </Button>
                         </div>
                         <div className="my-4">
@@ -82,7 +75,7 @@ export const CartSlide = ({ show, onHide }: Props) => {
                                 variant="primary"
                                 disabled={checkedTerms ? false : true}
                                 className="w-100 text-uppercase btn-round-border">
-                                view cart
+                                check out
                             </Button>
                         </div>
                     </div>

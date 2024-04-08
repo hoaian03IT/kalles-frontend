@@ -39,10 +39,6 @@ export default function ProductDetailScreen() {
         if (product.category._id) fetchSuggestedProduct(product.category._id);
     }, [product.category._id]);
 
-    useEffect(() => {
-        console.log(suggestedProduct);
-    }, [suggestedProduct]);
-
     return (
         <div className={cx("wrapper")}>
             <BreadCrumb
@@ -57,25 +53,7 @@ export default function ProductDetailScreen() {
                 ]}
             />
             <div className="py-5">
-                <Container>
-                    {loading ? (
-                        <Loading />
-                    ) : (
-                        <ProductDetail
-                            description={product.description}
-                            discount={product.discount}
-                            images={product.previewImages}
-                            nameProduct={product.name}
-                            price={product.price}
-                            stock={product.stock}
-                            category={product.category}
-                            colors={product.colors}
-                            sex={product.sex}
-                            sold={product.sold}
-                            rate={product.rate}
-                        />
-                    )}
-                </Container>
+                <Container>{loading ? <Loading /> : <ProductDetail product={product} />}</Container>
             </div>
             <div className={cx("description-reviews-part")}>
                 <Container>
@@ -87,8 +65,9 @@ export default function ProductDetailScreen() {
                     <p className="text-center fs-3 mb-0">You may also like</p>
                     <Row md={{ cols: 6 }} className="overflow-hidden flex-nowrap">
                         {suggestedProduct?.map((product) => (
-                            <Col>
+                            <Col key={product._id}>
                                 <CardProduct
+                                    productId={product._id}
                                     link={pathname.detailProduct.split(":")[0] + product._id}
                                     nameProduct={product.name}
                                     previewImages={product.previewImages}
