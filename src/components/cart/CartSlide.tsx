@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from "react";
+import { ReactElement, useEffect, useId, useState } from "react";
 import { Button } from "react-bootstrap";
 import classNames from "classnames/bind";
 import { BsCartX } from "react-icons/bs";
@@ -7,6 +7,9 @@ import { ItemCardProduct } from "./ItemCartProduct";
 
 import styles from "~/styles/CartSlide.module.scss";
 import { useAppSelector } from "~/app/hooks";
+import { useNavigate } from "react-router-dom";
+import { pathname } from "~/configs/pathname";
+import { formatCurrencyVND } from "~/utils";
 
 const cx = classNames.bind(styles);
 
@@ -16,21 +19,13 @@ type Props = {
 };
 
 export const CartSlide = ({ show, onHide }: Props) => {
-    const { items } = useAppSelector((state) => state.persist.cart);
+    const { items, total, discountAmount } = useAppSelector((state) => state.persist.cart);
 
-    const [totalPrice, setTotalPrice] = useState(0);
     const [isEmpty] = useState(false);
     const [checkedTerms, setCheckedTerms] = useState(false);
 
     const checkboxId = useId();
-
-    useEffect(() => {
-        const total = items.reduce((acc, cur) => {
-            const discountPrice = cur.product.price - (cur.product.price * cur.product.discount) / 100;
-            return acc + discountPrice;
-        }, 0);
-        setTotalPrice(total);
-    }, [items]);
+    const navigate = useNavigate();
 
     return (
         <CustomOffCanvas titleHeader="shopping cart" show={show} onHide={onHide} placement="end">
@@ -50,7 +45,7 @@ export const CartSlide = ({ show, onHide }: Props) => {
                     <div className={cx("checkout")}>
                         <div className="d-flex align-items-center justify-content-between fs-4">
                             <span>Subtotal:</span>
-                            <span>{totalPrice.toLocaleString("it-IT", { style: "currency", currency: "VND" })}</span>
+                            <span>{formatCurrencyVND(total - discountAmount)}</span>
                         </div>
                         <p className="my-2 fw-light text-black-50">Taxes shipping calculated at checkout</p>
                         <div className="d-flex align-items-center">
@@ -66,7 +61,13 @@ export const CartSlide = ({ show, onHide }: Props) => {
                             </label>
                         </div>
                         <div className="my-4">
-                            <Button variant="secondary" className="w-100 text-uppercase btn-round-border">
+                            <Button
+                                variant="secondary"
+                                className="w-100 text-uppercase btn-round-border"
+                                onClick={() => {
+                                    navigate(pathname.cart);
+                                    onHide();
+                                }}>
                                 view cart
                             </Button>
                         </div>

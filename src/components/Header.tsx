@@ -10,12 +10,11 @@ import { SearchSlide } from "./slides/SearchSlide";
 import { MenuSlideMobile } from "./slides/MenuSlideMobile";
 import { navbar } from "~/data";
 
-import logoImage from "~/assets/images/text-logo.png";
-
 import styles from "~/styles/Header.module.scss";
 import { CheckLoggedContext } from "./CheckLogged";
 import { pathname } from "~/configs/pathname";
 import { useAppSelector } from "~/app/hooks";
+import { textLogo } from "~/assets/images/logo";
 
 const cx = classNames.bind(styles);
 
@@ -71,7 +70,7 @@ export const Header = ({ type }: Props) => {
                 </Col>
                 <Col className="text-center">
                     <Link to="/">
-                        <img src={logoImage} alt="kalles" />
+                        <img src={textLogo} alt="kalles" />
                     </Link>
                 </Col>
                 <Col className={cx("interact")}>

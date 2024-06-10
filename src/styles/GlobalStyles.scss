@@ -148,3 +148,15 @@ input[type="checkbox"] {
         -webkit-box-orient: vertical;
     }
 }
+
+// custom progress bar
+::-webkit-scrollbar {
+    appearance: none;
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba($color: $black-color, $alpha: 0.2);
+    border-radius: 4px;
+}

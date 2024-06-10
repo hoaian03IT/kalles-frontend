@@ -13,4 +13,5 @@ export const pathname = {
     address: function () {
         return this.me + "/address";
     },
+    cart: "/your-cart",
 };

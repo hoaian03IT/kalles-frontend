@@ -3,7 +3,6 @@ import { IoMdClose } from "react-icons/io";
 import { Product } from "~/app/features/products/productReducer";
 import { RateProduct } from "./RateProduct";
 import { FormEvent, useId, useState } from "react";
-import cameraPlaceholder from "~/assets/images/camera-placeholder.png";
 
 import classNames from "classnames/bind";
 import styles from "~/styles/WriteReviewModal.module.scss";
@@ -13,6 +12,7 @@ import { createReviewApi } from "~/api";
 import { axiosInstance } from "~/https/axiosInstance";
 import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { useNavigate } from "react-router-dom";
+import { cameraPlaceholder } from "~/assets/images/placeholder";
 const cx = classNames.bind(styles);
 
 type Props = {

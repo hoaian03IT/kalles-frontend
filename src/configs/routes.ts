@@ -8,6 +8,7 @@ const RegisterScreen = lazy(() => import("~/screens/RegisterScreen"));
 const ShopScreen = lazy(() => import("~/screens/ShopScreen"));
 const ProductScreen = lazy(() => import("~/screens/ProductScreen"));
 const ProductDetailScreen = lazy(() => import("~/screens/ProductDetailScreen"));
+const CartScreen = lazy(() => import("~/screens/CartScreen"));
 
 export const publicRoutes = [
     { path: pathname.home, component: HomeScreen, layout: PrimaryLayout },
@@ -16,6 +17,7 @@ export const publicRoutes = [
     { path: pathname.shop, component: ShopScreen, layout: SecondaryLayout },
     { path: pathname.product, component: ProductScreen, layout: SecondaryLayout },
     { path: pathname.detailProduct, component: ProductDetailScreen, layout: SecondaryLayout },
+    { path: pathname.cart, component: CartScreen, layout: SecondaryLayout },
 ];
 
 export const privateRoutes = [];

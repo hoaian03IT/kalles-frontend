@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import { MdOutlineFilterList } from "react-icons/md";
 import { TfiLayoutColumn2Alt, TfiLayoutColumn3Alt, TfiLayoutColumn4Alt } from "react-icons/tfi";
-import classNames from "classnames/bind";
 import { HeaderBanner } from "~/components/HeaderBanner";
 import { CardProduct } from "~/components/CardProduct";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -11,11 +10,13 @@ import { SortProductModal } from "~/components/SortProductModal";
 import { fetchListProductApi } from "~/api";
 import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { pathname } from "~/configs/pathname";
-
-import styles from "~/styles/ProductScreen.module.scss";
+import { bgBanner1 } from "~/assets/images/background-banner";
 import { FilterProduct } from "~/components/FilterProduct";
 import { Loading } from "~/components/Loading";
 import { Pagination, PaginationItem, PaginationNext, PaginationPrevious } from "~/components/pagination";
+
+import classNames from "classnames/bind";
+import styles from "~/styles/ProductScreen.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -153,10 +154,7 @@ export default function ProductScreen() {
                         </Link>
                     ))}
                 </div>
-                <HeaderBanner
-                    img="https://demo-kalles-4-3.myshopify.com/cdn/shop/files/shop-banner_1296x_01f220ac-becc-43e3-b2cc-9f6d90b92a94.jpg"
-                    title="product"
-                />
+                <HeaderBanner img={bgBanner1} title="product" />
                 <Container className="my-4">
                     <div className={cx("actions")}>
                         <Row xs={{ cols: 3 }}>

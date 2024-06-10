@@ -8,7 +8,7 @@ import { QuantityEditor } from "../QuantityEditor";
 import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { SocialNetworks } from "../SocialNetWorks";
-import listSafeCheckout from "~/assets/images/list-safe-checkout.png";
+
 import { ColorProduct, Product, SizeProduct } from "~/app/features/products/productReducer";
 import { pathname } from "~/configs/pathname";
 import { RateProduct } from "../RateProduct";
@@ -20,6 +20,7 @@ import {
     addProductToCartSuccess,
 } from "~/app/features/cart/cartReducer";
 import { toast } from "react-toastify";
+import { checkoutBrands } from "~/assets/images/brands";
 
 const cx = classNames.bind(styles);
 
@@ -217,7 +218,7 @@ export const ProductDetail = ({ product, preview = false }: Props) => {
                                 </Col>
                                 <div className={cx("guaranteed-checkout")}>
                                     <p className="text-uppercase text-black fs-5">guaranteed safe checkout</p>
-                                    <img className="w-100" src={listSafeCheckout} alt="safe checkout" />
+                                    <img className="w-100" src={checkoutBrands} alt="safe checkout" />
                                 </div>
                                 <div>
                                     <div className="fw-light">

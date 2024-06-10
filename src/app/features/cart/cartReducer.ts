@@ -9,15 +9,32 @@ export type CartItem = {
 
 type CartState = {
     items: Array<CartItem>;
+    total: number;
+    discountAmount: number;
     loading: boolean;
     error: string;
 };
 
 const initialState: CartState = {
     items: [],
+    total: 0,
+    discountAmount: 0,
     loading: false,
     error: "",
 };
+
+function calculateTotalAndDiscount(cartItems: Array<CartItem>): Array<number> {
+    let total = 0,
+        discountAmount = 0;
+
+    cartItems.forEach((cartItem: CartItem) => {
+        const product = cartItem.product;
+        const quantity = cartItem.quantity;
+        discountAmount += ((product.price * product.discount) / 100) * quantity;
+        total += product.price * quantity;
+    });
+    return [total, discountAmount];
+}
 
 export const cartSlice = createSlice({
     name: "cart",
@@ -28,7 +45,6 @@ export const cartSlice = createSlice({
             state.error = "";
         },
         addProductToCartSuccess: (state, action: PayloadAction<CartItem>) => {
-            state.loading = false;
             const { product, quantity } = action.payload;
             const oldProduct = state.items.find(
                 (item) =>
@@ -41,7 +57,11 @@ export const cartSlice = createSlice({
                     product,
                     quantity,
                 });
+                const [total, discountAmount] = calculateTotalAndDiscount(state.items);
+                state.total = total;
+                state.discountAmount = discountAmount;
             }
+            state.loading = false;
         },
         addProductToCartFailed: (state, action: PayloadAction<Error>) => {
             state.loading = false;
@@ -66,6 +86,9 @@ export const cartSlice = createSlice({
                 }
                 return item;
             });
+            const [total, discountAmount] = calculateTotalAndDiscount(state.items);
+            state.total = total;
+            state.discountAmount = discountAmount;
         },
         uploadQuantityProductFromCartFailed: (state, action: PayloadAction<Error>) => {
             state.loading = false;
@@ -83,6 +106,9 @@ export const cartSlice = createSlice({
                     item.product.colors[0]._id !== action.payload.product.colors[0]._id ||
                     item.product.colors[0].sizes[0]._id !== action.payload.product.colors[0].sizes[0]._id
             );
+            const [total, discountAmount] = calculateTotalAndDiscount(state.items);
+            state.total = total;
+            state.discountAmount = discountAmount;
         },
         removeProductFromCartFailed: (state, action: PayloadAction<Error>) => {
             state.loading = false;
