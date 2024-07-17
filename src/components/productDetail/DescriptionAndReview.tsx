@@ -171,9 +171,9 @@ export const DescriptionAndReview = () => {
                         <div>
                             <div className={cx("reviews-summary", "d-flex")}>
                                 <div className="text-center">
-                                    <h1 className={cx("rate", "fw-semibold")}>{product.rate}</h1>
+                                    <h1 className={cx("rate", "fw-semibold")}>{product.avgRate}</h1>
                                     <div className="d-flex justify-content-center">
-                                        <RateProduct rating={product.rate} size="medium" />
+                                        <RateProduct rating={product.avgRate} size="medium" />
                                     </div>
                                     <p className="fw-light">
                                         {totalRate.length + ` ${reviews.length > 1 ? "reviews" : "review"}`}

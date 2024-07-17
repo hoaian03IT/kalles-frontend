@@ -155,7 +155,7 @@ export const SearchSlide = ({ show, onHide }: Props) => {
                                                 </span>
                                             )}
                                         </div>
-                                        <p className="fw-light m-0">Sold: {product.sold}</p>
+                                        <p className="fw-light m-0">Sold: {product.totalSold}</p>
                                         <p className="fw-light m-0">Discount: {product.discount}%</p>
                                     </div>
                                 </div>

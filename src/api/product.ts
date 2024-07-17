@@ -67,10 +67,12 @@ export const fetchSuggestedProductApi = async (categoryId: string) => {
     }
 };
 
-export const fetchQuantityProductByColorSize = async (productId: string, sizeId: string, colorId: string) => {
+export const fetchQuantityAndSoldProductByColorSize = async (productId: string, sizeId: string, colorId: string) => {
     try {
-        const res = await axios.get(`/product/quantity?product-id=${productId}&size-id=${sizeId}&color-id=${colorId}`);
-        return res.data as { quantity: number };
+        const res = await axios.get(
+            `/product/quantity-sold?product-id=${productId}&size-id=${sizeId}&color-id=${colorId}`
+        );
+        return res.data as { quantity: number; sold: number };
     } catch (error) {
         if (axios.isAxiosError(error)) {
             const message = error.response?.data.message || messageErrDefault;

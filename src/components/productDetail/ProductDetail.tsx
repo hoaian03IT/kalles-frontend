@@ -22,7 +22,7 @@ import { VerticalImageList } from "./VerticalImageList";
 import { toast } from "react-toastify";
 import { checkoutBrands } from "~/assets/images/brands";
 import { ColorProduct, Product, SizeProduct } from "~/types";
-import { fetchQuantityProductByColorSize } from "~/api/product";
+import { fetchQuantityAndSoldProductByColorSize } from "~/api/product";
 
 const cx = classNames.bind(styles);
 
@@ -32,14 +32,20 @@ export const ProductDetail = ({ preview, product }: { preview?: boolean; product
     const [quantityBuy, setQuantityBuy] = useState<number>(1);
     const [isWhitelist, setIsWhitelist] = useState<boolean>(false);
     const [selectedSize, setSelectedSize] = useState<SizeProduct>(product.sizes[0]);
-    const [quantity, setQuantity] = useState<number>(0);
+    const [quantityOfTypeProduct, setQuantityOfTypeProduct] = useState<number>(0);
+    const [soldOfTypeProduct, setSoldOfTypeProduct] = useState<number>(0);
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         const fetchQuantity = async () => {
-            const data = await fetchQuantityProductByColorSize(product?._id, selectedSize?._id, selectedColor?._id);
-            setQuantity(data?.quantity || 0);
+            const data = await fetchQuantityAndSoldProductByColorSize(
+                product?._id,
+                selectedSize?._id,
+                selectedColor?._id
+            );
+            setQuantityOfTypeProduct(data?.quantity || 0);
+            setSoldOfTypeProduct(data?.sold || 0);
         };
 
         product._id && fetchQuantity();
@@ -60,8 +66,6 @@ export const ProductDetail = ({ preview, product }: { preview?: boolean; product
 
     const handleSelectedSize = (size: SizeProduct) => {
         setSelectedSize(size);
-        // call api to fetch quantity of the product with selected color and size
-        // ---code here---
     };
 
     const handleAddToCard = () => {
@@ -145,10 +149,10 @@ export const ProductDetail = ({ preview, product }: { preview?: boolean; product
                             {!preview && (
                                 <Col>
                                     <div className={cx("rating", "d-flex align-items-center justify-content-end")}>
-                                        <span className="fw-light">Sold: {product.sold}</span>
+                                        <span className="fw-light">Sold: {product.totalSold}</span>
                                         <span className="ms-4 d-flex align-items-center">
-                                            <RateProduct rating={product.rate} />
-                                            <span className="ms-1 fw-light">({product.rate})</span>
+                                            <RateProduct rating={product.avgRate} />
+                                            <span className="ms-1 fw-light">({product.avgRate})</span>
                                         </span>
                                     </div>
                                 </Col>
@@ -187,6 +191,9 @@ export const ProductDetail = ({ preview, product }: { preview?: boolean; product
                                 ))}
                             </div>
                         </div>
+                        <div className="pt-2">
+                            <p>Available: {quantityOfTypeProduct}</p>
+                        </div>
                         <div className="d-flex align-items-center mt-2">
                             <Row className="g-2 w-100 align-items-center">
                                 <Col md={4}>
@@ -200,7 +207,7 @@ export const ProductDetail = ({ preview, product }: { preview?: boolean; product
                                     <Row className="g-2">
                                         <Col xs={8}>
                                             <button className={cx("btn-buy", "w-100")} onClick={handleAddToCard}>
-                                                {product.stock === 0 ? "Out of stock" : "Add to cart"}
+                                                {quantityOfTypeProduct === 0 ? "Out of stock" : "Add to cart"}
                                             </button>
                                         </Col>
                                         <Col xs={4}>
@@ -226,7 +233,11 @@ export const ProductDetail = ({ preview, product }: { preview?: boolean; product
                                 <div>
                                     <div className="fw-light">
                                         <span className="text-black-50">Availability:&nbsp;</span>
-                                        <span>{product.stock > 0 ? `In Stock (${product.stock})` : "Out Stock"}</span>
+                                        <span>
+                                            {product.totalQuantity > 0
+                                                ? `In Stock (${product.totalQuantity})`
+                                                : "Out Stock"}
+                                        </span>
                                     </div>
                                     <div className="fw-light">
                                         <span className="text-black-50">Categories:&nbsp;</span>

@@ -50,12 +50,12 @@ export type Product = {
     colors: Array<ColorProduct>;
     sizes: Array<SizeProduct>;
     sex: string;
-    stock: number;
-    sold: number;
-    rate: number;
+    totalQuantity: number;
+    totalSold: number;
+    avgRate: number;
 };
 
-export type SubProduct = Pick<Product, "_id" | "previewImages" | "name" | "price" | "discount" | "sold">;
+export type SubProduct = Pick<Product, "_id" | "previewImages" | "name" | "price" | "discount" | "totalSold">;
 
 export type CartItem = {
     product: Product;

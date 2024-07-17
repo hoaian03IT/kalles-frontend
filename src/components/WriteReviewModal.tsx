@@ -122,7 +122,7 @@ function WriteReviewModal({ handleClose, show, product, numberReviews }: Props) 
                         <div className="ms-3">
                             <h6 className="limit-line-1 text-secondary">{product.name}</h6>
                             <div className="d-flex align-items-center">
-                                <RateProduct rating={product.rate} size="small" />
+                                <RateProduct rating={product.avgRate} size="small" />
                                 <span className="ms-1 fw-light">
                                     {numberReviews + ` ${numberReviews > 1 ? "reviews" : "review"}`}
                                 </span>
