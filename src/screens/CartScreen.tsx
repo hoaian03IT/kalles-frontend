@@ -6,7 +6,7 @@ import { GrFormNextLink } from "react-icons/gr";
 
 import classNames from "classnames/bind";
 import styles from "~/styles/CartScreen.module.scss";
-import { formatCurrencyVND } from "~/utils";
+import { formatCurrency } from "~/utils";
 import { Link } from "react-router-dom";
 import { pathname } from "~/configs/pathname";
 import { bgBanner1 } from "~/assets/images/background-banner";
@@ -50,11 +50,11 @@ export default function CartScreen() {
                     <div className="d-flex align-items-end">
                         <span className="text-uppercase fs-5 fw-semibold">Subtotal:</span>
                         <div className="ms-3">
-                            <span className="d-block text-end fs-6 fw-normal">{formatCurrencyVND(total)}</span>
+                            <span className="d-block text-end fs-6 fw-normal">{formatCurrency(total)}</span>
                             <span className="d-block text-end fs-6 fw-light text-black-50">
-                                -{formatCurrencyVND(discountAmount)}
+                                -{formatCurrency(discountAmount)}
                             </span>
-                            <span className="d-block text-end fs-5">{formatCurrencyVND(total - discountAmount)}</span>
+                            <span className="d-block text-end fs-5">{formatCurrency(total - discountAmount)}</span>
                         </div>
                     </div>
                 </div>

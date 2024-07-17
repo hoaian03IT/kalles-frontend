@@ -1,15 +1,14 @@
 import classNames from "classnames/bind";
-import { Col, OverlayTrigger, Popover, PopoverBody, Row, Tooltip } from "react-bootstrap";
+import { Col, Container, OverlayTrigger, Popover, PopoverBody, Row, Tooltip } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 import styles from "~/styles/ProductDetail.module.scss";
-import { formatCurrencyVND } from "~/utils";
+import { formatCurrency } from "~/utils";
 import { QuantityEditor } from "../QuantityEditor";
 import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SocialNetworks } from "../SocialNetWorks";
 
-import { ColorProduct, Product, SizeProduct } from "~/app/features/products/productReducer";
 import { pathname } from "~/configs/pathname";
 import { RateProduct } from "../RateProduct";
 import { ImageSlider } from "../ImageSlider";
@@ -19,30 +18,32 @@ import {
     addProductToCartRequest,
     addProductToCartSuccess,
 } from "~/app/features/cart/cartReducer";
+import { VerticalImageList } from "./VerticalImageList";
 import { toast } from "react-toastify";
 import { checkoutBrands } from "~/assets/images/brands";
+import { ColorProduct, Product, SizeProduct } from "~/types";
+import { fetchQuantityProductByColorSize } from "~/api/product";
 
 const cx = classNames.bind(styles);
 
-type Props = {
-    product: Product;
-    preview?: boolean;
-};
-
-export const ProductDetail = ({ product, preview = false }: Props) => {
+export const ProductDetail = ({ preview, product }: { preview?: boolean; product: Product }) => {
+    const [selectedColor, setSelectedColor] = useState<ColorProduct>(product.colors[0]);
+    const [selectedImage, setSelectedImage] = useState<number>(0); // the index of the selected image in a color of the product
     const [quantityBuy, setQuantityBuy] = useState<number>(1);
     const [isWhitelist, setIsWhitelist] = useState<boolean>(false);
-    const [selectedColor, setSelectedColor] = useState<ColorProduct>(product.colors[0]);
-    const [selectedSize, setSelectedSize] = useState<SizeProduct>(selectedColor?.sizes[0]);
-    const [selectedImage, setSelectedImage] = useState<number>(0);
-    const [listImages, setListImages] = useState<Array<string>>([]);
+    const [selectedSize, setSelectedSize] = useState<SizeProduct>(product.sizes[0]);
+    const [quantity, setQuantity] = useState<number>(0);
 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        const images = selectedColor?.sizes.map((size) => size.image);
-        setListImages(images);
-    }, [selectedColor]);
+        const fetchQuantity = async () => {
+            const data = await fetchQuantityProductByColorSize(product?._id, selectedSize?._id, selectedColor?._id);
+            setQuantity(data?.quantity || 0);
+        };
+
+        product._id && fetchQuantity();
+    }, [product?._id, selectedColor?._id, selectedSize?._id]);
 
     const handleAddOneItem = () => {
         setQuantityBuy((prev) => (prev >= 10 ? prev : prev + 1));
@@ -53,88 +54,90 @@ export const ProductDetail = ({ product, preview = false }: Props) => {
 
     const handleSelectedColor = (color: ColorProduct) => {
         setSelectedColor(color);
-        setSelectedSize(color.sizes[0]);
-        setSelectedImage(0);
+        setSelectedSize(product.sizes[0]); // reset to the first size
+        setSelectedImage(0); // reset to the first image
     };
 
-    const handleSelectedSize = (size: SizeProduct, indexSize: number) => {
+    const handleSelectedSize = (size: SizeProduct) => {
         setSelectedSize(size);
-        setSelectedImage(indexSize);
+        // call api to fetch quantity of the product with selected color and size
+        // ---code here---
     };
-
-    const handleNextImageSlider = () => setSelectedImage((prev) => (prev === listImages.length - 1 ? 0 : prev + 1));
-    const handlePreviousImageSlider = () => setSelectedImage((prev) => (prev === 0 ? listImages.length - 1 : prev - 1));
 
     const handleAddToCard = () => {
-        try {
-            dispatch(addProductToCartRequest());
-            dispatch(
-                addProductToCartSuccess({
-                    product: { ...product, colors: [{ ...selectedColor, sizes: [selectedSize] }] },
-                    quantity: quantityBuy,
-                })
-            );
-            toast.success("Add to cart successfully");
-        } catch (error) {
-            dispatch(addProductToCartFailed({ message: "Oops! Something went wrong!" }));
-        }
+        // try {
+        //     dispatch(addProductToCartRequest());
+        //     dispatch(
+        //         addProductToCartSuccess({
+        //             product: { ...product, colors: [{ ...selectedColor, sizes: [selectedSize] }] },
+        //             quantity: quantityBuy,
+        //         })
+        //     );
+        //     toast.success("Add to cart successfully");
+        // } catch (error) {
+        //     dispatch(addProductToCartFailed({ message: "Oops! Something went wrong!" }));
+        // }
     };
 
     const priceAfterDiscount =
         product.discount > 0 ? product.price - (product.price * product.discount) / 100 : product.price;
+
+    const handleNextImageSlider = useCallback(
+        () => setSelectedImage((prev) => (prev === selectedColor?.images.length - 1 ? 0 : prev + 1)),
+        [selectedColor?.images.length]
+    );
+    const handlePreviousImageSlider = useCallback(
+        () => setSelectedImage((prev) => (prev === 0 ? selectedColor?.images.length - 1 : prev - 1)),
+        [selectedColor?.images.length]
+    );
+
     return (
-        <div className={cx("wrapper", "w-100 h-100")}>
-            <Row xs={{ cols: 1 }} md={{ cols: 2 }}>
-                <Col className={preview ? "d-flex align-items-center" : ""}>
+        <Container className={cx("wrapper", "py-5 h-100")}>
+            <Row xs={{ cols: 1 }} md={{ cols: 2 }} className="h-100">
+                <Col className={preview ? "h-100 d-flex align-items-center" : "h-100"}>
                     {preview ? (
                         <div className="w-100">
                             <ImageSlider
                                 handleNextImage={handleNextImageSlider}
                                 handlePreviousImage={handlePreviousImageSlider}
-                                images={listImages}
+                                images={selectedColor?.images}
                                 selectedIndexImage={selectedImage}
                             />
                         </div>
                     ) : (
-                        <Row>
-                            <Col lg={2}>
-                                {listImages?.map((image, index) => (
-                                    <img
-                                        key={index}
-                                        className={cx("preview-image", index === selectedImage ? "active" : "")}
-                                        src={image}
-                                        alt=""
-                                        draggable={false}
-                                        loading="lazy"
-                                        onClick={() => setSelectedImage(index)}
-                                    />
-                                ))}
+                        <Row className="h-100 d-flex flex-row">
+                            <Col lg={2} className="g-0 h-100">
+                                <VerticalImageList
+                                    active={selectedImage}
+                                    images={selectedColor?.images}
+                                    onSelectImage={(index: number) => setSelectedImage(index)}
+                                />
                             </Col>
-                            <Col lg={10}>
+                            <Col lg={10} className="h-100">
                                 <ImageSlider
                                     handleNextImage={handleNextImageSlider}
                                     handlePreviousImage={handlePreviousImageSlider}
-                                    images={listImages}
+                                    images={selectedColor?.images}
                                     selectedIndexImage={selectedImage}
                                 />
                             </Col>
                         </Row>
                     )}
                 </Col>
-                <Col>
-                    <div className={cx("content", "px-4")}>
+                <Col className="h-100">
+                    <div className={cx("content", "px-4 h-100")}>
                         <Row>
                             <Col>
                                 <h6 className={cx("name-product")}>{product.name}</h6>
                                 <div className={cx("price")}>
-                                    <span className={cx("current-price")}>{formatCurrencyVND(priceAfterDiscount)}</span>
+                                    <span className={cx("current-price")}>{formatCurrency(priceAfterDiscount)}</span>
                                     {product.discount > 0 && (
                                         <span
                                             className={cx(
                                                 "origin-price",
                                                 "ms-2 text-danger text-decoration-line-through"
                                             )}>
-                                            {formatCurrencyVND(product.price)}
+                                            {formatCurrency(product.price)}
                                         </span>
                                     )}
                                 </div>
@@ -174,12 +177,12 @@ export const ProductDetail = ({ product, preview = false }: Props) => {
                         <div className={cx("size-product", "mt-4")}>
                             <h6 className={cx("label", "fw-normal text-uppercase")}>Size: {selectedSize?.name}</h6>
                             <div className={cx("sizes")}>
-                                {selectedColor?.sizes.map((size, index) => (
+                                {product.sizes?.map((size) => (
                                     <span
                                         key={size._id}
                                         className={cx("size", selectedSize._id === size._id ? "active" : "")}
-                                        onClick={() => handleSelectedSize(size, index)}>
-                                        {size.name}
+                                        onClick={() => handleSelectedSize(size)}>
+                                        {size.abbreviation}
                                     </span>
                                 ))}
                             </div>
@@ -247,6 +250,6 @@ export const ProductDetail = ({ product, preview = false }: Props) => {
                     </div>
                 </Col>
             </Row>
-        </div>
+        </Container>
     );
 };

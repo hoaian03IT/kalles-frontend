@@ -40,8 +40,8 @@ export const ImageSlider = ({
             nextIcon={images?.length > 1 ? <NextControl onClick={handleNextImage} /> : <></>}
             activeIndex={selectedIndexImage}>
             {images?.map((img, index) => (
-                <CarouselItem key={index}>
-                    <img loading="eager" draggable={false} className={cx("img", "w-100")} src={img} alt="" />
+                <CarouselItem className={cx("carousel-item")} key={index}>
+                    <img loading="eager" draggable={false} className={cx("img", "h-100")} src={img} alt="" />
                 </CarouselItem>
             ))}
         </Carousel>

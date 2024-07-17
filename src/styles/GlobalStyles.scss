@@ -82,6 +82,9 @@ input[type="checkbox"] {
 
 // Custom carousel
 .carousel {
+    .carousel-inner {
+        height: 100%;
+    }
     .carousel-indicators button {
         height: 8px;
         width: 8px;

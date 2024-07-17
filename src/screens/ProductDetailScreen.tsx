@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { fetchProductDetailApi } from "~/api";
-import { Product } from "~/app/features/products/productReducer";
 import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { BreadCrumb } from "~/components/BreadCrumb";
 import { Loading } from "~/components/Loading";
@@ -14,6 +13,7 @@ import { fetchSuggestedProductApi } from "~/api/product";
 import classNames from "classnames/bind";
 import styles from "~/styles/ProductDetailScreen.module.scss";
 import { CardProduct } from "~/components/CardProduct";
+import { Product } from "~/types";
 const cx = classNames.bind(styles);
 
 export default function ProductDetailScreen() {
@@ -36,6 +36,7 @@ export default function ProductDetailScreen() {
             const resData = await fetchSuggestedProductApi(categoryId);
             setSuggestedProduct(resData.products);
         };
+
         if (product.category._id) fetchSuggestedProduct(product.category._id);
     }, [product.category._id]);
 
@@ -45,16 +46,14 @@ export default function ProductDetailScreen() {
                 links={[
                     { label: "Home", value: "/", isCurrent: false },
                     {
-                        label: product.category.name,
+                        label: product.category?.name || "",
                         value: pathname.product + `?category=${product.category._id}`,
                         isCurrent: false,
                     },
                     { label: product.name, value: pathname.detailProduct.split(":")[0] + product._id, isCurrent: true },
                 ]}
             />
-            <div className="py-5">
-                <Container>{loading ? <Loading /> : <ProductDetail product={product} />}</Container>
-            </div>
+            <div className={cx("detail-product")}>{loading ? <Loading /> : <ProductDetail product={product} />}</div>
             <div className={cx("description-reviews-part")}>
                 <Container>
                     <DescriptionAndReview />

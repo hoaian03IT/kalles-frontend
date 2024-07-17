@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { QuantityEditor } from "../QuantityEditor";
 import { pathname } from "~/configs/pathname";
 import {
-    CartItem,
     removeProductFromCartRequest,
     removeProductFromCartSuccess,
     uploadQuantityProductFromCartFailed,
@@ -16,6 +15,7 @@ import classNames from "classnames/bind";
 import styles from "~/styles/CartSlideItem.module.scss";
 import { useAppDispatch } from "~/app/hooks";
 import { toast } from "react-toastify";
+import { CartItem } from "~/types";
 const cx = classNames.bind(styles);
 
 const MAX_ITEMS = 10;
@@ -57,11 +57,11 @@ export const ItemCardProduct = ({ product, quantity }: CartItem) => {
     return (
         <div className={cx("wrapper", "w-100")}>
             <Link to={linkProduct} className={cx("wrapper-image")}>
-                <img
+                {/* <img
                     className="h-100 w-100 user-select-none"
                     src={product.colors[0].sizes[0].image}
                     alt={product.name}
-                />
+                /> */}
             </Link>
             <div className="ms-4 flex-grow-1">
                 <Link className={cx("name-product")} to={linkProduct}>
@@ -78,9 +78,7 @@ export const ItemCardProduct = ({ product, quantity }: CartItem) => {
                 </p>
                 <div className="d-flex align-items-center fw-light">
                     {product.colors[0] && <span>Color: {product.colors[0].name}</span>}
-                    {product.colors[0].sizes[0] && (
-                        <span className="ms-2">Size: {product.colors[0].sizes[0].name}</span>
-                    )}
+                    {product.sizes[0] && <span className="ms-2">Size: {product.sizes[0].name}</span>}
                 </div>
                 <div className="my-1">
                     <QuantityEditor

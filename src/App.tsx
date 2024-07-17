@@ -4,10 +4,11 @@ import { LazyReact } from "./components/LazyReact";
 import { ToastContainer } from "react-toastify";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { PublicRoute } from "./components/PublicRoute";
+import { ScrollToTop } from "./components/ScrollToTop";
+import "react-toastify/dist/ReactToastify.css";
 
 import "~/styles/animations.scss";
 import "~/styles/GlobalStyles.scss";
-import "react-toastify/dist/ReactToastify.css";
 
 function App() {
     return (
@@ -25,6 +26,7 @@ function App() {
                                 <Layout>
                                     <PublicRoute>
                                         <LazyReact>
+                                            <ScrollToTop />
                                             <Component />
                                         </LazyReact>
                                     </PublicRoute>

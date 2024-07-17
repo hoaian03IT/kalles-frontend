@@ -5,7 +5,7 @@ import classNames from "classnames/bind";
 import styles from "~/styles/FilterProduct.module.scss";
 import { InputRangeDoubleSlide } from "./InputRangeDoubleSlide";
 import axios from "axios";
-import { formatCurrencyVND } from "~/utils";
+import { formatCurrency } from "~/utils";
 import { Button } from "react-bootstrap";
 import { useAppSelector } from "~/app/hooks";
 import { ProductScreenContext } from "~/screens/ProductScreen";
@@ -121,7 +121,7 @@ export const FilterProduct = ({ show, onHide }: Props) => {
                         <div className={cx("price-filter")}>
                             <span className={cx("label")}>Price:</span>
                             <span className="ms-2">
-                                {formatCurrencyVND(filterPrice.min)} - {formatCurrencyVND(filterPrice.max)}
+                                {formatCurrency(filterPrice.min)} - {formatCurrency(filterPrice.max)}
                             </span>
                         </div>
                         <Button className="mt-2" variant="secondary" onClick={handleClickFilterPriceBtn}>

@@ -1,17 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Error } from "../commonTypes";
-
-type Product = {
-    _id: string;
-    previewImages: string[];
-    name: string;
-    price: number;
-    discount: number;
-    sold: number;
-};
+import { SubProduct } from "~/types";
 
 type ProductListState = {
-    products: Product[];
+    products: SubProduct[];
     page: number;
     pages: number;
     loading?: boolean;

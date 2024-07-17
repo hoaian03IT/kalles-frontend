@@ -1,5 +1,5 @@
-export const formatCurrencyVND = (value: number) => {
-    return value.toLocaleString("vi-VN", { style: "currency", currency: "VND" });
+export const formatCurrency = (value: number) => {
+    return value.toLocaleString("us", { style: "currency", currency: "USD" });
 };
 
 export const validateRules = {
@@ -26,26 +26,35 @@ export const getBase64 = (file: File) => {
     });
 };
 
-export const getTimeAgo = (date: Date) => {
-    if (!date) {
-        return "";
+export const getTimeAgo = (oldDate: Date) => {
+    const MAXIMUM_DAY_AGO = 7;
+    const rtf = new Intl.RelativeTimeFormat("en", { style: "short" });
+
+    const now = new Date();
+    const seconds = Math.floor((now.getTime() - oldDate.getTime()) / 1000);
+
+    let interval = Math.floor(seconds / 84600); // 84600 is seconds in one day
+    if (interval > MAXIMUM_DAY_AGO) {
+        return oldDate.toLocaleString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
     }
-    const currentTime = new Date();
-    if (currentTime.getDate() - date.getDate() <= 0) {
-        if (currentTime.getHours() - date.getHours() <= 0) {
-            if (currentTime.getMinutes() - date.getMinutes() <= 0) {
-                if (currentTime.getSeconds() - date.getSeconds() <= 60) {
-                    return `${currentTime.getSeconds() - date.getSeconds()} seconds ago`;
-                }
-            } else {
-                return `${currentTime.getMinutes() - date.getMinutes()} minutes ago`;
-            }
-        } else {
-            return `${currentTime.getHours() - date.getHours()} hours ago`;
-        }
-    } else if (currentTime.getDate() - date.getDate() <= 2) {
-        return `${currentTime.getDate() - date.getDate()} days ago`;
-    } else {
-        return `${date.getMonth() + 1}/${date.getDay()}/${date.getFullYear()}`;
+
+    if (interval >= 1) {
+        return rtf.format(-interval, "day");
     }
+
+    interval = Math.floor(seconds / 3600); // 3600 is seconds in one hour
+    if (interval >= 1) {
+        return rtf.format(-interval, "hour");
+    }
+
+    interval = Math.floor(seconds / 60); // 60 is seconds in one minute
+    if (interval >= 1) {
+        return rtf.format(-interval, "minute");
+    }
+
+    return rtf.format(-Math.floor(seconds), "second");
 };

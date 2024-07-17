@@ -40,7 +40,7 @@ $height-label-search: 50px;
     flex-direction: column;
     justify-content: space-between;
     min-height: $height-search-group;
-    max-height: calc(100% - $height-search-group - $offcanvas-header-height);
+    height: calc(100% - $height-search-group);
     overflow: hidden;
     .label,
     .search-value-label {

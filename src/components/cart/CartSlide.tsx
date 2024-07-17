@@ -9,7 +9,7 @@ import styles from "~/styles/CartSlide.module.scss";
 import { useAppSelector } from "~/app/hooks";
 import { useNavigate } from "react-router-dom";
 import { pathname } from "~/configs/pathname";
-import { formatCurrencyVND } from "~/utils";
+import { formatCurrency } from "~/utils";
 
 const cx = classNames.bind(styles);
 
@@ -45,7 +45,7 @@ export const CartSlide = ({ show, onHide }: Props) => {
                     <div className={cx("checkout")}>
                         <div className="d-flex align-items-center justify-content-between fs-4">
                             <span>Subtotal:</span>
-                            <span>{formatCurrencyVND(total - discountAmount)}</span>
+                            <span>{formatCurrency(total - discountAmount)}</span>
                         </div>
                         <p className="my-2 fw-light text-black-50">Taxes shipping calculated at checkout</p>
                         <div className="d-flex align-items-center">

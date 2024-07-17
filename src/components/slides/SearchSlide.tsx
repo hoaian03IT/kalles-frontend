@@ -9,10 +9,10 @@ import { ItemCardProduct } from "../cart/ItemCartProduct";
 import { useAppSelector } from "~/app/hooks";
 import { useDebounce } from "~/hooks";
 import axios from "axios";
-import { Product } from "~/app/features/products/productReducer";
-import { formatCurrencyVND } from "~/utils";
+import { formatCurrency } from "~/utils";
 import { Link } from "react-router-dom";
 import { pathname } from "~/configs/pathname";
+import { Product } from "~/types";
 
 type Props = {
     show: boolean;
@@ -78,15 +78,11 @@ export const SearchSlide = ({ show, onHide }: Props) => {
             const res = await axios.get(queryString);
             setSearchedProducts(res.data.products);
         };
-        if (debouncedSearch) {
-            fetchSearchProduct(
-                `/product/filter?category=${selectedCategory}&query=${debouncedSearch}&pageSize=${10}&order=featured`
-            );
-        } else {
-            fetchSearchProduct(`/product/filter?pageSize=${10}&order=featured`);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedSearch]);
+
+        fetchSearchProduct(
+            `/product/filter?category=${selectedCategory}&query=${debouncedSearch}&pageSize=${10}&order=featured`
+        );
+    }, [debouncedSearch, selectedCategory]);
 
     const searchId = useId();
 
@@ -144,7 +140,7 @@ export const SearchSlide = ({ show, onHide }: Props) => {
                                                     product.discount > 0 ? "highlight" : "",
                                                     "fw-light"
                                                 )}>
-                                                {formatCurrencyVND(
+                                                {formatCurrency(
                                                     product.price - (product.price * product.discount) / 100
                                                 )}
                                             </span>
@@ -155,7 +151,7 @@ export const SearchSlide = ({ show, onHide }: Props) => {
 
                                                         "ms-2 fw-light text-black-50 text-decoration-line-through"
                                                     )}>
-                                                    {formatCurrencyVND(product.price)}
+                                                    {formatCurrency(product.price)}
                                                 </span>
                                             )}
                                         </div>
@@ -166,12 +162,11 @@ export const SearchSlide = ({ show, onHide }: Props) => {
                             );
                         })
                     ) : (
-                        <p className="text-center">Sorry! There is no product now for "{debouncedSearch}"</p>
+                        <p className="text-center pt-5">Sorry! There are no products</p>
                     )}
                 </div>
-                {/* {searchValue && <div className={cx("search-value-label")}>Search for "{searchValue}"</div>} */}
                 <div className={cx("search-value-label")}>
-                    {debouncedSearch ? `Search for "${searchValue}"` : "Suggested products"}
+                    {searchValue ? `Search for "${searchValue}"` : "Suggested products"}
                 </div>
             </div>
         </CustomOffCanvas>

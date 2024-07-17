@@ -1,14 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Error } from "../commonTypes";
-
-export type Category = {
-    _id: string;
-    key: string;
-    name: string;
-    description: string | null | undefined;
-    img: string;
-    productCount: number;
-};
+import { Category } from "~/types";
 
 type CategoryState = {
     categories: Category[];

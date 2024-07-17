@@ -1,11 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Error } from "../commonTypes";
-import { Product } from "../products/productReducer";
-
-export type CartItem = {
-    product: Product;
-    quantity: number;
-};
+import { CartItem, Product } from "~/types";
 
 type CartState = {
     items: Array<CartItem>;
@@ -50,7 +45,7 @@ export const cartSlice = createSlice({
                 (item) =>
                     item.product._id === product._id &&
                     item.product.colors[0]._id === product.colors[0]._id &&
-                    item.product.colors[0].sizes[0]._id === product.colors[0].sizes[0]._id
+                    item.product.sizes[0]._id === product.sizes[0]._id
             );
             if (!oldProduct) {
                 state.items.push({
@@ -77,7 +72,7 @@ export const cartSlice = createSlice({
                 if (
                     item.product._id === product._id &&
                     item.product.colors[0]._id === product.colors[0]._id &&
-                    item.product.colors[0].sizes[0]._id === product.colors[0].sizes[0]._id
+                    item.product.sizes[0]._id === product.sizes[0]._id
                 ) {
                     return {
                         ...item,
@@ -104,7 +99,7 @@ export const cartSlice = createSlice({
                 (item) =>
                     item.product._id !== action.payload.product._id ||
                     item.product.colors[0]._id !== action.payload.product.colors[0]._id ||
-                    item.product.colors[0].sizes[0]._id !== action.payload.product.colors[0].sizes[0]._id
+                    item.product.sizes[0]._id !== action.payload.product.sizes[0]._id
             );
             const [total, discountAmount] = calculateTotalAndDiscount(state.items);
             state.total = total;

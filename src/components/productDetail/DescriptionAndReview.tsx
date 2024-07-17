@@ -1,6 +1,5 @@
 import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { fetchReviewsApi, fetchTotalRateApi } from "~/api/review";
-import { ReviewProduct } from "~/app/features/products/productReducer";
 import { Loading } from "../Loading";
 import { WriteReviewModal } from "../WriteReviewModal";
 import { useAppSelector } from "~/app/hooks";
@@ -15,6 +14,7 @@ import { ImageSlider } from "../ImageSlider";
 import classNames from "classnames/bind";
 import styles from "~/styles/ProductDetailScreen.module.scss";
 import { ReviewItem } from "./ReviewItem";
+import { ReviewProduct } from "~/types";
 const cx = classNames.bind(styles);
 
 type Sort = "newest" | "oldest";
@@ -74,7 +74,7 @@ export const DescriptionAndReview = () => {
         const fetchReviews = async () => {
             setLoadingReviews(true);
             const res = await fetchReviewsApi(
-                `product=${product._id}&nPage=${nPage}&sort=${sort}&skip=${false}&rate=${filterRate}`
+                `product-id=${product._id}&nPage=${nPage}&sort=${sort}&skip=${false}&rate=${filterRate}`
             );
             setLoadingReviews(false);
             if (res) {

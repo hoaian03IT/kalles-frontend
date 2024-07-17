@@ -7,8 +7,7 @@ import styles from "~/styles/CardProduct.module.scss";
 import { memo, useCallback, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ProductDetail } from "./productDetail/ProductDetail";
-import { formatCurrencyVND } from "~/utils";
-import { Product } from "~/app/features/products/productReducer";
+import { formatCurrency } from "~/utils";
 import { fetchProductDetailApi } from "~/api";
 import { useAppDispatch } from "~/app/hooks";
 import {
@@ -17,6 +16,7 @@ import {
     addProductToCartSuccess,
 } from "~/app/features/cart/cartReducer";
 import { toast } from "react-toastify";
+import { Product } from "~/types";
 
 const cx = classNames.bind(styles);
 
@@ -58,20 +58,19 @@ export const CardProduct = memo(
         }, [productId]);
 
         const handleAddToCard = async () => {
-            const res = await fetchProductDetailApi(productId);
-            const product = res.product as Product;
-
-            dispatch(addProductToCartRequest());
-            if (product && product.colors.length === 1 && product.colors[0].sizes.length === 1) {
-                dispatch(addProductToCartSuccess({ product: product, quantity: 1 }));
-                toast.success("Add the product successfully!");
-            } else {
-                const message = "The product have many types! Please select a type";
-                dispatch(addProductToCartFailed({ message: message }));
-                toast.warning(message);
-                handleQuickView();
-                setShowQuickView(true);
-            }
+            // const res = await fetchProductDetailApi(productId);
+            // const product = res.product as Product;
+            // dispatch(addProductToCartRequest());
+            // if (product && product.colors.length === 1 && product.colors[0].sizes.length === 1) {
+            //     dispatch(addProductToCartSuccess({ product: product, quantity: 1 }));
+            //     toast.success("Add the product successfully!");
+            // } else {
+            //     const message = "The product have many types! Please select a type";
+            //     dispatch(addProductToCartFailed({ message: message }));
+            //     toast.warning(message);
+            //     handleQuickView();
+            //     setShowQuickView(true);
+            // }
         };
 
         return (
@@ -108,11 +107,11 @@ export const CardProduct = memo(
                             className={`text-black-50 ${
                                 moneyAfterDiscount !== null ? "text-decoration-line-through" : ""
                             }`}>
-                            {formatCurrencyVND(price)}
+                            {formatCurrency(price)}
                         </span>
                         {/* price with discount */}
                         {moneyAfterDiscount !== null && (
-                            <span className="text-danger ms-2">{formatCurrencyVND(moneyAfterDiscount)}</span>
+                            <span className="text-danger ms-2">{formatCurrency(moneyAfterDiscount)}</span>
                         )}
                     </div>
                 </div>

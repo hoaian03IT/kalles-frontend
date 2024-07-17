@@ -1,8 +1,8 @@
 import classNames from "classnames/bind";
-import { ReviewProduct } from "~/app/features/products/productReducer";
 import styles from "~/styles/ProductDetailScreen.module.scss";
 import { RateProduct } from "../RateProduct";
 import { getTimeAgo } from "~/utils";
+import { ReviewProduct } from "~/types";
 const cx = classNames.bind(styles);
 
 type Props = {

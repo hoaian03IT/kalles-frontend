@@ -1,6 +1,5 @@
 import { Button, FormGroup, Modal } from "react-bootstrap";
 import { IoMdClose } from "react-icons/io";
-import { Product } from "~/app/features/products/productReducer";
 import { RateProduct } from "./RateProduct";
 import { FormEvent, useId, useState } from "react";
 
@@ -13,6 +12,7 @@ import { axiosInstance } from "~/https/axiosInstance";
 import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { useNavigate } from "react-router-dom";
 import { cameraPlaceholder } from "~/assets/images/placeholder";
+import { Product } from "~/types";
 const cx = classNames.bind(styles);
 
 type Props = {

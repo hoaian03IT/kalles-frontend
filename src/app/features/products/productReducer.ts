@@ -1,50 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Error } from "../commonTypes";
-import { Category } from "../category/categoryReducer";
-
-export type SizeProduct = {
-    _id: string;
-    image: string;
-    name: string;
-    description: string;
-};
-
-export type ColorProduct = {
-    _id: string;
-    name: string;
-    hex: string;
-    sizes: Array<SizeProduct>;
-};
-
-export type ReviewProduct = {
-    product: string;
-    _id: string;
-    content: string;
-    title: string;
-    owner: {
-        firstName: string;
-        lastName: string;
-        avatar: string;
-    };
-    rate: number | 0;
-    photos: Array<string>;
-    updatedAt: string;
-};
-
-export type Product = {
-    category: Category;
-    _id: string;
-    previewImages: Array<string>;
-    name: string;
-    description: string;
-    price: number;
-    discount: number;
-    colors: Array<ColorProduct>;
-    sex: string;
-    stock: number;
-    sold: number;
-    rate: number;
-};
+import { Product } from "~/types";
 
 type ProductState = {
     product: Product;
@@ -54,14 +10,7 @@ type ProductState = {
 
 const initialState: ProductState = {
     product: {
-        category: {
-            _id: "",
-            key: "",
-            name: "",
-            description: "",
-            img: "",
-            productCount: 0,
-        },
+        category: {},
         _id: "",
         previewImages: [],
         name: "",
@@ -73,6 +22,7 @@ const initialState: ProductState = {
         stock: 0,
         sold: 0,
         rate: 0,
+        sizes: [],
     },
     loading: false,
     error: "",
@@ -86,9 +36,9 @@ export const userSlice = createSlice({
             state.loading = true;
             state.error = "";
         },
-        fetchDetailProductSuccess: (state, action: PayloadAction<ProductState>) => {
+        fetchDetailProductSuccess: (state, action: PayloadAction<Product>) => {
             state.loading = false;
-            state.product = action.payload.product;
+            state.product = { ...state.product, ...action.payload };
             state.error = "";
         },
         fetchDetailProductFailed: (state, action: PayloadAction<Error>) => {

@@ -1,13 +1,12 @@
 import { IoTrashOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { pathname } from "~/configs/pathname";
-import { formatCurrencyVND } from "~/utils";
+import { formatCurrency } from "~/utils";
 import { QuantityEditor } from "~/components/QuantityEditor";
 
 import classNames from "classnames/bind";
 import styles from "~/styles/CartScreen.module.scss";
 import {
-    CartItem,
     removeProductFromCartRequest,
     removeProductFromCartSuccess,
     uploadQuantityProductFromCartFailed,
@@ -18,6 +17,7 @@ import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useAppDispatch } from "~/app/hooks";
 import { toast } from "react-toastify";
+import { CartItem } from "~/types";
 
 const cx = classNames.bind(styles);
 
@@ -68,7 +68,7 @@ export const CartScreenItem = ({ cartItem }: Props) => {
             <Row className="align-items-center">
                 <Col md={6} className="d-flex align-items-center">
                     <div className={cx("wrapper-image")}>
-                        <img src={product.colors[0].sizes[0].image} alt={product.name} />
+                        {/* <img src={product.colors[0].sizes[0].image} alt={product.name} /> */}
                     </div>
                     <div className="ms-2">
                         <Link className={cx("product-name")} to={pathname.detailProduct.split(":")[0] + product._id}>
@@ -84,7 +84,7 @@ export const CartScreenItem = ({ cartItem }: Props) => {
                             </div>
                             <div>
                                 <span>Size:</span>&nbsp;
-                                <span>{product.colors[0].sizes[0].name}</span>
+                                <span>{product.sizes[0].name}</span>
                             </div>
                         </div>
                         <button className={cx("btn-delete")} onClick={handleRemoveProductItem}>
@@ -94,9 +94,9 @@ export const CartScreenItem = ({ cartItem }: Props) => {
                 </Col>
                 <Col md={2} className="text-center">
                     <div className={cx("product-price", "mx-auto")}>
-                        <span className={cx("discounted-price", "d-block")}>{formatCurrencyVND(discountedPrice)}</span>
+                        <span className={cx("discounted-price", "d-block")}>{formatCurrency(discountedPrice)}</span>
                         {product.discount && (
-                            <span className={cx("origin-price", "d-block")}>{formatCurrencyVND(product.price)}</span>
+                            <span className={cx("origin-price", "d-block")}>{formatCurrency(product.price)}</span>
                         )}
                     </div>
                 </Col>
@@ -110,7 +110,7 @@ export const CartScreenItem = ({ cartItem }: Props) => {
                     </div>
                 </Col>
                 <Col md={2} className="text-end">
-                    <span>{formatCurrencyVND(discountedPrice * quantity)}</span>
+                    <span>{formatCurrency(discountedPrice * quantity)}</span>
                 </Col>
             </Row>
         </div>
