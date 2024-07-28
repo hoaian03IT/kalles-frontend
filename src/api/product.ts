@@ -11,7 +11,7 @@ import {
     fetchDetailProductRequest,
     fetchDetailProductSuccess,
 } from "~/app/features/products/productReducer";
-import { Product } from "~/types";
+import { Product, SubProduct } from "~/types";
 
 const messageErrDefault = "Oops! Something went wrong";
 
@@ -67,7 +67,7 @@ export const fetchSuggestedProductApi = async (categoryId: string) => {
     }
 };
 
-export const fetchQuantityAndSoldProductByColorSize = async (productId: string, sizeId: string, colorId: string) => {
+export const fetchQuantityAndSoldProductByColorSizeApi = async (productId: string, sizeId: string, colorId: string) => {
     try {
         const res = await axios.get(
             `/product/quantity-sold?product-id=${productId}&size-id=${sizeId}&color-id=${colorId}`
@@ -78,5 +78,18 @@ export const fetchQuantityAndSoldProductByColorSize = async (productId: string, 
             const message = error.response?.data.message || messageErrDefault;
             toast.error(message);
         }
+    }
+};
+
+export const fetchNewArrivalProductApi = async (quantityProducts: number = 16): Promise<SubProduct[]> => {
+    try {
+        const res = await axios.get(`/product/filter?order=newest&page-size=${quantityProducts}`);
+        return res.data.products || [];
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || messageErrDefault;
+            toast.error(message);
+        }
+        return [];
     }
 };

@@ -61,3 +61,5 @@ export type CartItem = {
     product: Product;
     quantity: number;
 };
+
+export type DeviceType = "desktop" | "tablet" | "mobile";

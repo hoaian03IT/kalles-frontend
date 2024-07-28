@@ -22,7 +22,7 @@ import { VerticalImageList } from "./VerticalImageList";
 import { toast } from "react-toastify";
 import { checkoutBrands } from "~/assets/images/brands";
 import { ColorProduct, Product, SizeProduct } from "~/types";
-import { fetchQuantityAndSoldProductByColorSize } from "~/api/product";
+import { fetchQuantityAndSoldProductByColorSizeApi } from "~/api/product";
 
 const cx = classNames.bind(styles);
 
@@ -39,7 +39,7 @@ export const ProductDetail = ({ preview, product }: { preview?: boolean; product
 
     useEffect(() => {
         const fetchQuantity = async () => {
-            const data = await fetchQuantityAndSoldProductByColorSize(
+            const data = await fetchQuantityAndSoldProductByColorSizeApi(
                 product?._id,
                 selectedSize?._id,
                 selectedColor?._id

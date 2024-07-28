@@ -98,14 +98,14 @@ export const CardProduct = memo(
                     {discount && <div className={cx("discount")}>-{discount}%</div>}
                 </div>
                 <div className={cx("details")}>
-                    <Link to={link} className="mb-1 text-decoration-none text-black">
+                    <Link to={link} className="fs-6 mb-1 text-decoration-none text-black">
                         {nameProduct}
                     </Link>
                     {/* price without discount */}
                     <div className="d-flex align-items-center flex-wrap justify-content-center">
                         <span
                             className={`text-black-50 ${
-                                moneyAfterDiscount !== null ? "text-decoration-line-through" : ""
+                                moneyAfterDiscount !== null ? "text-decoration-line-through" : "fs-6"
                             }`}>
                             {formatCurrency(price)}
                         </span>

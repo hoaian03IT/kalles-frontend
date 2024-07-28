@@ -1,4 +1,4 @@
-import { Button, FormGroup, Modal } from "react-bootstrap";
+import { Button, FormGroup, Modal, Spinner } from "react-bootstrap";
 import { IoMdClose } from "react-icons/io";
 import { RateProduct } from "./RateProduct";
 import { FormEvent, useId, useState } from "react";
@@ -38,6 +38,7 @@ function WriteReviewModal({ handleClose, show, product, numberReviews }: Props) 
     });
     const [errMsg, setErrMsg] = useState({ email: "" });
     const [handledPhotos, setHandledPhotos] = useState<Array<string>>([]);
+    const [loadingSubmit, setLoadingSubmit] = useState(false);
 
     const inputEmailId = useId();
     const inputTitleId = useId();
@@ -78,6 +79,7 @@ function WriteReviewModal({ handleClose, show, product, numberReviews }: Props) 
 
     const handleSubmitReview = async (e: FormEvent) => {
         e.preventDefault();
+        setLoadingSubmit(true);
         let canSubmit = true;
         if (validateRules.email(inputs.email)) {
             setErrMsg({ email: validateRules.email(inputs.email) });
@@ -103,6 +105,7 @@ function WriteReviewModal({ handleClose, show, product, numberReviews }: Props) 
             );
             if (handler) handleClose();
         }
+        setLoadingSubmit(false);
     };
 
     return (
@@ -211,7 +214,11 @@ function WriteReviewModal({ handleClose, show, product, numberReviews }: Props) 
                             </FormGroup>
                         </form>
                         <Button className={cx("btn-submit", "mt-4 ms-auto")} onClick={handleSubmitReview}>
-                            Submit Your Review
+                            {loadingSubmit ? (
+                                <Spinner size="sm" animation="border" variant="light" />
+                            ) : (
+                                <span>Submit Your Review</span>
+                            )}
                         </Button>
                     </div>
                 </div>
