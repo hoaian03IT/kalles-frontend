@@ -37,7 +37,8 @@ export default function NewArrivalProducts() {
         } else {
             setQuantityProductShown((prev) => ({ ...prev, number: quantityProductShown.number * 2 }));
         }
-    }, [deviceType, quantityProductShown]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [deviceType]);
 
     return (
         <div className={cx("wrapper")}>

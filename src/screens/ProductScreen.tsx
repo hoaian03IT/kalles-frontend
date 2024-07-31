@@ -7,7 +7,7 @@ import { HeaderBanner } from "~/components/HeaderBanner";
 import { CardProduct } from "~/components/CardProduct";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { SortProductModal } from "~/components/SortProductModal";
-import { fetchListProductApi } from "~/api";
+import { fetchFilteredProductApi } from "~/api";
 import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { pathname } from "~/configs/pathname";
 import { bgBanner1 } from "~/assets/images/background-banner";
@@ -17,11 +17,12 @@ import { Pagination, PaginationItem, PaginationNext, PaginationPrevious } from "
 
 import classNames from "classnames/bind";
 import styles from "~/styles/ProductScreen.module.scss";
+import { ProductFilterType, OrderFilterType, StockFilterType, PriceFilterType, SexFilterType } from "~/types";
 
 const cx = classNames.bind(styles);
 
 const categories = ["Decor", "Denim", "Dress", "Sale", "Shoes", "Men", "Women"];
-const orderProducts = [
+const orderProducts: Array<{ label: string; key: OrderFilterType }> = [
     {
         label: "A -> Z",
         key: "asc",
@@ -52,18 +53,9 @@ const orderProducts = [
     },
 ];
 
-type FilterProductStateType = {
-    order: number;
-    category: string;
-    stock: string;
-    price: string;
-    page: number;
-    sex: string;
-};
-
 export type FilterProductContextType = {
-    filter: FilterProductStateType;
-    setFilter: Dispatch<SetStateAction<FilterProductStateType>>;
+    filter: ProductFilterType;
+    setFilter: Dispatch<SetStateAction<ProductFilterType>>;
 };
 
 export const ProductScreenContext = createContext<FilterProductContextType | null>(null);
@@ -74,22 +66,25 @@ export default function ProductScreen() {
     const { search } = useLocation();
 
     const query = new URLSearchParams(search);
-    const categoryQuery = query.get("category") || "all";
-    const orderQuery = Number(query.get("order")) || 0;
-    const stockQuery = query.get("stock") || "all";
-    const priceQuery = query.get("price") || "all";
-    const sexQuery = query.get("sex") || "all";
+    // bi loi
+    const categoryQuery = query.get("category") as string;
+    const orderQuery = query.get("order") as OrderFilterType;
+    const stockQuery = query.get("stock") as StockFilterType;
+    const priceQuery = query.get("price") as PriceFilterType;
+    const sexQuery = query.get("sex") as SexFilterType;
+    // ----------------------------------------------------------------
 
     const [layout, setLayout] = useState(4); // default is 2 cols per row
 
     // state filter
-    const [filter, setFilter] = useState<FilterProductStateType>({
+    const [filter, setFilter] = useState<ProductFilterType>({
         order: orderQuery,
         category: categoryQuery,
         stock: stockQuery,
         price: priceQuery,
         page: 1,
         sex: sexQuery,
+        pageSize: 8,
     });
 
     // state modals
@@ -100,12 +95,10 @@ export default function ProductScreen() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        navigate(
-            pathname.product +
-                `?order=${orderProducts[filter.order].key}&category=${filter.category}&stock=${filter.stock}&price=${
-                    filter.price
-                }&sex=${filter.sex}`
-        );
+        // navigate(
+        //     pathname.product +
+        //         `?order=${filter.order}&category=${filter.category}&stock=${filter.stock}&price=${filter.price}&sex=${filter.sex}`
+        // );
         setFilter({ ...filter, page: 1 }); // set lại page 1
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filter.category, filter.order, filter.price, filter.stock, navigate, filter.sex]);
@@ -113,10 +106,23 @@ export default function ProductScreen() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                await fetchListProductApi(
-                    `order=${orderProducts[filter.order].key}&category=${filter.category}&stock=${filter.stock}&price=${
-                        filter.price
-                    }&sex=${filter.sex}&pageSize=${8}&page=${filter.page}`,
+                // await fetchFilteredProductApi(
+                //     `order=${orderProducts[filter.order].key}&category=${filter.category}&stock=${filter.stock}&price=${
+                //         filter.price
+                //     }&sex=${filter.sex}&pageSize=${8}&page=${filter.page}`,
+                //     dispatch
+                // );
+                console.log(filter.price);
+                await fetchFilteredProductApi(
+                    {
+                        order: filter.order,
+                        category: filter.category,
+                        stock: filter.stock,
+                        price: filter.price,
+                        sex: filter.sex,
+                        pageSize: 8,
+                        page: filter.page,
+                    },
                     dispatch
                 );
                 // close all modals when fetch products successfully
@@ -129,7 +135,7 @@ export default function ProductScreen() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search, filter.page]);
 
-    const handleChangeOrderProduct = (value: number) => {
+    const handleChangeOrderProduct = (value: OrderFilterType) => {
         setFilter({ ...filter, order: value });
     };
 
@@ -185,9 +191,11 @@ export default function ProductScreen() {
                                 <Form.Select
                                     className={cx("selected")}
                                     value={filter.order}
-                                    onChange={(e) => setFilter({ ...filter, order: Number(e.target.value) })}>
+                                    onChange={(e) =>
+                                        setFilter({ ...filter, order: e.target.value as OrderFilterType })
+                                    }>
                                     {orderProducts.map((order, index) => (
-                                        <option key={order.key} value={index}>
+                                        <option key={order.key} value={order.key}>
                                             {order.label}
                                         </option>
                                     ))}

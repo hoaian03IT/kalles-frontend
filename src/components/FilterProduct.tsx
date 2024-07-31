@@ -4,12 +4,13 @@ import { useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "~/styles/FilterProduct.module.scss";
 import { InputRangeDoubleSlide } from "./InputRangeDoubleSlide";
-import axios from "axios";
 import { formatCurrency } from "~/utils";
 import { Button } from "react-bootstrap";
 import { useAppSelector } from "~/app/hooks";
 import { ProductScreenContext } from "~/screens/ProductScreen";
 import { toast } from "react-toastify";
+import { PriceFilterType, SexFilterType, StockFilterType } from "~/types";
+import { fetchHighestProductApi } from "~/api/product";
 
 const cx = classNames.bind(styles);
 
@@ -18,18 +19,22 @@ type Props = {
     onHide: () => void;
 };
 
-const availabilityOptions = [
+const availabilityOptions: Array<{ label: string; value: StockFilterType }> = [
     { label: "In Stock", value: "in-stock" },
     { label: "Out of Stock", value: "out-stock" },
 ];
 
-const sexOptions = [
+const sexOptions: Array<{ label: string; key: SexFilterType }> = [
     { label: "Men", key: "men" },
     { label: "Women", key: "women" },
     { label: "Unisex", key: "unisex" },
 ];
 
 const defaultMaxPrice = 50000000;
+
+const formatForQueryPrice = (min: number, max: number): PriceFilterType => {
+    return `${min}-${max}`;
+};
 
 export const FilterProduct = ({ show, onHide }: Props) => {
     const { categories } = useAppSelector((state) => state.persist.category);
@@ -42,17 +47,19 @@ export const FilterProduct = ({ show, onHide }: Props) => {
 
     useEffect(() => {
         const fetchHighestPriceProduct = async () => {
-            try {
-                const res = await axios.get("/product/highest-price");
-                setLimitPrice({ ...limitPrice, max: Number(res.data.price) || defaultMaxPrice });
-                setFilterPrice({ ...filterPrice, max: Number(res.data.price) || defaultMaxPrice });
-            } catch (error) {}
+            let highestPrice = (await fetchHighestProductApi()) || defaultMaxPrice;
+            setLimitPrice({ min: 0, max: highestPrice });
+            setFilterPrice({ min: 0, max: highestPrice });
+
+            if (!productScreenContext?.filter.price) {
+                productScreenContext?.setFilter((prev) => ({ ...prev, price: formatForQueryPrice(0, highestPrice) }));
+            }
         };
         fetchHighestPriceProduct();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleChangeAvailabilityOption = (value: string) => {
+    const handleChangeAvailabilityOption = (value: StockFilterType) => {
         if (value === productScreenContext?.filter.stock)
             productScreenContext.setFilter({ ...productScreenContext.filter, stock: "all" });
         else productScreenContext?.setFilter({ ...productScreenContext.filter, stock: value });
@@ -66,7 +73,7 @@ export const FilterProduct = ({ show, onHide }: Props) => {
         }
     };
 
-    const handleChangeFilterGender = (key: string) => {
+    const handleChangeFilterGender = (key: SexFilterType) => {
         if (key === productScreenContext?.filter.sex) {
             productScreenContext.setFilter({ ...productScreenContext.filter, sex: "all" });
         } else {
@@ -75,19 +82,24 @@ export const FilterProduct = ({ show, onHide }: Props) => {
     };
 
     const handleClickFilterPriceBtn = async () => {
-        const min = Number(productScreenContext?.filter.price.split("-")[0]);
-        const max = Number(productScreenContext?.filter.price.split("-")[1]);
-        if (filterPrice.min !== min && filterPrice.max !== max) {
-            productScreenContext?.setFilter({
-                ...productScreenContext.filter,
-                price: filterPrice.min + "-" + filterPrice.max,
-            });
+        if (productScreenContext?.filter.price) {
+            const min = Number(productScreenContext?.filter.price?.split("-")[0]);
+            const max = Number(productScreenContext?.filter.price?.split("-")[1]);
+            if (filterPrice.min !== min || filterPrice.max !== max) {
+                productScreenContext?.setFilter((prev) => ({
+                    ...prev,
+                    price: formatForQueryPrice(filterPrice.min, filterPrice.max),
+                }));
+            } else {
+                toast.warn("Please filter for a different price range");
+            }
         } else {
-            toast.warn("Please filter for a different price range");
+            productScreenContext?.setFilter((prev) => ({
+                ...prev,
+                price: formatForQueryPrice(filterPrice.min, filterPrice.max),
+            }));
         }
     };
-
-    useEffect(() => {});
 
     return (
         <CustomOffCanvas titleHeader="Filter" show={show} onHide={onHide} placement="start">

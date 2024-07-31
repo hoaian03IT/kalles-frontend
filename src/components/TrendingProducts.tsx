@@ -20,7 +20,7 @@ export default function TrendingProducts() {
     return (
         <div className={cx("wrapper")}>
             <div className={cx("header")}>
-                <h2>New Arrival Products</h2>
+                <h2>Trending Products</h2>
             </div>
             <div className={cx("categories")}>
                 {categories.map((category, index) => (

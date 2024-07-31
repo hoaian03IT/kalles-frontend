@@ -1,7 +1,7 @@
 import axios from "axios";
 import { RefreshTokenApi, signInApi, signOutApi, signUpApi } from "./auth";
 import { fetchCategoriesApi } from "./category";
-import { fetchListProductApi, fetchProductDetailApi } from "./product";
+import { fetchFilteredProductApi, fetchProductDetailApi } from "./product";
 import { createReviewApi, fetchReviewsApi, fetchTotalRateApi } from "./review";
 
 axios.defaults.baseURL = "http://localhost:4000";
@@ -12,7 +12,7 @@ export {
     signInApi,
     signOutApi,
     signUpApi,
-    fetchListProductApi,
+    fetchFilteredProductApi,
     fetchProductDetailApi,
     createReviewApi,
     fetchReviewsApi,

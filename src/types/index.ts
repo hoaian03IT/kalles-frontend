@@ -57,6 +57,21 @@ export type Product = {
 
 export type SubProduct = Pick<Product, "_id" | "previewImages" | "name" | "price" | "discount" | "totalSold">;
 
+export type OrderFilterType = "asc" | "desc" | "lowest" | "highest" | "newest" | "sales" | "featured" | undefined;
+export type PriceFilterType = `${number | string}-${number | string}` | undefined;
+export type SexFilterType = "all" | "unisex" | "men" | "women";
+export type StockFilterType = "in-stock" | "out-stock" | "all";
+export type ProductFilterType = {
+    query?: string;
+    category?: string;
+    sex?: SexFilterType;
+    price?: PriceFilterType;
+    pageSize: number;
+    stock?: StockFilterType;
+    order?: OrderFilterType;
+    page: number;
+};
+
 export type CartItem = {
     product: Product;
     quantity: number;

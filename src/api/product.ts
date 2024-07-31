@@ -11,22 +11,24 @@ import {
     fetchDetailProductRequest,
     fetchDetailProductSuccess,
 } from "~/app/features/products/productReducer";
-import { Product, SubProduct } from "~/types";
+import { ProductFilterType, Product, SubProduct } from "~/types";
 
 const messageErrDefault = "Oops! Something went wrong";
 
-export const fetchListProductApi = async (query: string, dispatch: Dispatch<Action>) => {
+export const fetchFilteredProductApi = async (filter: ProductFilterType, dispatch: Dispatch<Action>) => {
     dispatch(fetchListProductRequest());
     try {
-        const res = await axios.get(`/product/filter?${query}`);
-        dispatch(fetchListProductSuccess(res.data));
+        const res = await axios.get(
+            `/product/filter?category=${filter.category}&order=${filter.order}&query=${filter.query}&sex=${filter.sex}&price=${filter.price}&page-size=${filter.pageSize}&page=${filter.page}&stock=${filter.stock}`
+        );
+        dispatch && dispatch(fetchListProductSuccess(res.data));
     } catch (error) {
         if (axios.isAxiosError(error)) {
             const message = error.response?.data.message || messageErrDefault;
-            dispatch(fetchListProductFailed({ message }));
+            dispatch && dispatch(fetchListProductFailed({ message }));
             toast.error(message);
         }
-        dispatch(fetchListProductFailed({ message: "lỗi" }));
+        dispatch && dispatch(fetchListProductFailed({ message: "lỗi" }));
     }
 };
 
@@ -91,5 +93,18 @@ export const fetchNewArrivalProductApi = async (quantityProducts: number = 16): 
             toast.error(message);
         }
         return [];
+    }
+};
+
+export const fetchHighestProductApi = async (): Promise<number> => {
+    try {
+        const res = await axios.get("/product/highest-price");
+        return res.data.price || 0;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || messageErrDefault;
+            toast.error(message);
+        }
+        return 0;
     }
 };
