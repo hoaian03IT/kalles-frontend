@@ -28,7 +28,7 @@ export const fetchFilteredProductApi = async (filter: ProductFilterType, dispatc
             dispatch && dispatch(fetchListProductFailed({ message }));
             toast.error(message);
         }
-        dispatch && dispatch(fetchListProductFailed({ message: "lỗi" }));
+        dispatch && dispatch(fetchListProductFailed({ message: messageErrDefault }));
     }
 };
 

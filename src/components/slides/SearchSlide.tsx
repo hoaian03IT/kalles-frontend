@@ -80,7 +80,7 @@ export const SearchSlide = ({ show, onHide }: Props) => {
         };
 
         fetchSearchProduct(
-            `/product/filter?category=${selectedCategory}&query=${debouncedSearch}&pageSize=${10}&order=featured`
+            `/product/filter?category=${selectedCategory}&query=${debouncedSearch}&page-size=${10}&order=featured`
         );
     }, [debouncedSearch, selectedCategory]);
 

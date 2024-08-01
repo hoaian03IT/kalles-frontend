@@ -50,10 +50,6 @@ export const FilterProduct = ({ show, onHide }: Props) => {
             let highestPrice = (await fetchHighestProductApi()) || defaultMaxPrice;
             setLimitPrice({ min: 0, max: highestPrice });
             setFilterPrice({ min: 0, max: highestPrice });
-
-            if (!productScreenContext?.filter.price) {
-                productScreenContext?.setFilter((prev) => ({ ...prev, price: formatForQueryPrice(0, highestPrice) }));
-            }
         };
         fetchHighestPriceProduct();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,14 +58,14 @@ export const FilterProduct = ({ show, onHide }: Props) => {
     const handleChangeAvailabilityOption = (value: StockFilterType) => {
         if (value === productScreenContext?.filter.stock)
             productScreenContext.setFilter({ ...productScreenContext.filter, stock: "all" });
-        else productScreenContext?.setFilter({ ...productScreenContext.filter, stock: value });
+        else productScreenContext?.setFilter({ ...productScreenContext.filter, stock: value, page: 1 });
     };
 
     const handleChangeFilterCategory = (id: string) => {
         if (id === productScreenContext?.filter.category) {
             productScreenContext.setFilter({ ...productScreenContext.filter, category: "all" });
         } else {
-            productScreenContext?.setFilter({ ...productScreenContext.filter, category: id });
+            productScreenContext?.setFilter({ ...productScreenContext.filter, category: id, page: 1 });
         }
     };
 
@@ -77,7 +73,7 @@ export const FilterProduct = ({ show, onHide }: Props) => {
         if (key === productScreenContext?.filter.sex) {
             productScreenContext.setFilter({ ...productScreenContext.filter, sex: "all" });
         } else {
-            productScreenContext?.setFilter({ ...productScreenContext.filter, sex: key });
+            productScreenContext?.setFilter({ ...productScreenContext.filter, sex: key, page: 1 });
         }
     };
 
@@ -89,6 +85,7 @@ export const FilterProduct = ({ show, onHide }: Props) => {
                 productScreenContext?.setFilter((prev) => ({
                     ...prev,
                     price: formatForQueryPrice(filterPrice.min, filterPrice.max),
+                    page: 1,
                 }));
             } else {
                 toast.warn("Please filter for a different price range");
@@ -97,6 +94,7 @@ export const FilterProduct = ({ show, onHide }: Props) => {
             productScreenContext?.setFilter((prev) => ({
                 ...prev,
                 price: formatForQueryPrice(filterPrice.min, filterPrice.max),
+                page: 1,
             }));
         }
     };

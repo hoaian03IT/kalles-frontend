@@ -1,5 +1,5 @@
 import { createContext, Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import { MdOutlineFilterList } from "react-icons/md";
 import { TfiLayoutColumn2Alt, TfiLayoutColumn3Alt, TfiLayoutColumn4Alt } from "react-icons/tfi";
@@ -18,9 +18,11 @@ import { Pagination, PaginationItem, PaginationNext, PaginationPrevious } from "
 import classNames from "classnames/bind";
 import styles from "~/styles/ProductScreen.module.scss";
 import { ProductFilterType, OrderFilterType, StockFilterType, PriceFilterType, SexFilterType } from "~/types";
+import { useMediaQueries } from "~/hooks";
 
 const cx = classNames.bind(styles);
 
+const NUMBER_PRODUCTS_PER_PAGE = 8;
 const categories = ["Decor", "Denim", "Dress", "Sale", "Shoes", "Men", "Women"];
 const orderProducts: Array<{ label: string; key: OrderFilterType }> = [
     {
@@ -53,6 +55,8 @@ const orderProducts: Array<{ label: string; key: OrderFilterType }> = [
     },
 ];
 
+type ProductsPerRow = 2 | 3 | 4;
+
 export type FilterProductContextType = {
     filter: ProductFilterType;
     setFilter: Dispatch<SetStateAction<ProductFilterType>>;
@@ -64,17 +68,14 @@ export default function ProductScreen() {
     const { products, loading, pages } = useAppSelector((state) => state.products);
 
     const { search } = useLocation();
-
     const query = new URLSearchParams(search);
-    // bi loi
+
     const categoryQuery = query.get("category") as string;
     const orderQuery = query.get("order") as OrderFilterType;
     const stockQuery = query.get("stock") as StockFilterType;
     const priceQuery = query.get("price") as PriceFilterType;
     const sexQuery = query.get("sex") as SexFilterType;
-    // ----------------------------------------------------------------
-
-    const [layout, setLayout] = useState(4); // default is 2 cols per row
+    const pageQuery = Number(query.get("page")) || 1;
 
     // state filter
     const [filter, setFilter] = useState<ProductFilterType>({
@@ -82,37 +83,30 @@ export default function ProductScreen() {
         category: categoryQuery,
         stock: stockQuery,
         price: priceQuery,
-        page: 1,
+        page: pageQuery,
         sex: sexQuery,
-        pageSize: 8,
+        pageSize: NUMBER_PRODUCTS_PER_PAGE,
     });
+
+    const [layout, setLayout] = useState<ProductsPerRow>(4); // default is 4 cols per row
 
     // state modals
     const [showOrderProduct, setShowOrderProduct] = useState(false);
     const [showFilterProduct, setShowFilterProduct] = useState(false);
 
+    const deviceType = useMediaQueries();
+
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     useEffect(() => {
-        // navigate(
-        //     pathname.product +
-        //         `?order=${filter.order}&category=${filter.category}&stock=${filter.stock}&price=${filter.price}&sex=${filter.sex}`
-        // );
-        setFilter({ ...filter, page: 1 }); // set lại page 1
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filter.category, filter.order, filter.price, filter.stock, navigate, filter.sex]);
+        if (deviceType === "mobile") {
+            setLayout(2);
+        }
+    }, [deviceType]);
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                // await fetchFilteredProductApi(
-                //     `order=${orderProducts[filter.order].key}&category=${filter.category}&stock=${filter.stock}&price=${
-                //         filter.price
-                //     }&sex=${filter.sex}&pageSize=${8}&page=${filter.page}`,
-                //     dispatch
-                // );
-                console.log(filter.price);
                 await fetchFilteredProductApi(
                     {
                         order: filter.order,
@@ -120,7 +114,7 @@ export default function ProductScreen() {
                         stock: filter.stock,
                         price: filter.price,
                         sex: filter.sex,
-                        pageSize: 8,
+                        pageSize: filter.pageSize,
                         page: filter.page,
                     },
                     dispatch
@@ -133,7 +127,7 @@ export default function ProductScreen() {
         fetchProducts();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [search, filter.page]);
+    }, [search, filter]);
 
     const handleChangeOrderProduct = (value: OrderFilterType) => {
         setFilter({ ...filter, order: value });

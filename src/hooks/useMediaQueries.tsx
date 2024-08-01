@@ -15,6 +15,6 @@ export default function useMediaQueries(): DeviceType {
         };
         handler();
         return () => window.removeEventListener("resize", detectDeviceType);
-    });
+    }, []);
     return deviceType;
 }
