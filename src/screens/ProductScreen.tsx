@@ -212,14 +212,7 @@ export default function ProductScreen() {
                             <Row xs={{ cols: layout }}>
                                 {products.map((product) => (
                                     <Col key={product._id}>
-                                        <CardProduct
-                                            productId={product._id}
-                                            nameProduct={product.name}
-                                            previewImages={product.previewImages}
-                                            price={product.price}
-                                            discount={product.discount}
-                                            link={pathname.detailProduct.split(":")[0] + product._id}
-                                        />
+                                        <CardProduct info={product} />
                                     </Col>
                                 ))}
                                 <Pagination>

@@ -52,12 +52,21 @@ export type Product = {
     sex: string;
     totalQuantity: number;
     totalSold: number;
-    avgRate: number;
+    rate: number;
 };
 
 export type SubProduct = Pick<Product, "_id" | "previewImages" | "name" | "price" | "discount" | "totalSold">;
 
-export type OrderFilterType = "asc" | "desc" | "lowest" | "highest" | "newest" | "sales" | "featured" | undefined;
+export type OrderFilterType =
+    | "asc"
+    | "desc"
+    | "lowest"
+    | "highest"
+    | "newest"
+    | "sales"
+    | "featured"
+    | "top-rated"
+    | undefined;
 export type PriceFilterType = `${number | string}-${number | string}` | undefined;
 export type SexFilterType = "all" | "unisex" | "men" | "women";
 export type StockFilterType = "in-stock" | "out-stock" | "all";

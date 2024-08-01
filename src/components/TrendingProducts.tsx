@@ -2,11 +2,18 @@ import classNames from "classnames/bind";
 import styles from "~/styles/FeatureProducts.module.scss";
 import { CardProduct } from "./CardProduct";
 import { Col, Container, Row } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { OrderFilterType, SubProduct } from "~/types";
+import { fetchFilteredProductApi } from "~/api";
+import { Loading } from "./Loading";
 
 const cx = classNames.bind(styles);
 
-const categories = ["best-sellers", "top-rated", "sales"];
+const categories: Array<{ label: string; keyFilter: OrderFilterType }> = [
+    { label: "best-sellers", keyFilter: "featured" },
+    { label: "top-rated", keyFilter: "top-rated" },
+    { label: "sales", keyFilter: "sales" },
+];
 
 const convertUpperFirstText = (text: string) => {
     let texts = text.split("-");
@@ -16,6 +23,22 @@ const convertUpperFirstText = (text: string) => {
 
 export default function TrendingProducts() {
     const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+    const [products, setProducts] = useState<SubProduct[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            setLoading(true);
+            const products = await fetchFilteredProductApi({
+                page: 1,
+                pageSize: 12,
+                order: selectedCategory.keyFilter,
+            });
+            setProducts(products);
+            setLoading(false);
+        };
+        fetchProducts();
+    }, [selectedCategory]);
 
     return (
         <div className={cx("wrapper")}>
@@ -25,101 +48,27 @@ export default function TrendingProducts() {
             <div className={cx("categories")}>
                 {categories.map((category, index) => (
                     <button
-                        className={cx("btn-category", selectedCategory === category ? "active" : "")}
+                        className={cx("btn-category", selectedCategory.label === category.label ? "active" : "")}
                         key={index}
                         onClick={() => setSelectedCategory(category)}>
-                        {convertUpperFirstText(category)}
+                        {convertUpperFirstText(category.label)}
                     </button>
                 ))}
             </div>
-            <Container fluid className={`px-md-5 ${cx("products")}`}>
-                <Row
-                    xs={{ cols: 2 }}
-                    md={{ cols: 3 }}
-                    lg={{ cols: 5 }}
-                    className={cx("tab-product", selectedCategory === categories[0] ? "show" : "")}>
-                    {[1, 2, 3, 4, 5, 7, 89].map((item) => (
-                        <Col key={item}>
-                            {/* <CardProduct
-                                link="/"
-                                nameProduct="Minimalist Croc Embossed Baguette Bag"
-                                types={[
-                                    {
-                                        id: "brown",
-                                        image1: "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/66649955_070_d.jpg",
-                                        image2: "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/66649955_070_b.jpg",
-                                    },
-                                    {
-                                        id: "red",
-                                        image1: "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/63733695_220_b_96a804e9-eaf0-44e7-a652-e4bf7bf36978.jpg",
-                                        image2: "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/66649955_070_b.jpg",
-                                    },
-                                ]}
-                                price={3000000}
-                                discount={1}
-                                favorite={true}
-                            /> */}
-                        </Col>
-                    ))}
-                </Row>
-                <Row
-                    xs={{ cols: 2 }}
-                    md={{ cols: 3 }}
-                    lg={{ cols: 5 }}
-                    className={cx("tab-product", selectedCategory === categories[1] ? "show" : "")}>
-                    {[1, 2, 3, 4].map((item) => (
-                        <Col key={item}>
-                            {/* <CardProduct
-                                link="/"
-                                nameProduct="Minimalist Croc Embossed Baguette Bag"
-                                types={[
-                                    {
-                                        id: "brown",
-                                        image1: "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/66649955_070_d.jpg",
-                                        image2: "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/66649955_070_b.jpg",
-                                    },
-                                    {
-                                        id: "red",
-                                        image1: "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/63733695_220_b_96a804e9-eaf0-44e7-a652-e4bf7bf36978.jpg",
-                                        image2: "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/66649955_070_b.jpg",
-                                    },
-                                ]}
-                                price={3000000}
-                                discount={1}
-                                favorite={true}
-                            /> */}
-                        </Col>
-                    ))}
-                </Row>
-                <Row
-                    xs={{ cols: 2 }}
-                    md={{ cols: 3 }}
-                    lg={{ cols: 5 }}
-                    className={cx("tab-product", selectedCategory === categories[2] ? "show" : "")}>
-                    {[1, 2, 3].map((item) => (
-                        <Col key={item}>
-                            {/* <CardProduct
-                                link="/"
-                                nameProduct="Minimalist Croc Embossed Baguette Bag"
-                                types={[
-                                    {
-                                        id: "brown",
-                                        image1: "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/66649955_070_d.jpg",
-                                        image2: "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/66649955_070_b.jpg",
-                                    },
-                                    {
-                                        id: "red",
-                                        image1: "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/63733695_220_b_96a804e9-eaf0-44e7-a652-e4bf7bf36978.jpg",
-                                        image2: "https://demo-kalles-4-3.myshopify.com/cdn/shop/products/66649955_070_b.jpg",
-                                    },
-                                ]}
-                                price={3000000}
-                                discount={1}
-                                favorite={true}
-                            /> */}
-                        </Col>
-                    ))}
-                </Row>
+            <Container className={`px-md-5 ${cx("products")}`}>
+                {loading ? (
+                    <div className="my-5">
+                        <Loading />
+                    </div>
+                ) : (
+                    <Row xs={{ cols: 2 }} md={{ cols: 3 }} lg={{ cols: 4 }} className={cx("tab-product", "show")}>
+                        {products.map((product) => (
+                            <Col key={product._id}>
+                                <CardProduct info={product} />
+                            </Col>
+                        ))}
+                    </Row>
+                )}
             </Container>
         </div>
     );

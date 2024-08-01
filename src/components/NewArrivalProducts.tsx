@@ -4,11 +4,11 @@ import { CardProduct } from "./CardProduct";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { FaArrowDownLong } from "react-icons/fa6";
 import { useEffect, useState } from "react";
-import { SubProduct } from "~/types";
-import { fetchNewArrivalProductApi } from "~/api/product";
+import { ProductFilterType, SubProduct } from "~/types";
+import { fetchFilteredProductApi } from "~/api/product";
 import { pathname } from "~/configs/pathname";
-import { BsHandIndexFill } from "react-icons/bs";
 import { useMediaQueries } from "~/hooks";
+import { Loading } from "./Loading";
 
 const cx = classNames.bind(styles);
 
@@ -18,12 +18,21 @@ export default function NewArrivalProducts() {
         showMore: false,
         number: 8,
     });
+    const [loading, setLoading] = useState(false);
+
     const deviceType = useMediaQueries();
 
     useEffect(() => {
         const fetchNewArrivalProducts = async () => {
-            const products = await fetchNewArrivalProductApi();
+            setLoading(true);
+            let filter: ProductFilterType = {
+                order: "newest",
+                page: 1,
+                pageSize: 12,
+            };
+            const products = await fetchFilteredProductApi(filter);
             setProducts(products);
+            setLoading(false);
         };
 
         fetchNewArrivalProducts();
@@ -46,26 +55,27 @@ export default function NewArrivalProducts() {
                 <h2>New Arrival Products</h2>
             </div>
             <Container className="px-md-5 text-center">
-                <Row xs={{ cols: 2 }} md={{ cols: 3 }} lg={{ cols: 4 }} className="justify-content-center">
-                    {products.slice(0, quantityProductShown.number).map((product, index) => (
-                        <Col key={index}>
-                            <CardProduct
-                                link={pathname.detailProduct.split(":")[0] + product._id}
-                                nameProduct={product.name}
-                                previewImages={product.previewImages}
-                                price={product.price}
-                                productId={product._id}
-                                discount={product.discount}
-                            />
-                        </Col>
-                    ))}
-                </Row>
-                {!quantityProductShown.showMore && (
-                    <Button
-                        className="btn-size-lg mt-5 btn-round-border"
-                        onClick={() => setQuantityProductShown((prev) => ({ ...prev, showMore: true }))}>
-                        Load More <FaArrowDownLong />
-                    </Button>
+                {loading ? (
+                    <div className="my-5">
+                        <Loading />
+                    </div>
+                ) : (
+                    <>
+                        <Row xs={{ cols: 2 }} md={{ cols: 3 }} lg={{ cols: 4 }} className="justify-content-center">
+                            {products.slice(0, quantityProductShown.number).map((product) => (
+                                <Col key={product._id}>
+                                    <CardProduct info={product} />
+                                </Col>
+                            ))}
+                        </Row>
+                        {!quantityProductShown.showMore && (
+                            <Button
+                                className="btn-size-lg mt-5 btn-round-border"
+                                onClick={() => setQuantityProductShown((prev) => ({ ...prev, showMore: true }))}>
+                                Load More <FaArrowDownLong />
+                            </Button>
+                        )}
+                    </>
                 )}
             </Container>
         </div>

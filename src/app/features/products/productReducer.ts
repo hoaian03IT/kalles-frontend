@@ -21,7 +21,7 @@ const initialState: ProductState = {
         sex: "",
         totalQuantity: 0,
         totalSold: 0,
-        avgRate: 0,
+        rate: 0,
         sizes: [],
     },
     loading: false,

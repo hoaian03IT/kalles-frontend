@@ -151,8 +151,8 @@ export const ProductDetail = ({ preview, product }: { preview?: boolean; product
                                     <div className={cx("rating", "d-flex align-items-center justify-content-end")}>
                                         <span className="fw-light">Sold: {product.totalSold}</span>
                                         <span className="ms-4 d-flex align-items-center">
-                                            <RateProduct rating={product.avgRate} />
-                                            <span className="ms-1 fw-light">({product.avgRate})</span>
+                                            <RateProduct rating={product.rate} />
+                                            <span className="ms-1 fw-light">({product.rate})</span>
                                         </span>
                                     </div>
                                 </Col>

@@ -65,14 +65,7 @@ export default function ProductDetailScreen() {
                     <Row md={{ cols: 6 }} className="overflow-hidden flex-nowrap">
                         {suggestedProduct?.map((product) => (
                             <Col key={product._id}>
-                                <CardProduct
-                                    productId={product._id}
-                                    link={pathname.detailProduct.split(":")[0] + product._id}
-                                    nameProduct={product.name}
-                                    previewImages={product.previewImages}
-                                    price={product.price}
-                                    discount={product.discount}
-                                />
+                                <CardProduct info={product} />
                             </Col>
                         ))}
                     </Row>
