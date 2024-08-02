@@ -23,7 +23,6 @@ import { useMediaQueries } from "~/hooks";
 const cx = classNames.bind(styles);
 
 const NUMBER_PRODUCTS_PER_PAGE = 8;
-const categories = ["Decor", "Denim", "Dress", "Sale", "Shoes", "Men", "Women"];
 const orderProducts: Array<{ label: string; key: OrderFilterType }> = [
     {
         label: "A -> Z",
@@ -66,6 +65,7 @@ export const ProductScreenContext = createContext<FilterProductContextType | nul
 
 export default function ProductScreen() {
     const { products, loading, pages } = useAppSelector((state) => state.products);
+    const { categories } = useAppSelector((state) => state.persist.category);
 
     const { search } = useLocation();
     const query = new URLSearchParams(search);
@@ -149,8 +149,12 @@ export default function ProductScreen() {
             <div className={cx("wrapper")}>
                 <div className="d-flex align-items-center justify-content-center w-100 overflow-x-auto">
                     {categories.map((item, index) => (
-                        <Link to="/" key={index} className={cx("category")}>
-                            <h6 className={cx("title")}>{item}</h6>
+                        <Link
+                            to={pathname.product + `?category=${item._id}`}
+                            onClick={() => setFilter((prev) => ({ ...prev, category: item._id }))}
+                            key={index}
+                            className={cx("category")}>
+                            <h6 className={cx("title")}>{item.name}</h6>
                         </Link>
                     ))}
                 </div>

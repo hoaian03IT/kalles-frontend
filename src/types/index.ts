@@ -50,7 +50,7 @@ export type Product = {
     colors: Array<ColorProduct>;
     sizes: Array<SizeProduct>;
     sex: string;
-    totalQuantity: number;
+    stock: number;
     totalSold: number;
     rate: number;
 };
@@ -82,7 +82,10 @@ export type ProductFilterType = {
 };
 
 export type CartItem = {
-    product: Product;
+    product: Omit<Product, "totalSold" | "rate" | "colors" | "sizes"> & {
+        color: ColorProduct;
+        size: SizeProduct;
+    };
     quantity: number;
 };
 

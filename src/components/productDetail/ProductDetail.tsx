@@ -69,18 +69,18 @@ export const ProductDetail = ({ preview, product }: { preview?: boolean; product
     };
 
     const handleAddToCard = () => {
-        // try {
-        //     dispatch(addProductToCartRequest());
-        //     dispatch(
-        //         addProductToCartSuccess({
-        //             product: { ...product, colors: [{ ...selectedColor, sizes: [selectedSize] }] },
-        //             quantity: quantityBuy,
-        //         })
-        //     );
-        //     toast.success("Add to cart successfully");
-        // } catch (error) {
-        //     dispatch(addProductToCartFailed({ message: "Oops! Something went wrong!" }));
-        // }
+        try {
+            dispatch(addProductToCartRequest());
+            dispatch(
+                addProductToCartSuccess({
+                    product: { ...product, color: selectedColor, size: selectedSize },
+                    quantity: quantityBuy,
+                })
+            );
+            toast.success("Add to cart successfully");
+        } catch (error) {
+            dispatch(addProductToCartFailed({ message: "Oops! Something went wrong!" }));
+        }
     };
 
     const priceAfterDiscount =
@@ -192,7 +192,8 @@ export const ProductDetail = ({ preview, product }: { preview?: boolean; product
                             </div>
                         </div>
                         <div className="pt-2">
-                            <p>Available: {quantityOfTypeProduct}</p>
+                            <span className="me-1">Available: {quantityOfTypeProduct}</span>-
+                            <span>Sold: {soldOfTypeProduct}</span>
                         </div>
                         <div className="d-flex align-items-center mt-2">
                             <Row className="g-2 w-100 align-items-center">
@@ -233,11 +234,7 @@ export const ProductDetail = ({ preview, product }: { preview?: boolean; product
                                 <div>
                                     <div className="fw-light">
                                         <span className="text-black-50">Availability:&nbsp;</span>
-                                        <span>
-                                            {product.totalQuantity > 0
-                                                ? `In Stock (${product.totalQuantity})`
-                                                : "Out Stock"}
-                                        </span>
+                                        <span>{product.stock > 0 ? `In Stock (${product.stock})` : "Out Stock"}</span>
                                     </div>
                                     <div className="fw-light">
                                         <span className="text-black-50">Categories:&nbsp;</span>

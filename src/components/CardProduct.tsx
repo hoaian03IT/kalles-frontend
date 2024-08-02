@@ -16,7 +16,7 @@ import {
     addProductToCartSuccess,
 } from "~/app/features/cart/cartReducer";
 import { toast } from "react-toastify";
-import { Product, SubProduct } from "~/types";
+import { CartItem, Product, SubProduct } from "~/types";
 import { pathname } from "~/configs/pathname";
 
 const cx = classNames.bind(styles);
@@ -45,19 +45,28 @@ export const CardProduct = memo(({ info }: Props) => {
     const handleAddToFavorite = () => {};
 
     const handleAddToCard = async () => {
-        // const res = await fetchProductDetailApi(productId);
-        // const product = res.product as Product;
-        // dispatch(addProductToCartRequest());
-        // if (product && product.colors.length === 1 && product.colors[0].sizes.length === 1) {
-        //     dispatch(addProductToCartSuccess({ product: product, quantity: 1 }));
-        //     toast.success("Add the product successfully!");
-        // } else {
-        //     const message = "The product have many types! Please select a type";
-        //     dispatch(addProductToCartFailed({ message: message }));
-        //     toast.warning(message);
-        //     handleQuickView();
-        //     setShowQuickView(true);
-        // }
+        const product = await fetchProductDetailApi(info._id);
+        dispatch(addProductToCartRequest());
+        if (product && product.colors.length === 1 && product.sizes.length === 1) {
+            try {
+                dispatch(
+                    addProductToCartSuccess({
+                        product: { ...product, color: product.colors[0], size: product.sizes[0] },
+                        quantity: 1,
+                    })
+                );
+                toast.success("Add the product successfully!");
+            } catch (error) {
+                dispatch(addProductToCartFailed({ message: "Add the product failed!" }));
+                toast.error("Oops! Something went wrong!");
+            }
+        } else {
+            const message = "The product have many types! Please select a type";
+            dispatch(addProductToCartFailed({ message: message }));
+            toast.warning(message);
+            await handleQuickView();
+            setShowQuickView(true);
+        }
     };
 
     return (

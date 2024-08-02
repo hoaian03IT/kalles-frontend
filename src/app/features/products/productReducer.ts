@@ -19,7 +19,7 @@ const initialState: ProductState = {
         discount: 0,
         colors: [],
         sex: "",
-        totalQuantity: 0,
+        stock: 0,
         totalSold: 0,
         rate: 0,
         sizes: [],

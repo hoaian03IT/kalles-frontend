@@ -7,16 +7,17 @@ import { QuantityEditor } from "~/components/QuantityEditor";
 import classNames from "classnames/bind";
 import styles from "~/styles/CartScreen.module.scss";
 import {
+    addProductToCartFailed,
+    addProductToCartRequest,
+    addProductToCartSuccess,
+    destroyProductFromCart,
+    removeProductFromCartFailed,
     removeProductFromCartRequest,
     removeProductFromCartSuccess,
-    uploadQuantityProductFromCartFailed,
-    uploadQuantityProductFromCartRequest,
-    uploadQuantityProductFromCartSuccess,
 } from "~/app/features/cart/cartReducer";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useAppDispatch } from "~/app/hooks";
-import { toast } from "react-toastify";
 import { CartItem } from "~/types";
 
 const cx = classNames.bind(styles);
@@ -25,9 +26,6 @@ type Props = {
     cartItem: CartItem;
 };
 
-const MAX_ITEMS = 10;
-const MIN_ITEMS = 1;
-
 export const CartScreenItem = ({ cartItem }: Props) => {
     const product = cartItem.product;
     const [quantity, setQuantity] = useState<number>(cartItem.quantity);
@@ -35,17 +33,13 @@ export const CartScreenItem = ({ cartItem }: Props) => {
 
     const discountedPrice = product.price - (product.price * product.discount) / 100;
 
-    const handleUploadCartItem = (quantity: number) => {
+    const handleAddMoreQuantityProduct = () => {
+        dispatch(addProductToCartRequest());
         try {
-            if (quantity >= MIN_ITEMS && quantity <= MAX_ITEMS) {
-                dispatch(uploadQuantityProductFromCartRequest());
-                setQuantity(quantity);
-                dispatch(uploadQuantityProductFromCartSuccess({ product, quantity: quantity }));
-            } else {
-                toast.warning("You can buy one at least and 10 at most");
-            }
+            setQuantity((prev) => prev + 1);
+            dispatch(addProductToCartSuccess({ product, quantity: 1 }));
         } catch {
-            dispatch(uploadQuantityProductFromCartFailed({ message: "Oops! Something went wrong!" }));
+            dispatch(addProductToCartFailed({ message: "Oops! Something went wrong!" }));
         }
     };
 
@@ -55,20 +49,25 @@ export const CartScreenItem = ({ cartItem }: Props) => {
             dispatch(
                 removeProductFromCartSuccess({
                     product,
-                    quantity: quantity,
+                    quantity: 1,
                 })
             );
-            toast.success("Remove product from cart successfully");
+            setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
         } catch {
-            dispatch(uploadQuantityProductFromCartFailed({ message: "Oops! Something went wrong!" }));
+            dispatch(removeProductFromCartFailed({ message: "Oops! Something went wrong!" }));
         }
     };
+
+    const handleDestroyProductItem = (item: CartItem) => {
+        dispatch(destroyProductFromCart(item));
+    };
+
     return (
         <div className={cx("cart-item")}>
             <Row className="align-items-center">
                 <Col md={6} className="d-flex align-items-center">
                     <div className={cx("wrapper-image")}>
-                        {/* <img src={product.colors[0].sizes[0].image} alt={product.name} /> */}
+                        <img src={product.color.images[0]} alt={product.name} />
                     </div>
                     <div className="ms-2">
                         <Link className={cx("product-name")} to={pathname.detailProduct.split(":")[0] + product._id}>
@@ -79,15 +78,15 @@ export const CartScreenItem = ({ cartItem }: Props) => {
                                 <span>Color:</span>
                                 <span
                                     className={cx("color-present", "ms-1")}
-                                    style={{ backgroundColor: product.colors[0].hex }}></span>
-                                &nbsp;<span>- {product.colors[0].name}</span>
+                                    style={{ backgroundColor: product.color.hex }}></span>
+                                &nbsp;<span>- {product.color.name}</span>
                             </div>
                             <div>
                                 <span>Size:</span>&nbsp;
-                                <span>{product.sizes[0].name}</span>
+                                <span>{product.size.name}</span>
                             </div>
                         </div>
-                        <button className={cx("btn-delete")} onClick={handleRemoveProductItem}>
+                        <button className={cx("btn-delete")} onClick={() => handleDestroyProductItem(cartItem)}>
                             <IoTrashOutline className="fs-5" />
                         </button>
                     </div>
@@ -104,8 +103,8 @@ export const CartScreenItem = ({ cartItem }: Props) => {
                     <div className="w-50 mx-auto">
                         <QuantityEditor
                             value={quantity}
-                            handleInCrease={() => handleUploadCartItem(quantity + 1)}
-                            handleInDecrease={() => handleUploadCartItem(quantity - 1)}
+                            handleInCrease={handleAddMoreQuantityProduct}
+                            handleInDecrease={handleRemoveProductItem}
                         />
                     </div>
                 </Col>

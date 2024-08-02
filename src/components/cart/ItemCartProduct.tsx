@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 import { QuantityEditor } from "../QuantityEditor";
 import { pathname } from "~/configs/pathname";
 import {
+    addProductToCartFailed,
+    addProductToCartRequest,
+    addProductToCartSuccess,
+    destroyProductFromCart,
+    removeProductFromCartFailed,
     removeProductFromCartRequest,
     removeProductFromCartSuccess,
-    uploadQuantityProductFromCartFailed,
-    uploadQuantityProductFromCartRequest,
-    uploadQuantityProductFromCartSuccess,
 } from "~/app/features/cart/cartReducer";
 
 import classNames from "classnames/bind";
@@ -18,24 +20,19 @@ import { toast } from "react-toastify";
 import { CartItem } from "~/types";
 const cx = classNames.bind(styles);
 
-const MAX_ITEMS = 10;
-const MIN_ITEMS = 1;
-
 export const ItemCardProduct = ({ product, quantity }: CartItem) => {
     const [currentQuantity, setCurrentQuantity] = useState(quantity);
     const linkProduct = pathname.detailProduct.split(":")[0] + product._id;
 
     const dispatch = useAppDispatch();
 
-    const handleUploadQuantityProduct = (quantity: number) => {
+    const handleAddMoreQuantityProduct = () => {
+        dispatch(addProductToCartRequest());
         try {
-            if (quantity >= MIN_ITEMS && quantity <= MAX_ITEMS) {
-                dispatch(uploadQuantityProductFromCartRequest());
-                setCurrentQuantity(quantity);
-                dispatch(uploadQuantityProductFromCartSuccess({ product, quantity: quantity }));
-            }
+            setCurrentQuantity((prev) => prev + 1);
+            dispatch(addProductToCartSuccess({ product, quantity: 1 }));
         } catch {
-            dispatch(uploadQuantityProductFromCartFailed({ message: "Oops! Something went wrong!" }));
+            dispatch(addProductToCartFailed({ message: "Oops! Something went wrong!" }));
         }
     };
 
@@ -45,23 +42,28 @@ export const ItemCardProduct = ({ product, quantity }: CartItem) => {
             dispatch(
                 removeProductFromCartSuccess({
                     product,
-                    quantity: currentQuantity,
+                    quantity: 1,
                 })
             );
-            toast.success("Remove product from cart successfully");
+            setCurrentQuantity((prev) => (prev > 1 ? prev - 1 : 1));
         } catch {
-            dispatch(uploadQuantityProductFromCartFailed({ message: "Oops! Something went wrong!" }));
+            dispatch(removeProductFromCartFailed({ message: "Oops! Something went wrong!" }));
         }
+    };
+
+    const handleDestroyProductItem = (item: CartItem) => {
+        dispatch(destroyProductFromCart(item));
     };
 
     return (
         <div className={cx("wrapper", "w-100")}>
             <Link to={linkProduct} className={cx("wrapper-image")}>
-                {/* <img
+                <img
+                    draggable={false}
                     className="h-100 w-100 user-select-none"
-                    src={product.colors[0].sizes[0].image}
+                    src={product.color.images[0]}
                     alt={product.name}
-                /> */}
+                />
             </Link>
             <div className="ms-4 flex-grow-1">
                 <Link className={cx("name-product")} to={linkProduct}>
@@ -69,26 +71,26 @@ export const ItemCardProduct = ({ product, quantity }: CartItem) => {
                 </Link>
                 <p className="fw-light text-black-50 mb-0">
                     {((product.price - (product.price * product.discount) / 100) * currentQuantity).toLocaleString(
-                        "it-IT",
+                        "en-us",
                         {
                             style: "currency",
-                            currency: "VND",
+                            currency: "USD",
                         }
                     )}
                 </p>
-                <div className="d-flex align-items-center fw-light">
-                    {product.colors[0] && <span>Color: {product.colors[0].name}</span>}
-                    {product.sizes[0] && <span className="ms-2">Size: {product.sizes[0].name}</span>}
+                <div className={cx("type-product", "d-flex align-items-center fw-light")}>
+                    {product.color && <span>Color: {product.color.name}</span>}
+                    {product.size && <span className="ms-2">Size: {product.size.name}</span>}
                 </div>
                 <div className="my-1">
                     <QuantityEditor
-                        handleInCrease={() => handleUploadQuantityProduct(currentQuantity + 1)}
-                        handleInDecrease={() => handleUploadQuantityProduct(currentQuantity - 1)}
+                        handleInCrease={handleAddMoreQuantityProduct}
+                        handleInDecrease={handleRemoveProductItem}
                         value={currentQuantity}
                     />
                 </div>
-                <button className={cx("btn-delete")} onClick={handleRemoveProductItem}>
-                    <IoTrashOutline className="fs-6" />
+                <button className={cx("btn-delete")} onClick={() => handleDestroyProductItem({ product, quantity })}>
+                    <IoTrashOutline className="fs-5" />
                 </button>
             </div>
         </div>

@@ -18,11 +18,11 @@ const initialState: CartState = {
     error: "",
 };
 
-function calculateTotalAndDiscount(cartItems: Array<CartItem>): Array<number> {
+function calculateTotalAndDiscount(cartItems: Array<CartItem>): [number, number] {
     let total = 0,
         discountAmount = 0;
 
-    cartItems.forEach((cartItem: CartItem) => {
+    cartItems.forEach((cartItem) => {
         const product = cartItem.product;
         const quantity = cartItem.quantity;
         discountAmount += ((product.price * product.discount) / 100) * quantity;
@@ -30,6 +30,9 @@ function calculateTotalAndDiscount(cartItems: Array<CartItem>): Array<number> {
     });
     return [total, discountAmount];
 }
+
+const MAX_ITEMS = 10;
+const MIN_ITEMS = 1;
 
 export const cartSlice = createSlice({
     name: "cart",
@@ -41,73 +44,79 @@ export const cartSlice = createSlice({
         },
         addProductToCartSuccess: (state, action: PayloadAction<CartItem>) => {
             const { product, quantity } = action.payload;
-            const oldProduct = state.items.find(
-                (item) =>
-                    item.product._id === product._id &&
-                    item.product.colors[0]._id === product.colors[0]._id &&
-                    item.product.sizes[0]._id === product.sizes[0]._id
-            );
-            if (!oldProduct) {
-                state.items.push({
-                    product,
-                    quantity,
-                });
-                const [total, discountAmount] = calculateTotalAndDiscount(state.items);
-                state.total = total;
-                state.discountAmount = discountAmount;
+            let currentIndex = -1;
+            for (let i = 0; i < state.items.length; i++) {
+                let p = state.items[i].product;
+                let { _id, size, color } = p;
+                if (_id === product._id && size._id === product.size._id && color._id === product.color._id) {
+                    currentIndex = i;
+                    break;
+                }
             }
+
+            if (currentIndex >= 0 && currentIndex < state.items.length) {
+                // update new stock
+                state.items[currentIndex].product = { ...state.items[currentIndex].product, stock: product.stock };
+                let quantityAfterAdded = state.items[currentIndex].quantity + quantity;
+                console.log(quantityAfterAdded <= product.stock && quantityAfterAdded <= MAX_ITEMS);
+                if (quantityAfterAdded <= product.stock && quantityAfterAdded <= MAX_ITEMS) {
+                    state.items[currentIndex].quantity = quantityAfterAdded;
+                }
+            } else {
+                state.items.push({ product, quantity });
+            }
+
+            let [t, d] = calculateTotalAndDiscount(state.items);
+            state.total = t;
+            state.discountAmount = d;
             state.loading = false;
         },
         addProductToCartFailed: (state, action: PayloadAction<Error>) => {
             state.loading = false;
             state.error = action.payload.message;
         },
-        uploadQuantityProductFromCartRequest: (state) => {
-            state.loading = true;
-            state.error = "";
-        },
-        uploadQuantityProductFromCartSuccess: (state, action: PayloadAction<CartItem>) => {
-            const { product, quantity } = action.payload;
-            state.items = state.items.map((item) => {
-                if (
-                    item.product._id === product._id &&
-                    item.product.colors[0]._id === product.colors[0]._id &&
-                    item.product.sizes[0]._id === product.sizes[0]._id
-                ) {
-                    return {
-                        ...item,
-                        quantity,
-                    };
-                }
-                return item;
-            });
-            const [total, discountAmount] = calculateTotalAndDiscount(state.items);
-            state.total = total;
-            state.discountAmount = discountAmount;
-        },
-        uploadQuantityProductFromCartFailed: (state, action: PayloadAction<Error>) => {
-            state.loading = false;
-            state.error = action.payload.message;
-        },
+
         removeProductFromCartRequest: (state) => {
             state.loading = true;
             state.error = "";
         },
         removeProductFromCartSuccess: (state, action: PayloadAction<CartItem>) => {
+            const { product, quantity } = action.payload;
+            let currentIndex = -1;
+            for (let i = 0; i < state.items.length; i++) {
+                let p = state.items[i].product;
+                let { _id, size, color } = p;
+                if (_id === product._id && size._id === product.size._id && color._id === product.color._id) {
+                    currentIndex = i;
+                    break;
+                }
+            }
+
+            if (currentIndex >= 0 && currentIndex < state.items.length) {
+                let quantityAfterRemoved = state.items[currentIndex].quantity - quantity;
+                if (quantityAfterRemoved >= MIN_ITEMS) state.items[currentIndex].quantity = quantityAfterRemoved;
+            }
+            let [t, d] = calculateTotalAndDiscount(state.items);
+            state.total = t;
+            state.discountAmount = d;
             state.loading = false;
-            state.items = state.items.filter(
-                (item) =>
-                    item.product._id !== action.payload.product._id ||
-                    item.product.colors[0]._id !== action.payload.product.colors[0]._id ||
-                    item.product.sizes[0]._id !== action.payload.product.sizes[0]._id
-            );
-            const [total, discountAmount] = calculateTotalAndDiscount(state.items);
-            state.total = total;
-            state.discountAmount = discountAmount;
         },
         removeProductFromCartFailed: (state, action: PayloadAction<Error>) => {
             state.loading = false;
             state.error = action.payload.message;
+        },
+        destroyProductFromCart: (state, action: PayloadAction<CartItem>) => {
+            const { product } = action.payload;
+            state.items = state.items.filter(
+                (item) =>
+                    product._id !== item.product._id &&
+                    product.color._id !== item.product.color._id &&
+                    product.size._id !== item.product.size._id
+            );
+            let [t, d] = calculateTotalAndDiscount(state.items);
+            state.total = t;
+            state.discountAmount = d;
+            state.loading = false;
         },
     },
 });
@@ -119,9 +128,7 @@ export const {
     removeProductFromCartFailed,
     removeProductFromCartRequest,
     removeProductFromCartSuccess,
-    uploadQuantityProductFromCartFailed,
-    uploadQuantityProductFromCartRequest,
-    uploadQuantityProductFromCartSuccess,
+    destroyProductFromCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
