@@ -6,6 +6,7 @@ import {
     fetchCategoriesRequest,
     fetchCategoriesSuccess,
 } from "~/app/features/category/categoryReducer";
+import { messageErrDefault } from ".";
 export const fetchCategoriesApi = async (dispatch: Dispatch<Action>) => {
     try {
         dispatch(fetchCategoriesRequest());
@@ -14,7 +15,7 @@ export const fetchCategoriesApi = async (dispatch: Dispatch<Action>) => {
     } catch (error) {
         if (axios.isAxiosError(error)) {
             const message = error.response?.data.message || error.message;
-            dispatch(fetchCategoriesFailed(message));
+            dispatch(fetchCategoriesFailed(message || messageErrDefault));
             toast.error(message);
         }
     }

@@ -19,6 +19,7 @@ import classNames from "classnames/bind";
 import styles from "~/styles/screens/ProductScreen.module.scss";
 import { ProductFilterType, OrderFilterType, StockFilterType, PriceFilterType, SexFilterType } from "~/types";
 import { useMediaQueries } from "~/hooks";
+import { ChangeLayoutProductBtns } from "~/components/ChangeLayoutProductBtns";
 
 const cx = classNames.bind(styles);
 
@@ -168,22 +169,8 @@ export default function ProductScreen() {
                                     <span>Filter</span>
                                 </button>
                             </Col>
-                            <Col className={cx("layouts", "justify-content-center")}>
-                                <button
-                                    className={cx("layout-button", layout === 2 ? "active" : "")}
-                                    onClick={() => setLayout(2)}>
-                                    <TfiLayoutColumn2Alt className="fs-4" />
-                                </button>
-                                <button
-                                    className={cx("layout-button", layout === 3 ? "active" : "")}
-                                    onClick={() => setLayout(3)}>
-                                    <TfiLayoutColumn3Alt className="fs-4" />
-                                </button>
-                                <button
-                                    className={cx("layout-button", layout === 4 ? "active" : "")}
-                                    onClick={() => setLayout(4)}>
-                                    <TfiLayoutColumn4Alt className="fs-4" />
-                                </button>
+                            <Col>
+                                <ChangeLayoutProductBtns layout={layout} setLayout={setLayout} />
                             </Col>
                             <Col className={cx("ordered", "d-flex justify-content-end")}>
                                 <Form.Select
@@ -237,7 +224,7 @@ export default function ProductScreen() {
                             </Row>
                         ) : (
                             <div className="text-center my-5">
-                                <p className="fs-1 text-black-50">Sorry! Current we don't have products</p>
+                                <p className="fs-1 text-black-50">Sorry! Currently we don't have products</p>
                             </div>
                         )}
                     </div>

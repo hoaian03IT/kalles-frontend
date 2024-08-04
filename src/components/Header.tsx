@@ -74,17 +74,17 @@ export const Header = ({ type }: Props) => {
                     </Link>
                 </Col>
                 <Col className={cx("interact")}>
-                    <div className={cx("item-group", "mobile")}>
-                        <CiSearch className={cx("item")} onClick={() => setShowSearchSlide(true)} />
-                    </div>
-                    <div className={cx("item-group")}>
+                    <button className={cx("item-group", "mobile")} onClick={() => setShowSearchSlide(true)}>
+                        <CiSearch className={cx("item")} />
+                    </button>
+                    <button className={cx("item-group")} onClick={() => navigate(pathname.whitelist)}>
                         <CiHeart className={cx("item")} />
                         <span className={cx("bard")}>{"9+"}</span>
-                    </div>
-                    <div className={cx("item-group", "mobile")}>
-                        <CiShoppingCart className={cx("item")} onClick={() => setShowCartSlide(true)} />
+                    </button>
+                    <button className={cx("item-group", "mobile")} onClick={() => setShowCartSlide(true)}>
+                        <CiShoppingCart className={cx("item")} />
                         <span className={cx("bard")}>{cart.items.length > 9 ? "9+" : cart.items.length}</span>
-                    </div>
+                    </button>
                     {isLogged ? (
                         <OverlayTrigger
                             trigger="click"

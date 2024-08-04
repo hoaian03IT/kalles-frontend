@@ -4,6 +4,8 @@ import { fetchCategoriesApi } from "./category";
 import { fetchFilteredProductApi, fetchProductDetailApi } from "./product";
 import { createReviewApi, fetchReviewsApi, fetchTotalRateApi } from "./review";
 
+export const messageErrDefault = "Oops! Something went wrong";
+
 axios.defaults.baseURL = "http://localhost:4000";
 
 export {

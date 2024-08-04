@@ -14,4 +14,5 @@ export const pathname = {
         return this.me + "/address";
     },
     cart: "/your-cart",
+    whitelist: "/whitelist",
 };

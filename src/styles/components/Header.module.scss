@@ -74,6 +74,8 @@
         align-items: center;
         justify-content: flex-end;
         .item-group {
+            border: none;
+            background-color: transparent;
             position: relative;
             &:hover .item:not(.avatar) {
                 transform: scale(1.15);

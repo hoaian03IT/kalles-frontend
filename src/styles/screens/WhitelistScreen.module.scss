@@ -1,0 +1,17 @@
+@use "../variables" as *;
+
+.wrapper {
+    .empty {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        p {
+            font-size: 2rem;
+            color: rgba($color: $black-color, $alpha: 0.6);
+        }
+        img {
+            height: 180px;
+            width: 180px;
+        }
+    }
+}

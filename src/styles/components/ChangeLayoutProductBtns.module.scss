@@ -1,0 +1,33 @@
+@use "../variables" as *;
+@use "sass:map";
+
+.layouts {
+    display: flex;
+    align-items: center;
+
+    .layout-button {
+        margin: 0 0.4rem;
+        padding: 0.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba($color: $black-color, $alpha: 0.5);
+        border: 1px solid currentColor;
+        outline: none;
+        transition: color 0.3s;
+
+        &:hover,
+        &.active {
+            color: $black-color;
+        }
+    }
+}
+
+@media (max-width: calc(map.get($grid-breakpoints, md) - 1px)) {
+    .layouts {
+        .layout-button:nth-of-type(2),
+        .layout-button:nth-of-type(3) {
+            display: none;
+        }
+    }
+}

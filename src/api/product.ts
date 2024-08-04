@@ -12,8 +12,7 @@ import {
     fetchDetailProductSuccess,
 } from "~/app/features/products/productReducer";
 import { ProductFilterType, Product, SubProduct } from "~/types";
-
-const messageErrDefault = "Oops! Something went wrong";
+import { messageErrDefault } from ".";
 
 export const fetchFilteredProductApi = async (
     filter: ProductFilterType,
