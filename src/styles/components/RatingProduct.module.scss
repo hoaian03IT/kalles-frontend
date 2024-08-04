@@ -1,0 +1,20 @@
+@use "../variables" as *;
+
+.wrapper {
+    .btn-select-star {
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        &.just-show {
+            pointer-events: none;
+        }
+        .ic-star {
+            color: rgba($color: $black-color, $alpha: 0.1);
+            &.active {
+                color: $yellow-color;
+            }
+        }
+    }
+}

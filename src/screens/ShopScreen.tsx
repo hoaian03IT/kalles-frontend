@@ -5,7 +5,7 @@ import { bgBanner1 } from "~/assets/images/background-banner";
 import { img1, img2, img3, img4, img5, img6 } from "~/assets/images/shop-screen";
 
 import classNames from "classnames/bind";
-import styles from "~/styles/ShopScreen.module.scss";
+import styles from "~/styles/screens/ShopScreen.module.scss";
 
 const cx = classNames.bind(styles);
 

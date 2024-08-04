@@ -1,7 +1,7 @@
 import { FaCheck } from "react-icons/fa6";
 import classNames from "classnames/bind";
 
-import styles from "~/styles/MyCheckbox.module.scss";
+import styles from "~/styles/components/MyCheckbox.module.scss";
 import { useId } from "react";
 
 const cx = classNames.bind(styles);

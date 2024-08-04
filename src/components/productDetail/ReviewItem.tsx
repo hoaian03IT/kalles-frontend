@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import styles from "~/styles/ProductDetailScreen.module.scss";
+import styles from "~/styles/screens/ProductDetailScreen.module.scss";
 import { RateProduct } from "../RateProduct";
 import { getTimeAgo } from "~/utils";
 import { ReviewProduct } from "~/types";

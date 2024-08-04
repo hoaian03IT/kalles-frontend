@@ -3,7 +3,7 @@ import { Badge, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { CardSlider } from "./CardSlider";
 
-import styles from "~/styles/ShopCollections.module.scss";
+import styles from "~/styles/components/ShopCollections.module.scss";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { fetchCategoriesApi } from "~/api";

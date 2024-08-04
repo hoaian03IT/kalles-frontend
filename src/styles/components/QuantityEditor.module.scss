@@ -1,0 +1,30 @@
+@use "../variables" as *;
+
+.quantity {
+    position: relative;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid $black-color;
+    border-radius: $btn-radius;
+
+    .plus-icon,
+    .minus-icon {
+        position: absolute;
+        top: 50%;
+        color: $black-color;
+        user-select: none;
+        transform: translateY(-50%);
+        transition: all 0.3s;
+        &:hover {
+            color: $hover-blue-color;
+        }
+    }
+    .plus-icon {
+        right: 12px;
+    }
+    .minus-icon {
+        left: 12px;
+    }
+}

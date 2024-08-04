@@ -1,0 +1,79 @@
+@use "../variables" as *;
+
+.wrapper {
+    .wrapper-title {
+        border-bottom: 1px solid rgba($color: $black-color, $alpha: 0.2);
+    }
+    .cart-list {
+        border-bottom: 1px solid rgba($color: $black-color, $alpha: 0.2);
+        .cart-item {
+            padding: 1.5rem 0.5rem;
+            & + .cart-item {
+                border-top: 1px solid rgba($color: $black-color, $alpha: 0.2);
+            }
+            .color-and-size {
+                font-size: 14px;
+                .color {
+                    .color-present {
+                        display: block;
+                        height: 16px;
+                        width: 16px;
+                        border-radius: 50%;
+                    }
+                }
+            }
+            .wrapper-image {
+                width: 120px;
+                img {
+                    width: 100%;
+                    aspect-ratio: 1 / 1;
+                    object-fit: cover;
+                    object-position: center;
+                }
+            }
+            .product-name {
+                color: $black-color;
+                text-decoration: none;
+                transition: color 0.3s;
+
+                &:hover {
+                    color: $hover-blue-color;
+                }
+            }
+            .btn-delete {
+                border: none;
+                outline: none;
+                background-color: transparent;
+            }
+            .product-price {
+                .origin-price {
+                    font-size: 14px;
+                    color: rgba($color: $black-color, $alpha: 0.5);
+                    text-decoration: line-through;
+                }
+                .discounted-price {
+                    font-size: 16px;
+                    color: $red-color;
+                }
+            }
+        }
+    }
+    .link-to-shopping {
+        display: block;
+        color: $black-color;
+        text-decoration: underline;
+        text-decoration-color: $black-color;
+        transition: color 0.3s ease-out, text-decoration-color 0.3s ease-out, transform 0.2s;
+        & > * {
+            transition: color 0.3s ease-out;
+        }
+
+        &:hover {
+            transform: translateX(10px);
+            text-decoration-color: $hover-blue-color !important;
+            & > * {
+                color: $hover-blue-color;
+            }
+        }
+    }
+}

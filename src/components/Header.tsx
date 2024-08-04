@@ -10,7 +10,7 @@ import { SearchSlide } from "./slides/SearchSlide";
 import { MenuSlideMobile } from "./slides/MenuSlideMobile";
 import { navbar } from "~/data";
 
-import styles from "~/styles/Header.module.scss";
+import styles from "~/styles/components/Header.module.scss";
 import { CheckLoggedContext } from "./CheckLogged";
 import { pathname } from "~/configs/pathname";
 import { useAppSelector } from "~/app/hooks";

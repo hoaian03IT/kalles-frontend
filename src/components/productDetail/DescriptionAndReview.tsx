@@ -12,7 +12,7 @@ import { TableRate } from "./TableRate";
 import { ImageSlider } from "../ImageSlider";
 
 import classNames from "classnames/bind";
-import styles from "~/styles/ProductDetailScreen.module.scss";
+import styles from "~/styles/screens/ProductDetailScreen.module.scss";
 import { ReviewItem } from "./ReviewItem";
 import { ReviewProduct } from "~/types";
 const cx = classNames.bind(styles);

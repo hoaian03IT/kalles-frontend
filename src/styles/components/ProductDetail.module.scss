@@ -1,0 +1,206 @@
+@use "../variables" as *;
+
+@keyframes fluctuateAnimation {
+    0% {
+        transform: translateX(0);
+    }
+    15% {
+        transform: translateX(-5px);
+    }
+    30% {
+        transform: translateX(0);
+    }
+    45% {
+        transform: translateX(-5px);
+    }
+    60% {
+        transform: translateX(0);
+    }
+}
+
+.wrapper {
+    .content {
+        overflow-x: hidden;
+        overflow-y: auto;
+        .name-product {
+            font-weight: 500;
+            font-size: 1.2rem;
+            color: $black-color;
+            text-decoration: none;
+            transition: all 0.3s;
+
+            &:hover {
+                color: $hover-blue-color;
+            }
+        }
+        .price {
+            .current-price {
+                color: rgba($color: $black-color, $alpha: 0.6);
+                font-size: 1.4em;
+            }
+        }
+        .description {
+            word-wrap: break-word;
+        }
+        .btn-buy {
+            // margin: 0 12px;
+            padding: 0 8px;
+            color: $white-color;
+            background-color: $black-color;
+            border: none;
+            height: $btn-md-height;
+            border-radius: $btn-radius;
+            transition: background-color 0.2s ease-out;
+            animation: fluctuateAnimation 1s cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+            &:hover {
+                background-color: $hover-blue-color;
+                animation: none;
+            }
+        }
+        .color-product {
+            .colors {
+                display: flex;
+                align-items: center;
+            }
+        }
+        .size-product {
+            .sizes {
+                display: flex;
+                align-items: center;
+                .size {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-width: 28px;
+                    min-height: 28px;
+                    border: 1px solid rgba($color: $black-color, $alpha: 0.2);
+                    border-radius: 4px;
+                    font-weight: 300;
+                    color: rgba($color: $black-color, $alpha: 0.5);
+                    cursor: pointer;
+                    transition: all 0.6s ease-out;
+
+                    & + .size {
+                        margin-left: 4px;
+                    }
+                    &:hover,
+                    &.active {
+                        color: $black-color;
+                        border-color: $black-color;
+                    }
+                }
+            }
+        }
+        .whitelist {
+            position: relative;
+            height: 38px;
+            width: 38px;
+            border-radius: 50%;
+            border: 2px solid $black-color;
+            background-color: $white-color;
+            transition: all 0.3s;
+
+            .icon {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                transition: all 0.3s;
+            }
+
+            .icon-not-active {
+                opacity: 1;
+            }
+            .icon-active {
+                opacity: 0;
+                color: $red-color;
+            }
+
+            &.active {
+                border-color: $red-color;
+
+                .icon-not-active {
+                    opacity: 0;
+                }
+                .icon-active {
+                    opacity: 1;
+                }
+            }
+
+            &:hover {
+                border-color: $hover-blue-color;
+
+                .icon {
+                    color: $hover-blue-color;
+                }
+            }
+        }
+    }
+}
+
+.color {
+    position: relative;
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+
+    & + .color {
+        margin-left: 12px;
+    }
+
+    &:hover::after {
+        border-width: 1px;
+        border-color: $black-color;
+    }
+    &.active::after {
+        border-width: 2px;
+        border-color: $black-color;
+    }
+
+    &::after {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 34px;
+        height: 34px;
+        border: 1px solid rgba($color: $black-color, $alpha: 0.2);
+        border-radius: 50%;
+        transition: border-color 0.6s ease-out;
+    }
+}
+
+.vertical-image-list {
+    height: 100%;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+    .image {
+        @include image-3x4;
+        width: 100%;
+        opacity: 0.4;
+        transition: opacity 0.3s;
+        cursor: pointer;
+
+        &:hover,
+        &.active {
+            opacity: 1;
+        }
+
+        & + .image {
+            margin-top: 10px;
+        }
+    }
+}
+
+.popover {
+    border-radius: 8px;
+    overflow: hidden;
+    &-body {
+        background-color: $white-color;
+        padding: 4px;
+    }
+}

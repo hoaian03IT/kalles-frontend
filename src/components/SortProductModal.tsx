@@ -1,7 +1,7 @@
 import { CustomOffCanvas } from "./slides/CustomOffCanvas";
 import classNames from "classnames/bind";
 
-import styles from "~/styles/SortProductModal.module.scss";
+import styles from "~/styles/components/SortProductModal.module.scss";
 import { OrderFilterType } from "~/types";
 
 const cx = classNames.bind(styles);

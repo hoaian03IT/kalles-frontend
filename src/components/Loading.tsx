@@ -1,4 +1,4 @@
-import styles from "~/styles/Loading.module.scss";
+import styles from "~/styles/components/Loading.module.scss";
 
 export const Loading = () => {
     return (

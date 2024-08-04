@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import { HeaderBanner } from "~/components/HeaderBanner";
 import { RegisterForm } from "~/components/form/RegisterForm";
 
-import styles from "~/styles/LoginScreen_RegisterScreen.module.scss";
+import styles from "~/styles/screens/LoginScreen_RegisterScreen.module.scss";
 
 const cx = classNames.bind(styles);
 export default function RegisterScreen() {

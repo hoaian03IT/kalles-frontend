@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from "react-bootstrap";
 import classNames from "classnames/bind";
 import { IoMdEyeOff, IoMdEye } from "react-icons/io";
 
-import styles from "~/styles/CustomInput.module.scss";
+import styles from "~/styles/components/CustomInput.module.scss";
 
 type Props = {
     label: string;

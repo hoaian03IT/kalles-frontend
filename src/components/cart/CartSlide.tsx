@@ -5,7 +5,7 @@ import { BsCartX } from "react-icons/bs";
 import { CustomOffCanvas } from "../slides/CustomOffCanvas";
 import { ItemCardProduct } from "./ItemCartProduct";
 
-import styles from "~/styles/CartSlide.module.scss";
+import styles from "~/styles/components/CartSlide.module.scss";
 import { useAppSelector } from "~/app/hooks";
 import { useNavigate } from "react-router-dom";
 import { pathname } from "~/configs/pathname";

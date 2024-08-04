@@ -1,4 +1,4 @@
-import styles from "~/styles/ProductDetail.module.scss";
+import styles from "~/styles/components/ProductDetail.module.scss";
 import classNames from "classnames/bind";
 
 const cx = classNames.bind(styles);

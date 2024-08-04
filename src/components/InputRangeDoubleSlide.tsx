@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import { Dispatch, FormEvent, SetStateAction, useEffect, useState } from "react";
-import styles from "~/styles/InputRangeDoubleSlide.module.scss";
+import styles from "~/styles/components/InputRangeDoubleSlide.module.scss";
 
 const cx = classNames.bind(styles);
 

@@ -16,7 +16,7 @@ import { Loading } from "~/components/Loading";
 import { Pagination, PaginationItem, PaginationNext, PaginationPrevious } from "~/components/pagination";
 
 import classNames from "classnames/bind";
-import styles from "~/styles/ProductScreen.module.scss";
+import styles from "~/styles/screens/ProductScreen.module.scss";
 import { ProductFilterType, OrderFilterType, StockFilterType, PriceFilterType, SexFilterType } from "~/types";
 import { useMediaQueries } from "~/hooks";
 

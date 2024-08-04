@@ -1,6 +1,6 @@
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import classNames from "classnames/bind";
-import styles from "~/styles/QuantityEditor.module.scss";
+import styles from "~/styles/components/QuantityEditor.module.scss";
 
 const cx = classNames.bind(styles);
 

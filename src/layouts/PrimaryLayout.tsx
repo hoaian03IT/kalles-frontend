@@ -2,7 +2,7 @@ import { Footer } from "~/components/Footer";
 import { Header } from "~/components/Header";
 import classNames from "classnames/bind";
 
-import styles from "~/styles/Layouts.module.scss";
+import styles from "~/styles/components/Layouts.module.scss";
 
 const cx = classNames.bind(styles);
 

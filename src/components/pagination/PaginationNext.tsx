@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import styles from "~/styles/Pagination.module.scss";
+import styles from "~/styles/components/Pagination.module.scss";
 
 const cx = classNames.bind(styles);
 

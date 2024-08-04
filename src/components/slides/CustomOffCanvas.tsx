@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import { Offcanvas } from "react-bootstrap";
 import { IoCloseOutline } from "react-icons/io5";
 
-import styles from "~/styles/CustomOffCanvas.module.scss";
+import styles from "~/styles/components/CustomOffCanvas.module.scss";
 
 const cx = classNames.bind(styles);
 

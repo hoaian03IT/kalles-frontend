@@ -1,7 +1,7 @@
 import { FaStar } from "react-icons/fa";
 
 import classNames from "classnames/bind";
-import styles from "~/styles/ProductDetailScreen.module.scss";
+import styles from "~/styles/screens/ProductDetailScreen.module.scss";
 const cx = classNames.bind(styles);
 
 type Props = {

@@ -1,7 +1,7 @@
 import { Button, Col, FormControl, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-import styles from "~/styles/Footer.module.scss";
+import styles from "~/styles/components/Footer.module.scss";
 import { useState } from "react";
 import { SocialNetworks } from "./SocialNetWorks";
 

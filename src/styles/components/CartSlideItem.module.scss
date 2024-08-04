@@ -1,0 +1,47 @@
+@use "../variables" as *;
+
+.wrapper {
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    &-image {
+        max-width: 120px;
+        img {
+            width: 100%;
+            @include image-3x4;
+        }
+    }
+    .name-product {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        text-decoration: none;
+        overflow-x: hidden;
+        color: $black-color;
+        font-size: 1rem;
+        font-weight: 300;
+    }
+    .type-product {
+        font-size: 14px;
+    }
+
+    & + .wrapper {
+        border-top: 1px solid $black-color-20;
+    }
+    .btn-delete {
+        float: right;
+        padding: 2px 4px;
+        border: none;
+        outline: none;
+        border-radius: 4px;
+        background-color: transparent;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: #eeeeee;
+        }
+        &:active {
+            opacity: 0.8;
+        }
+    }
+}

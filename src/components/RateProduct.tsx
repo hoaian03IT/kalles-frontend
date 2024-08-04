@@ -1,7 +1,7 @@
 import { FaStarHalfAlt, FaStar } from "react-icons/fa";
 
 import classNames from "classnames/bind";
-import styles from "~/styles/RatingProduct.module.scss";
+import styles from "~/styles/components/RatingProduct.module.scss";
 const cx = classNames.bind(styles);
 
 type Props = {

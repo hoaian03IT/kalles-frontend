@@ -1,0 +1,152 @@
+@use "../variables" as *;
+
+.wrapper {
+    .header {
+        .btn-close {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            .ic-close {
+                cursor: pointer;
+                transition: transform 0.3s;
+                &:hover {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
+    .content {
+        .preview-product {
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba($color: $black-color, $alpha: 0.1);
+            border-radius: 4px;
+            .wrapper-image {
+                height: 50px;
+                img {
+                    @include image-3x4;
+                    height: 100%;
+                }
+            }
+        }
+        .form {
+            border-top: 1px solid rgba($color: $black-color, $alpha: 0.1);
+            .btn-submit {
+                min-width: 168px;
+                max-width: 100%;
+                background-color: $yellow-color !important;
+                border: none;
+                border-radius: 4px !important;
+                float: right;
+            }
+            form {
+                .form-group {
+                    position: relative;
+
+                    &.error {
+                        label {
+                            color: $red-color;
+                        }
+                        input {
+                            border-color: $red-color;
+                        }
+                    }
+
+                    label {
+                        color: rgba($color: $black-color, $alpha: 0.8);
+                        cursor: pointer;
+                    }
+                    input,
+                    textarea {
+                        margin-top: 10px;
+                        display: block;
+                        width: 100%;
+                        font-size: 14px;
+                        font-weight: 300;
+                        padding: 8px 10px;
+                        border: 1px solid rgba($color: $black-color, $alpha: 0.2);
+                        border-radius: 4px;
+                        outline: none;
+                        transition: border-color 0.3s;
+
+                        &::placeholder {
+                            color: rgba($color: $black-color, $alpha: 0.4);
+                            user-select: none;
+                        }
+
+                        &:focus {
+                            border-color: rgba($color: $black-color, $alpha: 0.3);
+                        }
+                    }
+
+                    textarea {
+                        resize: none;
+                    }
+
+                    & + .form-group {
+                        margin-top: 1.5rem;
+                    }
+                    .err-msg {
+                        margin: 0 8px;
+                        position: absolute;
+                        top: 100%;
+                        max-width: 100%;
+                        color: $red-color;
+                        font-size: 12px;
+                    }
+                }
+
+                .upload-photos {
+                    .wrapper-image {
+                        height: 50px;
+                        aspect-ratio: 1 / 1;
+                        overflow: hidden;
+                        img {
+                            height: 100%;
+                            scale: 3;
+                        }
+                    }
+                    .note {
+                        font-size: 12px;
+                    }
+                }
+                .photos-shown {
+                    display: grid;
+                    gap: 10px;
+                    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+                    .wrapper-image {
+                        position: relative;
+                        width: 100%;
+                        overflow: hidden;
+                        background-color: rgba($color: $black-color, $alpha: 0.8);
+                        img {
+                            width: 100%;
+                            aspect-ratio: 1 / 1;
+                            object-fit: contain;
+                            object-position: center;
+                        }
+                        .btn-remove {
+                            opacity: 0;
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            bottom: 0;
+                            border: none;
+                            outline: none;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            background-color: rgba($color: $black-color, $alpha: 0.4);
+                            transition: opacity 0.3s;
+                        }
+                        &:hover .btn-remove {
+                            opacity: 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

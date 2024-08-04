@@ -5,7 +5,7 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import { GoArrowRight } from "react-icons/go";
 import { IoCarOutline, IoDiamondOutline, IoGiftOutline } from "react-icons/io5";
 
-import styles from "~/styles/HomeScreen.module.scss";
+import styles from "~/styles/screens/HomeScreen.module.scss";
 import { LazyReact } from "~/components/LazyReact";
 const ShopCollections = lazy(() => import("~/components/ShopCollections"));
 const NewArrivalProducts = lazy(() => import("~/components/NewArrivalProducts"));

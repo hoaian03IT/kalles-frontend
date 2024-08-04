@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { signUpApi } from "~/api";
 import classNames from "classnames/bind";
 
-import styles from "~/styles/LoginForm&RegisterForm.module.scss";
+import styles from "~/styles/components/LoginForm&RegisterForm.module.scss";
 import { validateRules } from "~/utils";
 
 const cx = classNames.bind(styles);

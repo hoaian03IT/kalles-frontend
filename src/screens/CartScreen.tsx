@@ -5,7 +5,7 @@ import { CartScreenItem } from "~/components/cart/CartScreenItem";
 import { GrFormNextLink } from "react-icons/gr";
 
 import classNames from "classnames/bind";
-import styles from "~/styles/CartScreen.module.scss";
+import styles from "~/styles/screens/CartScreen.module.scss";
 import { formatCurrency } from "~/utils";
 import { Link } from "react-router-dom";
 import { pathname } from "~/configs/pathname";

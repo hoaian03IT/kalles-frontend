@@ -4,7 +4,7 @@ import { RateProduct } from "./RateProduct";
 import { FormEvent, useId, useState } from "react";
 
 import classNames from "classnames/bind";
-import styles from "~/styles/WriteReviewModal.module.scss";
+import styles from "~/styles/components/WriteReviewModal.module.scss";
 import { getBase64, validateRules } from "~/utils";
 import { toast } from "react-toastify";
 import { createReviewApi } from "~/api";

@@ -2,7 +2,7 @@ import { Carousel, CarouselItem } from "react-bootstrap";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 import classNames from "classnames/bind";
-import styles from "~/styles/ImageSlider.module.scss";
+import styles from "~/styles/components/ImageSlider.module.scss";
 const cx = classNames.bind(styles);
 
 type Props = {

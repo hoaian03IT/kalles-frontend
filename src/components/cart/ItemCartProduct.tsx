@@ -14,7 +14,7 @@ import {
 } from "~/app/features/cart/cartReducer";
 
 import classNames from "classnames/bind";
-import styles from "~/styles/CartSlideItem.module.scss";
+import styles from "~/styles/components/CartSlideItem.module.scss";
 import { useAppDispatch } from "~/app/hooks";
 import { toast } from "react-toastify";
 import { CartItem } from "~/types";

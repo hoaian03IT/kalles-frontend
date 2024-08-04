@@ -1,0 +1,52 @@
+@use "../variables" as *;
+@use "sass:map";
+
+.wrapper {
+    .footer {
+        background-color: $gray-color;
+        padding: 0 9rem;
+        .item-link {
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgba($color: $black-color, $alpha: 0.5);
+            text-decoration: none;
+            transition: color 0.2s linear;
+
+            &:hover {
+                color: $black-color;
+            }
+
+            & + .item-link {
+                padding-top: 1rem;
+            }
+        }
+
+        .form-subscribe {
+            width: 100%;
+            display: flex;
+            .input {
+                flex: 1;
+                padding: 0 8px;
+                font-size: 0.8rem;
+                font-weight: 300;
+                color: rgba($color: $black-color, $alpha: 0.5);
+                border: 1px solid $black-color;
+                outline: none;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            .button {
+                min-width: 98px;
+                margin-left: 4px;
+            }
+        }
+    }
+}
+
+@media (max-width: calc(map.get($grid-breakpoints, sm) - 1px)) {
+    .wrapper {
+        .footer {
+            padding: 0 2rem;
+        }
+    }
+}

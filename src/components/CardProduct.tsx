@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { CiHeart, CiShoppingCart, CiRead } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
 
-import styles from "~/styles/CardProduct.module.scss";
-import { memo, useCallback, useEffect, useState } from "react";
+import styles from "~/styles/components/CardProduct.module.scss";
+import { memo, useCallback, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ProductDetail } from "./productDetail/ProductDetail";
 import { formatCurrency } from "~/utils";
@@ -16,18 +16,20 @@ import {
     addProductToCartSuccess,
 } from "~/app/features/cart/cartReducer";
 import { toast } from "react-toastify";
-import { CartItem, Product, SubProduct } from "~/types";
+import { Product, SubProduct } from "~/types";
 import { pathname } from "~/configs/pathname";
 
 const cx = classNames.bind(styles);
 
 type Props = {
     info: SubProduct;
+    favoriteStatus?: boolean;
 };
 
-export const CardProduct = memo(({ info }: Props) => {
+export const CardProduct = memo(({ info, favoriteStatus = false }: Props) => {
     const [showQuickView, setShowQuickView] = useState(false);
     const [productInfo, setProductInfo] = useState<Product>();
+    const [favorite, setFavorite] = useState(favoriteStatus);
 
     const dispatch = useAppDispatch();
     const linkToDetailedProduct = pathname.detailProduct.split(":")[0] + info._id;
@@ -42,7 +44,15 @@ export const CardProduct = memo(({ info }: Props) => {
         }
     }, [info._id]);
 
-    const handleAddToFavorite = () => {};
+    const handleToggleFavorite = () => {
+        if (favorite) {
+            setFavorite(false);
+            // remove from favorites list
+        } else {
+            setFavorite(true);
+            // add to favorites list
+        }
+    };
 
     const handleAddToCard = async () => {
         const product = await fetchProductDetailApi(info._id);
@@ -85,7 +95,9 @@ export const CardProduct = memo(({ info }: Props) => {
                     <button className={cx("action-btn", "add-cart-btn")} onClick={handleAddToCard}>
                         <CiShoppingCart />
                     </button>
-                    <button className={cx("action-btn", "add-whitelist-btn")} onClick={handleAddToFavorite}>
+                    <button
+                        className={cx("action-btn", "add-whitelist-btn", favorite ? "active" : "")}
+                        onClick={handleToggleFavorite}>
                         <CiHeart />
                     </button>
                 </div>

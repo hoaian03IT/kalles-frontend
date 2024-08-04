@@ -2,7 +2,7 @@ import { CustomOffCanvas } from "./slides/CustomOffCanvas";
 import { MyCheckbox } from "./MyCheckbox";
 import { useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
-import styles from "~/styles/FilterProduct.module.scss";
+import styles from "~/styles/components/FilterProduct.module.scss";
 import { InputRangeDoubleSlide } from "./InputRangeDoubleSlide";
 import { formatCurrency } from "~/utils";
 import { Button } from "react-bootstrap";

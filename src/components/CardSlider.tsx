@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import { useEffect, useRef, useState } from "react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
-import styles from "~/styles/CardSlider.module.scss";
+import styles from "~/styles/components/CardSlider.module.scss";
 
 const cx = classNames.bind(styles);
 

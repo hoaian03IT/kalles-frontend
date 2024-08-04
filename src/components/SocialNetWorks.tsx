@@ -2,7 +2,7 @@ import { FaXTwitter, FaFacebookF, FaInstagram, FaLinkedinIn, FaPinterestP } from
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import classNames from "classnames/bind";
 
-import styles from "~/styles/SocialNetWorks.module.scss";
+import styles from "~/styles/components/SocialNetWorks.module.scss";
 
 const cx = classNames.bind(styles);
 

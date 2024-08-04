@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import styles from "~/styles/FeatureProducts.module.scss";
+import styles from "~/styles/components/FeatureProducts.module.scss";
 import { CardProduct } from "./CardProduct";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { FaArrowDownLong } from "react-icons/fa6";

@@ -1,0 +1,91 @@
+@use "../variables" as *;
+
+$height-search-group: 165px;
+$height-label-search: 50px;
+
+.group-search {
+    padding: 0.5rem 1.5rem;
+    border-bottom: 1px solid $black-color-20;
+    .input-search {
+        margin: 1.5rem 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        font-weight: 300;
+        border-radius: $btn-radius;
+        border-color: $black-color-20 !important;
+
+        &:focus {
+            box-shadow: none;
+            outline: none;
+        }
+
+        &[type="text"] {
+            padding-right: 2.5rem;
+        }
+    }
+    .categories-selection option {
+        font-weight: 300;
+    }
+    .wrap-search-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 10px;
+        cursor: pointer;
+    }
+}
+
+.result {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: $height-search-group;
+    height: calc(100% - $height-search-group);
+    overflow: hidden;
+    .label,
+    .search-value-label {
+        padding: 0.8rem 1.5rem;
+        max-height: $height-label-search;
+        border-bottom: 1px solid $black-color-20;
+        box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+    }
+    .search-value-label {
+        border-bottom: none;
+        border-top: 1px solid $black-color-20;
+        box-shadow: 0px -4px 10px 0px rgba(0, 0, 0, 0.1);
+    }
+    .result-list {
+        height: calc(100% - $height-label-search - $height-label-search);
+        overflow-y: auto;
+
+        .item-searched-product {
+            & + .item-searched-product {
+                border-top: 1px solid rgba($color: $black-color, $alpha: 0.1);
+            }
+            .wrapper-image {
+                width: 80px;
+                img {
+                    width: 100%;
+                    @include image-3x4;
+                }
+            }
+            .description {
+                .product-name {
+                    color: $black-color;
+
+                    &:hover {
+                        color: $hover-blue-color;
+                    }
+                }
+                .discount-price {
+                    &.highlight {
+                        color: $red-color;
+                    }
+                }
+                .origin-price {
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}

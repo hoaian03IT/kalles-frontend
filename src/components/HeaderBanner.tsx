@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import styles from "~/styles/HeaderBanner.module.scss";
+import styles from "~/styles/components/HeaderBanner.module.scss";
 
 const cx = classNames.bind(styles);
 

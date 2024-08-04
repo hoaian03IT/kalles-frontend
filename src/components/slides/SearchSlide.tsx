@@ -4,7 +4,7 @@ import { Form, FormControl, FormGroup } from "react-bootstrap";
 import classNames from "classnames/bind";
 import { CiSearch } from "react-icons/ci";
 
-import styles from "~/styles/SearchSlide.module.scss";
+import styles from "~/styles/components/SearchSlide.module.scss";
 import { ItemCardProduct } from "../cart/ItemCartProduct";
 import { useAppSelector } from "~/app/hooks";
 import { useDebounce } from "~/hooks";

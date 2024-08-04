@@ -1,9 +1,0 @@
-@use "variables" as *;
-
-.primary-layout .main {
-    transform: translateY(calc(0px - $offcanvas-header-height - $margin-horizontal-header * 2));
-}
-
-.secondary-layout .main {
-    padding-top: $offcanvas-header-height;
-}

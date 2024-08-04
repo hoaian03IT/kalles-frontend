@@ -5,7 +5,7 @@ import { formatCurrency } from "~/utils";
 import { QuantityEditor } from "~/components/QuantityEditor";
 
 import classNames from "classnames/bind";
-import styles from "~/styles/CartScreen.module.scss";
+import styles from "~/styles/screens/CartScreen.module.scss";
 import {
     addProductToCartFailed,
     addProductToCartRequest,

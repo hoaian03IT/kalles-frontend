@@ -56,9 +56,9 @@ export const fetchProductDetailApi = async (
     }
 };
 
-export const fetchSuggestedProductApi = async (categoryId: string) => {
+export const fetchSuggestedProductApi = async (categoryId: string, productId: string) => {
     try {
-        const res = await axios.get(`/product/suggest/${categoryId}`);
+        const res = await axios.get(`/product/suggested-product?category=${categoryId}&except=${productId}`);
         return res.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

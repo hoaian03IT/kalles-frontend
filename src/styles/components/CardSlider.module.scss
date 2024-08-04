@@ -1,0 +1,84 @@
+@use "../variables" as *;
+@use "sass:map";
+
+.wrapper {
+    $padding-x: 2rem;
+    padding: 0 $padding-x;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    .carousel {
+        width: 100%;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: calc(100% / 6);
+        scroll-behavior: smooth;
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: 0;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+    .pre-btn,
+    .nxt-btn {
+        display: none;
+        position: absolute;
+        top: 40%;
+        transform: translateY(-50%);
+        height: 30px;
+        width: 30px;
+        background-color: $black-color;
+        color: $white-color;
+        font-size: 0.8rem;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .pre-btn {
+        left: $padding-x;
+    }
+
+    .nxt-btn {
+        right: $padding-x;
+    }
+}
+
+@media (max-width: calc(map.get($grid-breakpoints, xl) - 1px)) {
+    .wrapper {
+        .pre-btn,
+        .nxt-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel {
+            overflow: hidden;
+            grid-auto-columns: calc(100% / 3);
+        }
+    }
+}
+
+@media (max-width: calc(map.get($grid-breakpoints, sm) - 1px)) {
+    $padding-x: 1rem;
+    .wrapper {
+        padding: 0 $padding-x;
+        .carousel {
+            overflow: hidden;
+            grid-auto-columns: calc(100% / 2);
+        }
+        .pre-btn {
+            left: $padding-x;
+        }
+
+        .nxt-btn {
+            right: $padding-x;
+        }
+    }
+}

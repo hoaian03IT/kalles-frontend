@@ -11,7 +11,7 @@ import { pathname } from "~/configs/pathname";
 import { fetchSuggestedProductApi } from "~/api/product";
 
 import classNames from "classnames/bind";
-import styles from "~/styles/ProductDetailScreen.module.scss";
+import styles from "~/styles/screens/ProductDetailScreen.module.scss";
 import { CardProduct } from "~/components/CardProduct";
 import { Product } from "~/types";
 const cx = classNames.bind(styles);
@@ -33,12 +33,12 @@ export default function ProductDetailScreen() {
 
     useEffect(() => {
         const fetchSuggestedProduct = async (categoryId: string) => {
-            const resData = await fetchSuggestedProductApi(categoryId);
+            const resData = await fetchSuggestedProductApi(categoryId, product._id);
             setSuggestedProduct(resData.products);
         };
 
         if (product.category._id) fetchSuggestedProduct(product.category._id);
-    }, [product.category._id]);
+    }, [product._id, product.category._id]);
 
     return (
         <div className={cx("wrapper")}>

@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import styles from "~/styles/BreadCrumb.module.scss";
+import styles from "~/styles/components/BreadCrumb.module.scss";
 import { MdNavigateNext } from "react-icons/md";
 
 const cx = classNames.bind(styles);

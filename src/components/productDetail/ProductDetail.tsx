@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import { Col, Container, OverlayTrigger, Popover, PopoverBody, Row, Tooltip } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
-import styles from "~/styles/ProductDetail.module.scss";
+import styles from "~/styles/components/ProductDetail.module.scss";
 import { formatCurrency } from "~/utils";
 import { QuantityEditor } from "../QuantityEditor";
 import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";

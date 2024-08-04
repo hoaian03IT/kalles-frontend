@@ -3,7 +3,7 @@ import { navbar } from "~/data";
 import { NavLink } from "react-router-dom";
 import { CiHeart, CiUser, CiLogout, CiMail, CiPhone } from "react-icons/ci";
 
-import styles from "~/styles/MenuSlideMobile.module.scss";
+import styles from "~/styles/components/MenuSlideMobile.module.scss";
 import classNames from "classnames/bind";
 import { useContext } from "react";
 import { CheckLoggedContext } from "../CheckLogged";
