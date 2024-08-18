@@ -6,6 +6,7 @@ import categoryReducer from "./features/category/categoryReducer";
 import listProductReducer from "./features/products/productListReducer";
 import productReducer from "./features/products/productReducer";
 import cartReducer from "./features/cart/cartReducer";
+import whitelistReducer from "./features/whitelist/whitelistReducer";
 
 const persistConfig = {
     key: "root",
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     persist: persistedReducer,
     products: listProductReducer,
     product: productReducer,
+    whitelist: whitelistReducer,
 });
 
 export const store = configureStore({

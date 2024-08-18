@@ -6,7 +6,7 @@ import styles from "~/styles/components/ProductDetail.module.scss";
 import { formatCurrency } from "~/utils";
 import { QuantityEditor } from "../QuantityEditor";
 import { IoHeartOutline, IoHeartSharp } from "react-icons/io5";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { SocialNetworks } from "../SocialNetWorks";
 
 import { pathname } from "~/configs/pathname";
@@ -21,16 +21,27 @@ import {
 import { VerticalImageList } from "./VerticalImageList";
 import { toast } from "react-toastify";
 import { checkoutBrands } from "~/assets/images/brands";
-import { ColorProduct, Product, SizeProduct } from "~/types";
+import { ColorProduct, Product, SizeProduct, SubProduct } from "~/types";
 import { fetchQuantityAndSoldProductByColorSizeApi } from "~/api/product";
+import { WhitelistContext } from "../contexts/WhitelistContext";
 
 const cx = classNames.bind(styles);
 
-export const ProductDetail = ({ preview, product }: { preview?: boolean; product: Product }) => {
+export const ProductDetail = ({
+    preview,
+    favorite = false,
+    product,
+}: {
+    preview?: boolean;
+    favorite?: boolean;
+    product: Product;
+}) => {
+    const whitelistCtx = useContext(WhitelistContext);
+
     const [selectedColor, setSelectedColor] = useState<ColorProduct>(product.colors[0]);
     const [selectedImage, setSelectedImage] = useState<number>(0); // the index of the selected image in a color of the product
     const [quantityBuy, setQuantityBuy] = useState<number>(1);
-    const [isWhitelist, setIsWhitelist] = useState<boolean>(false);
+    const [isWhitelist, setIsWhitelist] = useState<boolean>(favorite);
     const [selectedSize, setSelectedSize] = useState<SizeProduct>(product.sizes[0]);
     const [quantityOfTypeProduct, setQuantityOfTypeProduct] = useState<number>(0);
     const [soldOfTypeProduct, setSoldOfTypeProduct] = useState<number>(0);
@@ -94,6 +105,16 @@ export const ProductDetail = ({ preview, product }: { preview?: boolean; product
         () => setSelectedImage((prev) => (prev === 0 ? selectedColor?.images.length - 1 : prev - 1)),
         [selectedColor?.images.length]
     );
+
+    const handleToggleFavorite = async () => {
+        if (isWhitelist) {
+            let result = await whitelistCtx?.removeOneFromWhitelist(product._id);
+            result && setIsWhitelist(false);
+        } else {
+            let result = await whitelistCtx?.addNewToWhitelist(product as SubProduct);
+            result && setIsWhitelist(true);
+        }
+    };
 
     return (
         <Container className={cx("wrapper", "py-5 h-100")}>
@@ -219,7 +240,7 @@ export const ProductDetail = ({ preview, product }: { preview?: boolean; product
                                                         isWhitelist ? "active" : "",
                                                         "d-flex align-items-center justify-content-center"
                                                     )}
-                                                    onClick={() => setIsWhitelist(!isWhitelist)}>
+                                                    onClick={handleToggleFavorite}>
                                                     <IoHeartOutline className={cx("icon", "icon-not-active", "fs-4")} />
                                                     <IoHeartSharp className={cx("icon", "icon-active", "fs-4")} />
                                                 </button>

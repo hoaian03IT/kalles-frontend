@@ -4,7 +4,7 @@ import { CiHeart, CiShoppingCart, CiRead } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
 
 import styles from "~/styles/components/CardProduct.module.scss";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useContext, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ProductDetail } from "./productDetail/ProductDetail";
 import { formatCurrency } from "~/utils";
@@ -20,6 +20,7 @@ import { Product, SubProduct } from "~/types";
 import { pathname } from "~/configs/pathname";
 import { addNewToWhitelistApi, fetchAllWhitelistApi, removeFromWhitelistApi } from "~/api/whitelist";
 import { axiosInstance } from "~/https/axiosInstance";
+import { WhitelistContext } from "./contexts/WhitelistContext";
 
 const cx = classNames.bind(styles);
 
@@ -30,6 +31,7 @@ type Props = {
 
 export const CardProduct = memo(({ info, favoriteStatus = false }: Props) => {
     const [productInfo, setProductInfo] = useState<Product>();
+    const whitelistContext = useContext(WhitelistContext);
 
     const [showQuickView, setShowQuickView] = useState(false);
     const userState = useAppSelector((state) => state.persist.user);
@@ -54,10 +56,10 @@ export const CardProduct = memo(({ info, favoriteStatus = false }: Props) => {
 
     const handleToggleFavorite = async () => {
         if (favorite) {
-            let result = await removeFromWhitelistApi(axiosJWT, info._id);
+            let result = await whitelistContext?.removeOneFromWhitelist(info._id);
             result && setFavorite(false);
         } else {
-            let result = await addNewToWhitelistApi(axiosJWT, info._id);
+            let result = await whitelistContext?.addNewToWhitelist(info);
             result && setFavorite(true);
         }
     };
@@ -134,7 +136,7 @@ export const CardProduct = memo(({ info, favoriteStatus = false }: Props) => {
                     <button className={cx("close-btn")} onClick={() => setShowQuickView(false)}>
                         <IoCloseOutline className="fs-3" />
                     </button>
-                    {productInfo && <ProductDetail preview={true} product={productInfo} />}
+                    {productInfo && <ProductDetail preview={true} product={productInfo} favorite={favoriteStatus} />}
                 </Modal>
             </div>
         </div>

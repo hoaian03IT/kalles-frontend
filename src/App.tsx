@@ -5,8 +5,8 @@ import { ToastContainer } from "react-toastify";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { PublicRoute } from "./components/PublicRoute";
 import { ScrollToTop } from "./components/ScrollToTop";
-import "react-toastify/dist/ReactToastify.css";
 
+import "react-toastify/dist/ReactToastify.css";
 import "~/styles/animations.scss";
 import "~/styles/GlobalStyles.scss";
 

@@ -9,6 +9,7 @@ import { persistor, store } from "./app/store";
 import { PersistGate } from "redux-persist/integration/react";
 import { CheckLogged } from "./components/CheckLogged";
 import { BrowserRouter } from "react-router-dom";
+import { WLContextComponent } from "./components/contexts";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
@@ -16,7 +17,9 @@ root.render(
         <BrowserRouter>
             <PersistGate loading={null} persistor={persistor}>
                 <CheckLogged>
-                    <App />
+                    <WLContextComponent>
+                        <App />
+                    </WLContextComponent>
                 </CheckLogged>
             </PersistGate>
         </BrowserRouter>

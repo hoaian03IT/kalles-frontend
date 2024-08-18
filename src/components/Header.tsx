@@ -31,6 +31,7 @@ export const Header = ({ type }: Props) => {
 
     const { isLogged, handleLogout } = useContext(CheckLoggedContext);
     const { user, cart } = useAppSelector((state) => state.persist);
+    const { whitelist } = useAppSelector((state) => state.whitelist);
 
     const headerRef = useRef(null);
 
@@ -79,7 +80,7 @@ export const Header = ({ type }: Props) => {
                     </button>
                     <button className={cx("item-group")} onClick={() => navigate(pathname.whitelist)}>
                         <CiHeart className={cx("item")} />
-                        <span className={cx("bard")}>{"9+"}</span>
+                        <span className={cx("bard")}>{whitelist.length > 9 ? "9+" : whitelist.length}</span>
                     </button>
                     <button className={cx("item-group", "mobile")} onClick={() => setShowCartSlide(true)}>
                         <CiShoppingCart className={cx("item")} />
