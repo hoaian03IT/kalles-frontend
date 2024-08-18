@@ -2,20 +2,27 @@ import styles from "~/styles/screens/WhitelistScreen.module.scss";
 import classNames from "classnames/bind";
 import { HeaderBanner } from "~/components/HeaderBanner";
 import { bgBanner3 } from "~/assets/images/background-banner";
-import { Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { ChangeLayoutProductBtns } from "~/components/ChangeLayoutProductBtns";
 import { useEffect, useState } from "react";
-import { SubProduct } from "~/types";
 import { useAppSelector } from "~/app/hooks";
 import { CardProduct } from "~/components/CardProduct";
 import emptyImg from "~/assets/images/emptypng.png";
+import { useMediaQueries } from "~/hooks";
 
 const cx = classNames.bind(styles);
 
 function WhitelistScreen() {
     const whitelistState = useAppSelector((state) => state.whitelist);
     const [layout, setLayout] = useState<2 | 3 | 4>(4);
-    const [products, setProducts] = useState<SubProduct[]>([]);
+
+    let deviceType = useMediaQueries();
+
+    useEffect(() => {
+        if (deviceType === "mobile") {
+            setLayout(2);
+        }
+    }, [deviceType]);
 
     return (
         <div className={cx("wrapper")}>
@@ -26,9 +33,11 @@ function WhitelistScreen() {
                         <Row>
                             <ChangeLayoutProductBtns layout={layout} setLayout={setLayout} />
                         </Row>
-                        <Row className="py-5">
+                        <Row xs={{ cols: layout }} className="py-5">
                             {whitelistState.whitelist.map((product) => (
-                                <CardProduct info={product} favoriteStatus={true} />
+                                <Col>
+                                    <CardProduct info={product} favoriteStatus={true} />
+                                </Col>
                             ))}
                         </Row>
                     </>
