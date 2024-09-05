@@ -88,6 +88,7 @@ export const RegisterForm = () => {
                         setValue={setFirstName}
                         label="First name"
                         required={true}
+                        boldText={true}
                     />
                     <span className={cx("validation-msg", "limit-line-1")}>{validateFirstNameMsg}</span>
                 </FormGroup>
@@ -98,6 +99,7 @@ export const RegisterForm = () => {
                         setValue={setLastName}
                         label="Last name"
                         required={true}
+                        boldText={true}
                     />
                     <span className={cx("validation-msg", "limit-line-1")}>{validateLastNameMsg}</span>
                 </FormGroup>
@@ -113,11 +115,25 @@ export const RegisterForm = () => {
                     <span className={cx("validation-msg", "limit-line-1")}>{validateGenderMsg}</span>
                 </FormGroup>
                 <FormGroup>
-                    <CustomInput type="email" value={email} setValue={setEmail} label="Email" required />
+                    <CustomInput
+                        type="email"
+                        value={email}
+                        setValue={setEmail}
+                        label="Email"
+                        required
+                        boldText={true}
+                    />
                     <span className={cx("validation-msg", "limit-line-1")}>{validateEmailMsg}</span>
                 </FormGroup>
                 <FormGroup>
-                    <CustomInput type="password" value={password} setValue={setPassword} label="Password" required />
+                    <CustomInput
+                        type="password"
+                        value={password}
+                        setValue={setPassword}
+                        label="Password"
+                        required
+                        boldText={true}
+                    />
                     <span className={cx("validation-msg", "limit-line-1")}>{validatePasswordMsg}</span>
                 </FormGroup>
 

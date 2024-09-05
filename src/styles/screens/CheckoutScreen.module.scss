@@ -1,0 +1,191 @@
+@use "../variables" as *;
+
+$padding-left-input: 12px;
+
+.wrapper {
+    $left-part-width: 55%;
+    .left-part {
+        padding-left: 21rem;
+        flex-basis: calc($left-part-width);
+    }
+    .right-part {
+        padding-right: 21rem;
+        flex-basis: calc(100% - $left-part-width);
+        background-color: rgba($color: $black-color, $alpha: 0.05);
+        border-left: 1px solid rgba($color: $black-color, $alpha: 0.1);
+        height: 100vh;
+        overflow-y: auto;
+    }
+    .checkout-info {
+        .account {
+            .accordion-item {
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                border-radius: 0;
+                .accordion-header button {
+                    padding-left: 0;
+                    padding-right: 0;
+                    font-size: 14px;
+                    font-weight: 400;
+                    background-color: white;
+                    &:focus {
+                        box-shadow: none;
+                    }
+                }
+                .accordion-body {
+                    padding-left: 0;
+                    padding-right: 0;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+            }
+        }
+        .form-info {
+            .select-group {
+                position: relative;
+                border: 1px solid rgba($color: #000000, $alpha: 0.2);
+                border-radius: 6px;
+                box-shadow: none;
+                overflow: hidden;
+                &:focus-within {
+                    border-color: $black-color;
+                }
+                label {
+                    position: absolute;
+                    left: $padding-left-input;
+                    font-size: 1rem;
+                    font-weight: 400;
+                    color: rgba($color: $black-color, $alpha: 0.6);
+                    top: 50%;
+                    transform: translateY(-50%);
+                    transition: font-size 0.1s linear, font-weight 0.1s linear, top 0.1s linear;
+
+                    &.focus {
+                        top: 8px;
+                        font-size: 0.7rem;
+                        font-weight: 500;
+                    }
+                }
+                select {
+                    padding-left: $padding-left-input;
+                    padding-top: 1rem;
+                    padding-right: 40px;
+                    padding-bottom: 6px;
+                    font-size: 1rem;
+                    color: $black-color;
+                    border: none;
+                    outline: none;
+                    width: 100%;
+                }
+            }
+            .radio-item {
+                cursor: pointer;
+                border: 1px solid rgba($color: $black-color, $alpha: 0.2);
+                border-radius: 6px;
+                background-color: $white-color;
+                transition: background-color 0.3s, border-color 0.3s;
+                &.active {
+                    border-color: rgba($color: $black-color, $alpha: 0.4);
+                    background-color: rgb(232, 246, 255);
+                }
+            }
+            .shipping-method-item {
+                .name {
+                    font-weight: 300;
+                    font-size: 16px;
+                }
+                .price {
+                    font-size: 14px;
+                    font-style: italic;
+                    font-weight: 300;
+                    color: rgba($color: $black-color, $alpha: 0.8);
+                }
+            }
+            .error {
+                border: 1px solid rgba($color: $red-color, $alpha: 0.6);
+                border-radius: 6px;
+                background-color: rgba($color: $red-color, $alpha: 0.04);
+                .icon-error {
+                    color: $red-color;
+                    width: 24px;
+                    height: 24px;
+                }
+                .title {
+                    font-size: 14px;
+                }
+                .description {
+                    font-size: 14px;
+                    font-weight: 300;
+                    color: rgba($color: $black-color, $alpha: 0.7);
+                }
+            }
+        }
+    }
+    .show-orders {
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        overflow-y: auto;
+
+        .cart-item {
+            font-size: 14px;
+            font-weight: 300;
+            & + .cart-item {
+                margin-top: 16px;
+            }
+            .img-quantity {
+                position: relative;
+                border: none;
+                border-radius: 6px;
+                outline: 1px solid rgba($color: $black-color, $alpha: 0.1);
+                height: 64px;
+                width: 64px;
+                .img {
+                    height: 100%;
+                    width: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                    border-radius: 6px;
+                }
+                .quantity {
+                    height: 24px;
+                    width: 24px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    transform: translate(50%, -50%);
+                    background-color: rgba($color: $black-color, $alpha: 0.6);
+                    color: $white-color;
+                    border-radius: 50%;
+                    font-size: 12px;
+                    font-weight: 500;
+                    user-select: none;
+                }
+            }
+        }
+    }
+    .prices {
+        .subtotal,
+        .shipping-cost {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 8px;
+            font-size: 14px;
+            font-weight: 300;
+        }
+        .total {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 8px;
+            font-size: 20px;
+        }
+    }
+}

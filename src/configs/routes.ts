@@ -10,16 +10,34 @@ const ProductScreen = lazy(() => import("~/screens/ProductScreen"));
 const ProductDetailScreen = lazy(() => import("~/screens/ProductDetailScreen"));
 const CartScreen = lazy(() => import("~/screens/CartScreen"));
 const WhitelistScreen = lazy(() => import("~/screens/WhitelistScreen"));
+const CheckoutScreen = lazy(() => import("~/screens/CheckoutScreen"));
 
 export const publicRoutes = [
     { path: pathname.home, component: HomeScreen, layout: PrimaryLayout },
     { path: pathname.login, component: LoginScreen, layout: SecondaryLayout },
-    { path: pathname.register, component: RegisterScreen, layout: SecondaryLayout },
+    {
+        path: pathname.register,
+        component: RegisterScreen,
+        layout: SecondaryLayout,
+    },
     { path: pathname.shop, component: ShopScreen, layout: SecondaryLayout },
     { path: pathname.product, component: ProductScreen, layout: SecondaryLayout },
-    { path: pathname.detailProduct, component: ProductDetailScreen, layout: SecondaryLayout },
+    {
+        path: pathname.detailProduct,
+        component: ProductDetailScreen,
+        layout: SecondaryLayout,
+    },
     { path: pathname.cart, component: CartScreen, layout: SecondaryLayout },
-    { path: pathname.whitelist, component: WhitelistScreen, layout: SecondaryLayout },
+    {
+        path: pathname.whitelist,
+        component: WhitelistScreen,
+        layout: SecondaryLayout,
+    },
+    {
+        path: pathname.checkout,
+        component: CheckoutScreen,
+        layout: null,
+    },
 ];
 
 export const privateRoutes = [];

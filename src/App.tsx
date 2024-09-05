@@ -9,6 +9,7 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import "react-toastify/dist/ReactToastify.css";
 import "~/styles/animations.scss";
 import "~/styles/GlobalStyles.scss";
+import { Fragment } from "react";
 
 function App() {
     return (
@@ -16,7 +17,7 @@ function App() {
             <Routes>
                 {publicRoutes.map((route) => {
                     const Component = route.component;
-                    const Layout = route.layout;
+                    const Layout = route.layout !== null ? route.layout : Fragment;
 
                     return (
                         <Route

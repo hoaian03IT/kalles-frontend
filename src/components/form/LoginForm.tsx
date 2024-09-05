@@ -61,11 +61,18 @@ export const LoginForm = ({ onHideModal }: Props) => {
         <div className={cx("wrapper")}>
             <form onSubmit={(e) => handleSubmit(e)}>
                 <FormGroup>
-                    <CustomInput type="text" value={email} setValue={setEmail} label="Email" required />
+                    <CustomInput type="text" value={email} setValue={setEmail} label="Email" required boldText={true} />
                     <span className={cx("validation-msg", "limit-line-1")}>{validatedEmailMessage}</span>
                 </FormGroup>
                 <FormGroup>
-                    <CustomInput type="password" value={password} setValue={setPassword} label="Password" required />
+                    <CustomInput
+                        type="password"
+                        value={password}
+                        setValue={setPassword}
+                        label="Password"
+                        required
+                        boldText={true}
+                    />
                     <span className={cx("validation-msg", "limit-line-1")}>{validatedPasswordMessage}</span>
                 </FormGroup>
                 <Link to="/" className="my-3 d-block text-black-50">

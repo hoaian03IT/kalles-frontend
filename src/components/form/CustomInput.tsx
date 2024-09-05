@@ -11,24 +11,36 @@ type Props = {
     type: "email" | "phone" | "text" | "password";
     setValue: React.Dispatch<SetStateAction<string>>;
     required?: boolean;
+    boldText?: boolean;
+    roundBordered?: boolean;
+    disabled?: boolean;
 };
 
 const cx = classNames.bind(styles);
 
-export const CustomInput = ({ label, value, setValue, required, type }: Props) => {
+export const CustomInput = ({
+    label,
+    value,
+    setValue,
+    required = false,
+    type,
+    boldText = false,
+    roundBordered = false,
+    disabled = false,
+}: Props) => {
     const inputId = useId();
     const [showPassword, setShowPassword] = useState(false);
 
     return (
-        <FormGroup className={cx("group")}>
+        <FormGroup className={cx("group", roundBordered ? "rounded" : "")}>
             <FormControl
                 autoComplete="off"
                 id={inputId}
-                className={cx("input")}
+                className={cx("input", boldText ? "fw-semibold" : "fw-light")}
                 type={showPassword ? "text" : type}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                // required={required}
+                disabled={disabled}
             />
             <label className={cx("label", required ? "required" : "")} htmlFor={inputId}>
                 {label}

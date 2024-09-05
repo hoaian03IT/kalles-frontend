@@ -11,7 +11,9 @@ $padding-left-input: 12px;
     &:focus-within {
         border-color: $black-color;
     }
-
+    &.rounded {
+        border-radius: 6px;
+    }
     .input {
         padding-left: $padding-left-input;
         padding-top: 1rem;
