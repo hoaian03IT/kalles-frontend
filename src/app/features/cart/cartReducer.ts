@@ -109,8 +109,8 @@ export const cartSlice = createSlice({
             const { product } = action.payload;
             state.items = state.items.filter(
                 (item) =>
-                    product._id !== item.product._id &&
-                    product.color._id !== item.product.color._id &&
+                    product._id !== item.product._id ||
+                    product.color._id !== item.product.color._id ||
                     product.size._id !== item.product.size._id
             );
             let [t, d] = calculateTotalAndDiscount(state.items);
