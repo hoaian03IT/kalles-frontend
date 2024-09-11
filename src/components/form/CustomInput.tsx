@@ -8,7 +8,7 @@ import styles from "~/styles/components/CustomInput.module.scss";
 type Props = {
     label: string;
     value: string;
-    type: "email" | "phone" | "text" | "password";
+    type: "email" | "phone" | "text" | "password" | "number";
     setValue: React.Dispatch<SetStateAction<string>>;
     required?: boolean;
     boldText?: boolean;

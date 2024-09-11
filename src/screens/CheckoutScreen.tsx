@@ -3,10 +3,11 @@ import classNames from "classnames/bind";
 import { Accordion, Button, Col, FormGroup, Row } from "react-bootstrap";
 import { useAppSelector } from "~/app/hooks";
 import { CheckLoggedContext } from "~/components/CheckLogged";
-import { useContext, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { CustomInput } from "~/components/form/CustomInput";
 import { formatCurrency } from "~/utils";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
+import { getDistrictApi, getProvinceApi } from "~/api";
 
 const cx = classNames.bind(styles);
 
@@ -19,6 +20,16 @@ const shippingMethodsFake = [
 const PAYMENT_CASH = "Cash";
 const PAYMENT_BANKING = "Banking";
 
+type Province = {
+    ProvinceID: number;
+    ProvinceName: string;
+};
+
+type District = {
+    DistrictID: number;
+    DistrictName: string;
+};
+
 export default function CheckoutScreen() {
     const { user: userState, cart: cartState } = useAppSelector((state) => state.persist);
     const { email, firstName: fn, lastName: ln, phoneNumber, gender } = userState;
@@ -26,14 +37,45 @@ export default function CheckoutScreen() {
     const { handleLogout } = useContext(CheckLoggedContext);
 
     const [country, setCountry] = useState("Viet Nam");
-    const [province, setProvince] = useState("");
-    const [district, setDistrict] = useState("");
+    const [province, setProvince] = useState<Province | null>(null);
+    const [district, setDistrict] = useState<District | null>(null);
     const [postCode, setPostCode] = useState("");
     const [address, setAddress] = useState("");
     const [firstName, setFirstName] = useState(fn);
     const [lastName, setLastName] = useState(ln);
     const [shippingMethod, setShippingMethod] = useState("");
     const [payment, setPayment] = useState("");
+    const [listProvince, setListProvince] = useState<Province[]>([]);
+    const [listDistrict, setListDistrict] = useState<District[]>([]);
+
+    useEffect(() => {
+        const getProvinces = async () => {
+            const list = await getProvinceApi();
+            setListProvince(list || []);
+        };
+        getProvinces();
+    }, []);
+
+    useEffect(() => {
+        const getDistrict = async (provinceId: number) => {
+            const list = await getDistrictApi(provinceId);
+            setListDistrict(list || []);
+        };
+
+        if (province !== null) {
+            getDistrict(province.ProvinceID);
+        }
+    }, [province]);
+
+    const handleSelectProvince = (e: ChangeEvent<HTMLSelectElement>) => {
+        let province = listProvince.find((province) => province.ProvinceID + "" === e.currentTarget.value);
+        setProvince(province || null);
+    };
+
+    const handleSelectDistrict = (e: ChangeEvent<HTMLSelectElement>) => {
+        let district = listDistrict.find((district) => district.DistrictID + "" === e.currentTarget.value);
+        setDistrict(district || null);
+    };
 
     return (
         <div className={cx("wrapper")}>
@@ -98,40 +140,49 @@ export default function CheckoutScreen() {
                                             disabled={true}
                                         />
                                         <Row className="my-2 gx-2">
-                                            <Col>
+                                            <Col md={4}>
                                                 <div className={cx("select-group")}>
                                                     <label className={cx(province ? "focus" : "")}>Province</label>
                                                     <select
-                                                        value={province}
-                                                        onChange={(e) => setProvince(e.target.value)}>
-                                                        <option value="" selected></option>
-                                                        <option value="1">Option 1</option>
-                                                        <option value="2">Option 2</option>
-                                                        <option value="3">Option 3</option>
+                                                        value={province?.ProvinceID}
+                                                        onChange={handleSelectProvince}
+                                                        defaultValue="">
+                                                        <option value=""></option>
+                                                        {listProvince.map((province) => (
+                                                            <option
+                                                                key={province.ProvinceID}
+                                                                value={province.ProvinceID}>
+                                                                {province.ProvinceName}
+                                                            </option>
+                                                        ))}
                                                     </select>
                                                 </div>
                                             </Col>
-                                            <Col>
+                                            <Col md={5}>
                                                 <div className={cx("select-group")}>
                                                     <label className={cx(district ? "focus" : "")}>District</label>
                                                     <select
-                                                        value={district}
-                                                        onChange={(e) => setDistrict(e.target.value)}>
-                                                        <option value="" selected></option>
-                                                        <option value="1">Option 1</option>
-                                                        <option value="2">Option 2</option>
-                                                        <option value="3">Option 3</option>
+                                                        value={district?.DistrictID}
+                                                        onChange={handleSelectDistrict}
+                                                        defaultValue="">
+                                                        <option value=""></option>
+                                                        {listDistrict.map((district) => (
+                                                            <option
+                                                                key={district.DistrictID}
+                                                                value={district.DistrictID}>
+                                                                {district.DistrictName}
+                                                            </option>
+                                                        ))}
                                                     </select>
                                                 </div>
                                             </Col>
-                                            <Col>
+                                            <Col md={3}>
                                                 <CustomInput
                                                     label="Post code"
                                                     value={postCode}
-                                                    type="text"
-                                                    setValue={() => {}}
+                                                    type="number"
+                                                    setValue={setPostCode}
                                                     roundBordered={true}
-                                                    disabled={true}
                                                 />
                                             </Col>
                                         </Row>
@@ -162,6 +213,7 @@ export default function CheckoutScreen() {
                                         ) : (
                                             shippingMethodsFake.map((method) => (
                                                 <div
+                                                    key={method.name}
                                                     className={cx(
                                                         "radio-item",
                                                         "shipping-method-item",
@@ -269,8 +321,8 @@ export default function CheckoutScreen() {
                 </div>
                 <div className={cx("right-part", "py-4")}>
                     <div className={cx("show-orders", "px-5 py-4 col-md-5")}>
-                        {cartItems.map((cartItem) => (
-                            <div className={cx("cart-item")}>
+                        {cartItems.map((cartItem, index) => (
+                            <div key={index} className={cx("cart-item")}>
                                 <div className="d-flex align-items-center justify-content-between">
                                     <div className="d-flex align-items-center">
                                         <div className={cx("img-quantity")}>

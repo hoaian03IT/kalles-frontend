@@ -75,7 +75,8 @@ export const CartSlide = ({ show, onHide }: Props) => {
                             <Button
                                 variant="primary"
                                 disabled={checkedTerms ? false : true}
-                                className="w-100 text-uppercase btn-round-border">
+                                className="w-100 text-uppercase btn-round-border"
+                                onClick={() => navigate(pathname.checkout)}>
                                 check out
                             </Button>
                         </div>
