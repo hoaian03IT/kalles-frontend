@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 import { Accordion, Button, Col, FormGroup, Row } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { CheckLoggedContext } from "~/components/CheckLogged";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { CustomInput } from "~/components/form/CustomInput";
 import { formatCurrency } from "~/utils";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
@@ -14,6 +14,9 @@ import { useDebounce } from "~/hooks";
 import { useNavigate } from "react-router-dom";
 import EmptyCartShow from "~/components/EmptyCartShow";
 import { axiosInstance } from "~/https/axiosInstance";
+import { Id, toast } from "react-toastify";
+import { pathname } from "~/configs/pathname";
+import { cleanAllCart } from "~/app/features/cart/cartReducer";
 
 const cx = classNames.bind(styles);
 
@@ -38,7 +41,8 @@ export default function CheckoutScreen() {
     const { handleLogout } = useContext(CheckLoggedContext);
 
     const navigate = useNavigate();
-    const axiosJWT = axiosInstance(userState, useAppDispatch(), navigate);
+    const dispatch = useAppDispatch();
+    const axiosJWT = axiosInstance(userState, dispatch, navigate);
 
     const [country, setCountry] = useState("Viet Nam");
     const [province, setProvince] = useState<Province | null>(null);
@@ -53,6 +57,8 @@ export default function CheckoutScreen() {
     const [shippingMethods, setShippingMethods] = useState<Shipping[]>([]);
 
     const addressDebounce = useDebounce(address, 500);
+
+    const toastId = useRef<Id | null>(null);
 
     useEffect(() => {
         const getProvinces = async () => {
@@ -91,6 +97,46 @@ export default function CheckoutScreen() {
     const handleSelectDistrict = (e: ChangeEvent<HTMLSelectElement>) => {
         let district = listDistrict.find((district) => district.DistrictID + "" === e.currentTarget.value);
         setDistrict(district || null);
+    };
+
+    const handleOrder = async () => {
+        if (province && district && address) {
+            const handledProducts = cartItems.map((item) => {
+                let product = item.product;
+                let price =
+                    product.price *
+                    (product.discount > 1 ? 100 - product.discount : 1 - product.discount) *
+                    item.quantity;
+                return {
+                    productId: product._id,
+                    sizeId: product.size._id,
+                    colorId: product.color._id,
+                    quantity: item.quantity,
+                    price: price,
+                    paymentMethod: payment,
+                    address: {
+                        country: country,
+                        state: province?.ProvinceName,
+                        city: district?.DistrictName,
+                        street: address,
+                        postalCode: district?.Code,
+                    },
+                };
+            });
+            toastId.current = toast("Loading...", { type: "default", autoClose: false });
+            let result = await createOrderApi(axiosJWT, handledProducts, toastId);
+            if (result) {
+                let timeout = 3000;
+                setTimeout(() => {
+                    navigate(pathname.home);
+                }, timeout);
+                toast("We will redirect to home after 3s", {
+                    type: "info",
+                    autoClose: timeout,
+                });
+                dispatch(cleanAllCart());
+            }
+        }
     };
 
     return (
@@ -343,7 +389,10 @@ export default function CheckoutScreen() {
                                                     Pay now
                                                 </Button>
                                             ) : (
-                                                <Button variant="primary" className="px-5 btn-size-md">
+                                                <Button
+                                                    variant="primary"
+                                                    className="px-5 btn-size-md"
+                                                    onClick={handleOrder}>
                                                     Order
                                                 </Button>
                                             )}

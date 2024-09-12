@@ -118,6 +118,13 @@ export const cartSlice = createSlice({
             state.discountAmount = d;
             state.loading = false;
         },
+        cleanAllCart: (state) => {
+            state.items = [];
+            state.total = 0;
+            state.discountAmount = 0;
+            state.loading = false;
+            state.error = "";
+        },
     },
 });
 
@@ -129,6 +136,7 @@ export const {
     removeProductFromCartRequest,
     removeProductFromCartSuccess,
     destroyProductFromCart,
+    cleanAllCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
