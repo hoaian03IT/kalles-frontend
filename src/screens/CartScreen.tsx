@@ -7,14 +7,20 @@ import { GrFormNextLink } from "react-icons/gr";
 import classNames from "classnames/bind";
 import styles from "~/styles/screens/CartScreen.module.scss";
 import { formatCurrency } from "~/utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { pathname } from "~/configs/pathname";
 import { bgBanner1 } from "~/assets/images/background-banner";
+import { useId, useState } from "react";
 
 const cx = classNames.bind(styles);
 
 export default function CartScreen() {
     const { items: cartItems, discountAmount, total } = useAppSelector((state) => state.persist.cart);
+
+    const [acceptTerms, setAcceptTerms] = useState(false);
+    const checkboxId = useId();
+    const navigate = useNavigate();
+
     return (
         <div className={cx("wrapper")}>
             <HeaderBanner img={bgBanner1} title="cart" />
@@ -57,6 +63,27 @@ export default function CartScreen() {
                             <span className="d-block text-end fs-5">{formatCurrency(total - discountAmount)}</span>
                         </div>
                     </div>
+                </div>
+                <div className="d-flex flex-column align-items-end">
+                    <span className="text-black-50 fw-light">Taxes and shipping calculated at checkout</span>
+                    <div className="d-flex align-items-center">
+                        <input
+                            id={checkboxId}
+                            className="me-3"
+                            type="checkbox"
+                            checked={acceptTerms}
+                            onChange={(e) => setAcceptTerms(e.target.checked)}
+                        />
+                        <label className="text-black-50 fw-light cursor-pointer" htmlFor={checkboxId}>
+                            I agree with the terms and conditions.
+                        </label>
+                    </div>
+                    <button
+                        disabled={!acceptTerms}
+                        className={cx("btn-checkout", "btn btn-size-md", "mt-2")}
+                        onClick={() => navigate(pathname.checkout)}>
+                        Check out
+                    </button>
                 </div>
             </Container>
         </div>

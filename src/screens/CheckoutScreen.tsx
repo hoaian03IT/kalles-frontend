@@ -8,14 +8,12 @@ import { CustomInput } from "~/components/form/CustomInput";
 import { formatCurrency } from "~/utils";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { getDistrictApi, getProvinceApi } from "~/api";
+import { getShippingCostApi } from "~/api/order";
+import { Shipping } from "~/types";
+import { useDebounce } from "~/hooks";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
-
-const shippingMethodsFake = [
-    { name: "Standard", price: 20 },
-    { name: "Express", price: 40 },
-    { name: "Economical", price: 10 },
-];
 
 const PAYMENT_CASH = "Cash";
 const PAYMENT_BANKING = "Banking";
@@ -28,6 +26,7 @@ type Province = {
 type District = {
     DistrictID: number;
     DistrictName: string;
+    Code: string;
 };
 
 export default function CheckoutScreen() {
@@ -39,14 +38,18 @@ export default function CheckoutScreen() {
     const [country, setCountry] = useState("Viet Nam");
     const [province, setProvince] = useState<Province | null>(null);
     const [district, setDistrict] = useState<District | null>(null);
-    const [postCode, setPostCode] = useState("");
     const [address, setAddress] = useState("");
     const [firstName, setFirstName] = useState(fn);
     const [lastName, setLastName] = useState(ln);
-    const [shippingMethod, setShippingMethod] = useState("");
+    const [shippingMethod, setShippingMethod] = useState<Shipping | null>(null);
     const [payment, setPayment] = useState("");
     const [listProvince, setListProvince] = useState<Province[]>([]);
     const [listDistrict, setListDistrict] = useState<District[]>([]);
+    const [shippingMethods, setShippingMethods] = useState<Shipping[]>([]);
+
+    const addressDebounce = useDebounce(address, 500);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getProvinces = async () => {
@@ -66,6 +69,16 @@ export default function CheckoutScreen() {
             getDistrict(province.ProvinceID);
         }
     }, [province]);
+
+    useEffect(() => {
+        const getShippingCost = async (provinceId: number) => {
+            const methods = await getShippingCostApi(provinceId);
+            setShippingMethods(methods || []);
+        };
+        if (addressDebounce && province) {
+            getShippingCost(province?.ProvinceID);
+        }
+    }, [addressDebounce, province]);
 
     const handleSelectProvince = (e: ChangeEvent<HTMLSelectElement>) => {
         let province = listProvince.find((province) => province.ProvinceID + "" === e.currentTarget.value);
@@ -179,10 +192,11 @@ export default function CheckoutScreen() {
                                             <Col md={3}>
                                                 <CustomInput
                                                     label="Post code"
-                                                    value={postCode}
-                                                    type="number"
-                                                    setValue={setPostCode}
+                                                    value={district?.Code || ""}
+                                                    type="text"
+                                                    setValue={() => {}}
                                                     roundBordered={true}
+                                                    disabled={true}
                                                 />
                                             </Col>
                                         </Row>
@@ -211,26 +225,27 @@ export default function CheckoutScreen() {
                                                 </div>
                                             </div>
                                         ) : (
-                                            shippingMethodsFake.map((method) => (
+                                            shippingMethods.map((method) => (
                                                 <div
-                                                    key={method.name}
+                                                    key={method.id}
                                                     className={cx(
                                                         "radio-item",
                                                         "shipping-method-item",
-                                                        method.name === shippingMethod ? "active" : "",
+                                                        method.id === shippingMethod?.id ? "active" : "",
                                                         "mb-2 px-2 py-3 d-flex align-items-center"
                                                     )}
-                                                    onClick={() => setShippingMethod(method.name)}>
+                                                    onClick={() => setShippingMethod(method)}>
                                                     <input
                                                         className="me-2"
                                                         type="radio"
                                                         name="shipping methods"
-                                                        checked={shippingMethod === method.name}
+                                                        checked={method.id === shippingMethod?.id}
+                                                        readOnly={true}
                                                     />
                                                     <div className="flex-grow-1 d-flex align-items-center justify-content-between">
                                                         <p className={cx("name", "m-0")}>{method.name}</p>
                                                         <p className={cx("price", "m-0")}>
-                                                            {formatCurrency(method.price)}
+                                                            {formatCurrency(method.fee)}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -254,12 +269,17 @@ export default function CheckoutScreen() {
                                                         type="radio"
                                                         name="payment type"
                                                         checked={payment === PAYMENT_CASH}
+                                                        readOnly={true}
                                                     />
                                                     <div className="flex-grow-1 d-flex align-items-center justify-content-between">
                                                         <p className={cx("name", "m-0")}>
                                                             {PAYMENT_CASH} - Cash on Delivery
                                                         </p>
-                                                        <p className={cx("price", "m-0")}>{formatCurrency(100)}</p>
+                                                        <p className={cx("price", "m-0")}>
+                                                            {formatCurrency(
+                                                                total - discountAmount + shippingMethod.fee
+                                                            )}
+                                                        </p>
                                                     </div>
                                                 </div>
                                                 <div
@@ -275,13 +295,18 @@ export default function CheckoutScreen() {
                                                         type="radio"
                                                         name="payment type"
                                                         checked={payment === PAYMENT_BANKING}
+                                                        readOnly={true}
                                                     />
                                                     <div className="flex-grow-1 d-flex align-items-center justify-content-between">
                                                         <p className={cx("name", "m-0")}>
                                                             {PAYMENT_BANKING} -{" "}
                                                             <span className="text-danger">Unpaid</span>
                                                         </p>
-                                                        <p className={cx("price", "m-0")}>{formatCurrency(100)}</p>
+                                                        <p className={cx("price", "m-0")}>
+                                                            {formatCurrency(
+                                                                total - discountAmount + shippingMethod.fee
+                                                            )}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -301,10 +326,13 @@ export default function CheckoutScreen() {
                                         )}
                                     </div>
                                     <div className="mt-3 float-end">
-                                        <Button variant="secondary" className="me-2 px-3 btn-size-md">
+                                        <Button
+                                            variant="secondary"
+                                            className="me-2 px-3 btn-size-md"
+                                            onClick={() => navigate(-1)}>
                                             Cancel
                                         </Button>
-                                        {payment === PAYMENT_CASH ? (
+                                        {payment === PAYMENT_BANKING ? (
                                             <Button variant="primary" className="px-5 btn-size-md">
                                                 Pay now
                                             </Button>
@@ -321,25 +349,29 @@ export default function CheckoutScreen() {
                 </div>
                 <div className={cx("right-part", "py-4")}>
                     <div className={cx("show-orders", "px-5 py-4 col-md-5")}>
-                        {cartItems.map((cartItem, index) => (
-                            <div key={index} className={cx("cart-item")}>
-                                <div className="d-flex align-items-center justify-content-between">
-                                    <div className="d-flex align-items-center">
-                                        <div className={cx("img-quantity")}>
-                                            <img
-                                                draggable={false}
-                                                className={cx("img")}
-                                                src={cartItem.product.color.images[0]}
-                                                alt=""
-                                            />
-                                            <span className={cx("quantity")}>{cartItem.quantity}</span>
+                        {cartItems.map((cartItem, index) => {
+                            let { price, discount } = cartItem.product;
+                            let cost = price * (discount > 1 ? 100 - discount : 1 - discount) * cartItem.quantity;
+                            return (
+                                <div key={index} className={cx("cart-item")}>
+                                    <div className="d-flex align-items-center justify-content-between">
+                                        <div className="d-flex align-items-center">
+                                            <div className={cx("img-quantity")}>
+                                                <img
+                                                    draggable={false}
+                                                    className={cx("img")}
+                                                    src={cartItem.product.color.images[0]}
+                                                    alt=""
+                                                />
+                                                <span className={cx("quantity")}>{cartItem.quantity}</span>
+                                            </div>
+                                            <span className="ms-3">{cartItem.product.name}</span>
                                         </div>
-                                        <span className="ms-3">{cartItem.product.name}</span>
+                                        <span>{formatCurrency(cost)}</span>
                                     </div>
-                                    <span>{formatCurrency(100)}</span>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                         <div className={cx("prices", "mt-2")}>
                             <div className={cx("subtotal")}>
                                 <span className={cx("title")}>Subtotal</span>
@@ -347,13 +379,17 @@ export default function CheckoutScreen() {
                             </div>
                             <div className={cx("shipping-cost")}>
                                 <span className={cx("title")}>Shipping</span>
-                                <span className={cx("cost")}>{formatCurrency(20)}</span>
+                                <span className={cx("cost")}>
+                                    {shippingMethod ? formatCurrency(shippingMethod.fee) : "Calculating..."}
+                                </span>
                             </div>
                             <div className={cx("total")}>
                                 <span className={cx("title")}>Total</span>
                                 <span className={cx("cost")}>
                                     <span className="px-2 fw-light fs-6">USD</span>
-                                    {formatCurrency(20)}
+                                    {formatCurrency(
+                                        total - discountAmount + (shippingMethod ? shippingMethod?.fee : 0)
+                                    )}
                                 </span>
                             </div>
                         </div>

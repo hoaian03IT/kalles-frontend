@@ -76,4 +76,23 @@
             }
         }
     }
+    .btn-checkout {
+        padding-left: 3.5em !important;
+        padding-right: 3.5em !important;
+        background-color: $hover-blue-color;
+        color: $white-color;
+        border: none;
+        border-radius: 20px !important;
+        transition: all 0.3s;
+
+        &:hover {
+            opacity: 0.9;
+            background-color: $hover-blue-color;
+        }
+        &:active {
+            opacity: 1;
+            background-color: $hover-blue-color;
+            color: $white-color;
+        }
+    }
 }

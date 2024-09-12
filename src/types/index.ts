@@ -90,3 +90,9 @@ export type CartItem = {
 };
 
 export type DeviceType = "desktop" | "tablet" | "mobile";
+
+export type Shipping = {
+    id: number | string;
+    name: string;
+    fee: number;
+};
