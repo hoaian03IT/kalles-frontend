@@ -10,6 +10,7 @@ import {
 } from "./product";
 import { createReviewApi, fetchReviewsApi, fetchTotalRateApi } from "./review";
 import { getDistrictApi, getProvinceApi, getWardApi } from "./apiLocation";
+import { createOrderApi, getShippingCostApi } from "./order";
 
 export const messageErrDefault = "Oops! Something went wrong";
 
@@ -32,4 +33,6 @@ export {
     getDistrictApi,
     getProvinceApi,
     getWardApi,
+    createOrderApi,
+    getShippingCostApi,
 };

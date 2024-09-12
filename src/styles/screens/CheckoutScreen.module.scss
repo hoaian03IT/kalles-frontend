@@ -1,20 +1,27 @@
 @use "../variables" as *;
+@use "sass:map";
 
 $padding-left-input: 12px;
 
 .wrapper {
     $left-part-width: 55%;
 
+    @media (max-width: calc(map.get($grid-breakpoints, md) - 1px)) {
+        .left-part,
+        .right-part {
+            flex-basis: 100% !important;
+        }
+    }
+
     .left-part {
-        padding-left: 21rem;
+        padding-left: calc(100vw - 90rem);
         flex-basis: calc($left-part-width);
     }
     .right-part {
-        padding-right: 21rem;
+        padding-right: calc(100vw - 92rem);
         flex-basis: calc(100% - $left-part-width);
         background-color: rgba($color: $black-color, $alpha: 0.05);
         border-left: 1px solid rgba($color: $black-color, $alpha: 0.1);
-        height: 100vh;
         overflow-y: auto;
     }
     .checkout-info {
@@ -124,12 +131,7 @@ $padding-left-input: 12px;
         }
     }
     .show-orders {
-        position: sticky;
-        top: 0;
-        left: 0;
-        right: 0;
         width: 100%;
-        overflow-y: auto;
 
         .cart-item {
             font-size: 14px;

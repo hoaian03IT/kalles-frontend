@@ -1,18 +1,19 @@
 import styles from "~/styles/screens/CheckoutScreen.module.scss";
 import classNames from "classnames/bind";
 import { Accordion, Button, Col, FormGroup, Row } from "react-bootstrap";
-import { useAppSelector } from "~/app/hooks";
+import { useAppDispatch, useAppSelector } from "~/app/hooks";
 import { CheckLoggedContext } from "~/components/CheckLogged";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { CustomInput } from "~/components/form/CustomInput";
 import { formatCurrency } from "~/utils";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
-import { getDistrictApi, getProvinceApi } from "~/api";
-import { getShippingCostApi } from "~/api/order";
+import { createOrderApi, getDistrictApi, getProvinceApi, getShippingCostApi } from "~/api";
+
 import { Shipping } from "~/types";
 import { useDebounce } from "~/hooks";
 import { useNavigate } from "react-router-dom";
 import EmptyCartShow from "~/components/EmptyCartShow";
+import { axiosInstance } from "~/https/axiosInstance";
 
 const cx = classNames.bind(styles);
 
@@ -36,6 +37,9 @@ export default function CheckoutScreen() {
     const { items: cartItems, total, discountAmount } = cartState;
     const { handleLogout } = useContext(CheckLoggedContext);
 
+    const navigate = useNavigate();
+    const axiosJWT = axiosInstance(userState, useAppDispatch(), navigate);
+
     const [country, setCountry] = useState("Viet Nam");
     const [province, setProvince] = useState<Province | null>(null);
     const [district, setDistrict] = useState<District | null>(null);
@@ -49,15 +53,6 @@ export default function CheckoutScreen() {
     const [shippingMethods, setShippingMethods] = useState<Shipping[]>([]);
 
     const addressDebounce = useDebounce(address, 500);
-
-    const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     if (cartItems.length === 0) {
-    //         toast.warn("Your cart is empty!");
-    //         navigate(pathname.shop);
-    //     }
-    // });
 
     useEffect(() => {
         const getProvinces = async () => {
@@ -103,7 +98,7 @@ export default function CheckoutScreen() {
             {cartItems.length === 0 ? (
                 <EmptyCartShow />
             ) : (
-                <div className="d-flex flex-wrap-reverse min-vh-100">
+                <div className="d-flex flex-wrap-reverse">
                     <div className={cx("left-part", "py-4")}>
                         <div className={cx("checkout-info", "px-5")}>
                             <div className={cx("account")}>
@@ -135,7 +130,7 @@ export default function CheckoutScreen() {
                                     <FormGroup>
                                         <div>
                                             <p className="mt-3 mb-2 fs-4">Delivery</p>
-                                            <Row className="my-2">
+                                            <Row className="my-2 g-2">
                                                 <Col>
                                                     <CustomInput
                                                         label="First Name"
@@ -386,7 +381,7 @@ export default function CheckoutScreen() {
                             <div className={cx("prices", "mt-2")}>
                                 <div className={cx("subtotal")}>
                                     <span className={cx("title")}>Subtotal</span>
-                                    <span className={cx("cost")}>{formatCurrency(20)}</span>
+                                    <span className={cx("cost")}>{formatCurrency(total - discountAmount)}</span>
                                 </div>
                                 <div className={cx("shipping-cost")}>
                                     <span className={cx("title")}>Shipping</span>
