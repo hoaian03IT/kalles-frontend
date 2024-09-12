@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useId, useState } from "react";
+import { useId, useState } from "react";
 import { Button } from "react-bootstrap";
 import classNames from "classnames/bind";
 import { BsCartX } from "react-icons/bs";
@@ -10,6 +10,7 @@ import { useAppSelector } from "~/app/hooks";
 import { useNavigate } from "react-router-dom";
 import { pathname } from "~/configs/pathname";
 import { formatCurrency } from "~/utils";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
@@ -26,6 +27,14 @@ export const CartSlide = ({ show, onHide }: Props) => {
 
     const checkboxId = useId();
     const navigate = useNavigate();
+
+    const handleGoToCheckout = () => {
+        if (items.length === 0) {
+            toast.warn("Your cart is empty!");
+        } else {
+            navigate(pathname.checkout);
+        }
+    };
 
     return (
         <CustomOffCanvas titleHeader="shopping cart" show={show} onHide={onHide} placement="end">
@@ -76,7 +85,7 @@ export const CartSlide = ({ show, onHide }: Props) => {
                                 variant="primary"
                                 disabled={checkedTerms ? false : true}
                                 className="w-100 text-uppercase btn-round-border"
-                                onClick={() => navigate(pathname.checkout)}>
+                                onClick={handleGoToCheckout}>
                                 check out
                             </Button>
                         </div>

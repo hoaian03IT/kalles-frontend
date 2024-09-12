@@ -11,6 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { pathname } from "~/configs/pathname";
 import { bgBanner1 } from "~/assets/images/background-banner";
 import { useId, useState } from "react";
+import EmptyCartShow from "~/components/EmptyCartShow";
 
 const cx = classNames.bind(styles);
 
@@ -21,7 +22,9 @@ export default function CartScreen() {
     const checkboxId = useId();
     const navigate = useNavigate();
 
-    return (
+    return cartItems.length === 0 ? (
+        <EmptyCartShow />
+    ) : (
         <div className={cx("wrapper")}>
             <HeaderBanner img={bgBanner1} title="cart" />
             <Container className="my-5">

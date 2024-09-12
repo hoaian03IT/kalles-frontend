@@ -1,0 +1,17 @@
+@use "../variables" as *;
+.empty-cart {
+    padding: 8em 0;
+    width: 100%;
+
+    img {
+        width: 20em;
+    }
+
+    a {
+        background-color: $hover-blue-color;
+        color: $white-color;
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+    }
+}
