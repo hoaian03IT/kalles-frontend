@@ -1,15 +1,15 @@
 import classNames from "classnames/bind";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { CiHeart, CiShoppingCart, CiRead } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
 
 import styles from "~/styles/components/CardProduct.module.scss";
-import { memo, useCallback, useContext, useState } from "react";
+import { memo, useCallback, useContext, useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { ProductDetail } from "./productDetail/ProductDetail";
 import { formatCurrency } from "~/utils";
 import { fetchProductDetailApi } from "~/api";
-import { useAppDispatch, useAppSelector } from "~/app/hooks";
+import { useAppDispatch } from "~/app/hooks";
 import {
     addProductToCartFailed,
     addProductToCartRequest,
@@ -18,8 +18,6 @@ import {
 import { toast } from "react-toastify";
 import { Product, SubProduct } from "~/types";
 import { pathname } from "~/configs/pathname";
-import { addNewToWhitelistApi, fetchAllWhitelistApi, removeFromWhitelistApi } from "~/api/whitelist";
-import { axiosInstance } from "~/https/axiosInstance";
 import { WhitelistContext } from "./contexts/WhitelistContext";
 
 const cx = classNames.bind(styles);
@@ -34,13 +32,9 @@ export const CardProduct = memo(({ info, favoriteStatus = false }: Props) => {
     const whitelistContext = useContext(WhitelistContext);
 
     const [showQuickView, setShowQuickView] = useState(false);
-    const userState = useAppSelector((state) => state.persist.user);
     const [favorite, setFavorite] = useState(favoriteStatus);
 
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-
-    const axiosJWT = axiosInstance(userState, dispatch, navigate);
 
     const linkToDetailedProduct = pathname.detailProduct.split(":")[0] + info._id;
 
@@ -53,6 +47,10 @@ export const CardProduct = memo(({ info, favoriteStatus = false }: Props) => {
             setShowQuickView(true);
         }
     }, [info._id]);
+
+    useEffect(() => {
+        console.log(info);
+    });
 
     const handleToggleFavorite = async () => {
         if (favorite) {

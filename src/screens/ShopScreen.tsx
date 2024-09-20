@@ -6,16 +6,17 @@ import { img1, img2, img3, img4, img5, img6 } from "~/assets/images/shop-screen"
 
 import classNames from "classnames/bind";
 import styles from "~/styles/screens/ShopScreen.module.scss";
+import { pathname } from "~/configs/pathname";
 
 const cx = classNames.bind(styles);
 
 const collectionShop = [
-    { img: img1, name: "Women", link: "/" },
-    { img: img2, name: "Men", link: "/" },
-    { img: img3, name: "Accessories", link: "/" },
-    { img: img4, name: "Footwear", link: "/" },
-    { img: img5, name: "Tops", link: "/" },
-    { img: img6, name: "Sale", link: "/" },
+    { img: img1, name: "Women", link: `${pathname.product}?sex=women` },
+    { img: img2, name: "Men", link: `${pathname.product}?sex=men` },
+    { img: img3, name: "Accessories", link: pathname.product },
+    { img: img4, name: "Footwear", link: pathname.product },
+    { img: img5, name: "Tops", link: pathname.product },
+    { img: img6, name: "Sale", link: pathname.product },
 ];
 
 export default function ShopScreen() {
