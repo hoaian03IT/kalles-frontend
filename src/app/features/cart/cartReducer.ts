@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Error } from "../commonTypes";
 import { CartItem } from "~/types";
 
-type CartState = {
+export type CartState = {
     items: Array<CartItem>;
     total: number;
     discountAmount: number;

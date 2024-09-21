@@ -96,3 +96,13 @@ export type Shipping = {
     name: string;
     fee: number;
 };
+export type Province = {
+    ProvinceID: number;
+    ProvinceName: string;
+};
+
+export type District = {
+    DistrictID: number;
+    DistrictName: string;
+    Code: string;
+};

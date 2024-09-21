@@ -8,8 +8,8 @@ import styles from "~/styles/components/CustomInput.module.scss";
 type Props = {
     label: string;
     value: string;
-    type: "email" | "phone" | "text" | "password" | "number";
-    setValue: React.Dispatch<SetStateAction<string>>;
+    type?: "email" | "phone" | "text" | "password" | "number";
+    setValue?: React.Dispatch<SetStateAction<string>>;
     required?: boolean;
     boldText?: boolean;
     roundBordered?: boolean;
@@ -23,7 +23,7 @@ export const CustomInput = ({
     value,
     setValue,
     required = false,
-    type,
+    type = "text",
     boldText = false,
     roundBordered = false,
     disabled = false,
@@ -39,7 +39,7 @@ export const CustomInput = ({
                 className={cx("input", boldText ? "fw-semibold" : "fw-light")}
                 type={showPassword ? "text" : type}
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={setValue ? (e) => setValue(e.target.value) : () => {}}
                 disabled={disabled}
             />
             <label className={cx("label", required ? "required" : "")} htmlFor={inputId}>
