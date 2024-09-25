@@ -1,5 +1,5 @@
 export const formatCurrency = (value: number) => {
-    return value.toLocaleString("us", { style: "currency", currency: "USD" });
+    return value.toLocaleString("vi", { style: "currency", currency: "VND" });
 };
 
 export const validateRules = {

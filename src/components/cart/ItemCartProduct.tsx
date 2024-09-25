@@ -18,6 +18,7 @@ import styles from "~/styles/components/CartSlideItem.module.scss";
 import { useAppDispatch } from "~/app/hooks";
 import { toast } from "react-toastify";
 import { CartItem } from "~/types";
+import { formatCurrency } from "~/utils";
 const cx = classNames.bind(styles);
 
 export const ItemCardProduct = ({ product, quantity }: CartItem) => {
@@ -70,13 +71,7 @@ export const ItemCardProduct = ({ product, quantity }: CartItem) => {
                     {product.name}
                 </Link>
                 <p className="fw-light text-black-50 mb-0">
-                    {((product.price - (product.price * product.discount) / 100) * currentQuantity).toLocaleString(
-                        "en-us",
-                        {
-                            style: "currency",
-                            currency: "USD",
-                        }
-                    )}
+                    {formatCurrency((product.price - (product.price * product.discount) / 100) * currentQuantity)}
                 </p>
                 <div className={cx("type-product", "d-flex align-items-center fw-light")}>
                     {product.color && <span>Color: {product.color.name}</span>}

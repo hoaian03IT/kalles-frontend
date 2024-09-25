@@ -106,7 +106,6 @@ export default function CheckoutScreen() {
                                 <div className={cx("total")}>
                                     <span className={cx("title")}>Total</span>
                                     <span className={cx("cost")}>
-                                        <span className="px-2 fw-light fs-6">USD</span>
                                         {formatCurrency(
                                             total - discountAmount + (shippingMethod ? shippingMethod?.fee : 0)
                                         )}

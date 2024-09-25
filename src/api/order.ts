@@ -28,3 +28,37 @@ export const getShippingCostApi = async (provinceId: number): Promise<Shipping[]
         return [];
     }
 };
+
+export const fetchPaymentURL = async ({
+    amount,
+    orderDescription,
+    orderType,
+    bankCode = "",
+    language = "en",
+    returnUrl,
+}: {
+    amount: number;
+    orderDescription: string;
+    orderType: string;
+    language?: string;
+    bankCode?: string;
+    returnUrl: string;
+}): Promise<string> => {
+    try {
+        const res = await axios.post("/order/create-payment", {
+            amount: amount + "",
+            orderDescription,
+            orderType,
+            language,
+            bankCode,
+            returnUrl,
+        });
+        return res.data.url;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data.message || error.message;
+            toast.error(message);
+        }
+        return "";
+    }
+};
